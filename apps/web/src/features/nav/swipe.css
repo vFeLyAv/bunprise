@@ -1,0 +1,58 @@
+/*
+ * src/features/nav/swipe.css — the edge-swipe-back layers (K11), imported by EdgeSwipeBack.tsx (a lazy
+ * chunk that only the installed PWA loads). Only transforms and opacity move, every frame.
+ */
+
+/* the touch zone along the left edge, below the top bar (its "Zurück" stays untouched); vertical
+   panning still scrolls the page, a horizontal move belongs to the gesture */
+.swipe-edge {
+  position: fixed;
+  left: 0;
+  top: calc(var(--sa-top) + var(--topbar-h));
+  bottom: 0;
+  width: 24px;
+  z-index: calc(var(--z-bar) + 5);
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* the previous screen underneath (a static copy, features/nav/ghost.ts) */
+.swipe-ghost {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  background-image: var(--page-backdrop);
+}
+.swipe-ghost,
+.swipe-ghost * {
+  /* a copy must never take part in (or break) a router view transition */
+  view-transition-name: none !important;
+}
+.swipe-ghost-scroll {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+.swipe-ghost-dim {
+  position: absolute;
+  inset: 0;
+  background-color: var(--text);
+  opacity: 0;
+}
+
+/* the current screen's own paper while it moves: opaque, with a soft shadow along its left edge */
+.swipe-paper {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-color: var(--bg);
+  background-image: var(--page-backdrop);
+  box-shadow:
+    -1px 0 0 color-mix(in srgb, var(--shade) 8%, transparent),
+    -14px 0 36px -6px color-mix(in srgb, var(--shade) 22%, transparent);
+}

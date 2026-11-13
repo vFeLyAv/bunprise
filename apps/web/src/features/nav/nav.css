@@ -1,0 +1,316 @@
+/*
+ * src/features/nav/nav.css — the floating glass tab bar (wave 1, K5 / K11; wave 2: two tabs in each capsule —
+ * [ Start · Listen ] ( + ) [ Ideen · Profil ]; supersedes G-14 "no tab bar").
+ * Imported by TabBar.tsx: ships with the _authed layout chunk, never with the invite landing (/i).
+ * Values come from tokens.css; only transform / opacity / colour animate; the springs are the
+ * --dur-* / --ease-* tokens (0 ms under reduced motion), so every motion here calms down with the setting.
+ * Real backdrop blur: the capsules are floating chrome (.glass-float, solid under reduced transparency).
+ */
+
+/* Declared on the dev phone frame's screen too: a custom property resolves where it is declared, and the
+   frame simulates the safe areas (--sa-*) on .pf-app, not on :root. */
+:root,
+.pf-app {
+  --nav-bar-h: 64px;
+  /* a tab's width where there is room; narrower phones shrink the capsules (≈ 47 px a tab at 320 px) */
+  --nav-tab-w: 64px;
+  --nav-group-pad: 5px;
+  /* floats above the home indicator (iOS 26): 22 px from the bottom on a Face ID phone, 10 px elsewhere */
+  --nav-bar-bottom: max(10px, calc(var(--sa-bottom) - 12px));
+  /* what a top-level screen keeps free at its end, so its last row scrolls clear of the bar (signed in
+     there is no legal footer: the Profil tab has the "Rechtliches" section) */
+  --nav-bar-space: calc(var(--nav-bar-h) + var(--nav-bar-bottom) + var(--sp-3));
+}
+
+/* The bar is visible (<html data-tabbar>, set by TabBar): the app column ends above it. */
+:root[data-tabbar]:not([data-dev-frame]) #root,
+:root[data-tabbar] .pf-app {
+  padding-bottom: var(--nav-bar-space);
+}
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: var(--nav-bar-bottom);
+  z-index: var(--z-fab);
+  display: flex;
+  justify-content: center;
+  padding-left: max(var(--sp-4), var(--sa-left));
+  padding-right: max(var(--sp-4), var(--sa-right));
+  pointer-events: none;
+  /* screen changes (router view transitions): the bar leaves / arrives as its own layer (below) */
+  view-transition-name: bp-tabbar;
+}
+/* …but not while the launch screen (index.html #bp-splash) is up: a named element is painted in the browser's top
+   layer during a transition — above the splash — so the bar flashed over it at start (Felix 26.10) */
+html:has(#bp-splash) .tabbar { view-transition-name: none; }
+
+/* three columns: the left capsule ends left of the centre, the "+" IS the centre, the right capsule starts
+   right of it — both capsules hold two tabs, so the bar is symmetric around the "+" */
+.tabbar-inner {
+  display: grid;
+  width: 100%;
+  max-width: 400px;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 10px;
+  transform-origin: 50% 100%;
+  transition: transform var(--dur-smooth) var(--ease-smooth);
+}
+/* iOS 26: scrolling down, the bar shrinks to a compact form (labels fade, icons stay) */
+.tabbar[data-compact] .tabbar-inner {
+  transform: translateY(6px) scale(0.86);
+}
+
+.tabbar-group {
+  position: relative;
+  /* two tabs + the capsule's inner padding; never wider than its column (narrow phones) */
+  width: min(100%, calc(2 * var(--nav-tab-w) + 2 * var(--nav-group-pad)));
+  height: var(--nav-bar-h);
+  border-radius: var(--r-full);
+  pointer-events: auto;
+}
+.tabbar-group-left {
+  justify-self: end;
+}
+.tabbar-group-right {
+  justify-self: start;
+}
+
+/* the material: Liquid-Glass capsule — blur + saturation (.glass-float), a brighter specular rim on top,
+   a soft warm lift; overrides .glass-float's own (layered) shadow */
+.tabbar-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--hl) 85%, transparent),
+    inset 0 0 0 0.5px color-mix(in srgb, var(--hl) 55%, transparent),
+    0 0 0 0.5px color-mix(in srgb, var(--shade) 10%, transparent),
+    0 2px 6px color-mix(in srgb, var(--shade) 8%, transparent),
+    0 16px 36px -12px color-mix(in srgb, var(--shade) 32%, transparent);
+}
+
+.tabbar-row {
+  position: relative;
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: var(--nav-group-pad);
+  list-style: none;
+}
+.tabbar-row > li {
+  display: flex;
+  min-width: 0;
+}
+
+/* the selected tab's lens: a warm pill that springs from tab to tab (TabBar: motion x + a squash) */
+.tabbar-pill {
+  position: absolute;
+  top: var(--nav-group-pad);
+  bottom: var(--nav-group-pad);
+  left: var(--nav-group-pad);
+  /* one tab wide: x = slot × 100 % of its own width (TabBar) */
+  width: calc((100% - 2 * var(--nav-group-pad)) / 2);
+  pointer-events: none;
+}
+.tabbar-pill-shape {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-full);
+  background-color: color-mix(in oklab, var(--accent-100) 80%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--hl) 70%, transparent),
+    inset 0 0 0 0.5px rgba(220, 123, 44, 0.14);
+}
+
+.tabbar-tab {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: var(--r-full);
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color var(--dur-s) var(--ease-out);
+}
+.tabbar-tab[aria-current='page'] {
+  color: var(--accent-text);
+}
+.tabbar-tab:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.tabbar-icon {
+  display: grid;
+  place-items: center;
+  height: 28px;
+  transition: transform var(--dur-smooth) var(--ease-smooth);
+}
+.tabbar-request-dot {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-full);
+  background: var(--accent-500);
+}
+.tabbar-label {
+  max-width: calc(100% - 4px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-caption-2);
+  line-height: var(--lh-caption-2);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition:
+    opacity var(--dur-s) var(--ease-out),
+    transform var(--dur-smooth) var(--ease-smooth);
+}
+/* 320 px phones: a tab is 48 px wide and Russian "Профиль" is 49 px — the label may use the whole tab, a hair
+   tighter (German "Profil" is 27 px; nothing else changes visibly) */
+@media (max-width: 359px) {
+  .tabbar-label {
+    max-width: 100%;
+    letter-spacing: -0.01em;
+  }
+}
+.tabbar[data-compact] .tabbar-label {
+  opacity: 0;
+  transform: translateY(5px) scale(0.9);
+}
+.tabbar[data-compact] .tabbar-icon {
+  transform: translateY(7px);
+}
+
+/* the Profil tab IS the avatar; selected = ringed like Telegram (the ring fades, it never grows) */
+.tabbar-avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.tabbar-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1.5px var(--surface),
+    0 0 0 3px var(--accent-400);
+  opacity: 0;
+  transition: opacity var(--dur-s) var(--ease-out);
+}
+.tabbar-tab[aria-current='page'] .tabbar-avatar::after {
+  opacity: 1;
+}
+
+/* the create button: the big "+" in accent glass, the centre of the bar */
+.tabbar-create-slot {
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+}
+.tabbar-create {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  color: var(--text-on-accent);
+}
+/* "+" ⇄ "×": ONE button whose glyph turns in place (only the glyph — the glass, its rim and its shadow
+   never rotate). Opening: the bouncy spring; closing: back quickly with the snappy one, interruptible
+   (a CSS transition turns from wherever it is). Reduced / off: the spring tokens are 0 ms — it switches. */
+.tabbar-create > svg {
+  transition: transform var(--dur-snappy) var(--ease-snappy);
+}
+.tabbar[data-menu-open] .tabbar-create > svg {
+  transform: rotate(45deg);
+  transition-duration: var(--dur-bouncy);
+  transition-timing-function: var(--ease-bouncy);
+}
+
+/* The create menu is open or still fading out (CreateMenu): the bar rises above the menu's scrim, so the
+   "×" stays crisp and nothing doubles while the menu leaves; the capsules dim like the page behind them.
+   While open the bar takes no taps at all: a tap on the "×" falls through to the menu's (invisible)
+   close button right under it, a tap on a capsule to the scrim — both close the menu. */
+.tabbar[data-menu-layer] {
+  z-index: calc(var(--z-backdrop) + 1);
+}
+.tabbar[data-menu-open] .tabbar-group,
+.tabbar[data-menu-open] .tabbar-create-slot {
+  pointer-events: none;
+}
+.tabbar-group::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: color-mix(in oklab, var(--text) 26%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.45, 0, 0.2, 1);
+}
+.tabbar-row {
+  transition: opacity 0.28s cubic-bezier(0.45, 0, 0.2, 1);
+}
+.tabbar[data-menu-open] .tabbar-group::after {
+  opacity: 1;
+}
+.tabbar[data-menu-open] .tabbar-row {
+  opacity: 0.55;
+}
+:root[data-motion='off'] .tabbar-group::after,
+:root[data-motion='off'] .tabbar-row {
+  transition: none;
+}
+
+/* Screen changes: to a pushed screen the bar sinks away; back on a top-level screen it rises again.
+   Only when the bar exists on one side of the change (:only-child); tab ↔ tab changes run without a
+   view transition (the pill's spring is the animation there). */
+::view-transition-old(bp-tabbar):only-child {
+  animation: nav-tabbar-out var(--dur-m) var(--ease-in) both;
+}
+::view-transition-new(bp-tabbar):only-child {
+  animation: nav-tabbar-in var(--dur-smooth) var(--ease-smooth) both;
+}
+@keyframes nav-tabbar-out {
+  to {
+    opacity: 0;
+    transform: translateY(28px) scale(0.94);
+  }
+}
+@keyframes nav-tabbar-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.94);
+  }
+}
+/* reduced motion (the motion level, src/motion/level.ts): the bar only fades — no sinking, no rising;
+   'off': the --dur-* tokens are 0 ms, the change is instant */
+:root[data-motion='reduce'] ::view-transition-old(bp-tabbar):only-child {
+  animation-name: nav-tabbar-fade-out;
+}
+:root[data-motion='reduce'] ::view-transition-new(bp-tabbar):only-child {
+  animation-name: nav-tabbar-fade-in;
+  animation-duration: var(--dur-m);
+}
+@keyframes nav-tabbar-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes nav-tabbar-fade-in {
+  from {
+    opacity: 0;
+  }
+}

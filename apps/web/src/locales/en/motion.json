@@ -1,0 +1,32 @@
+{
+  "motion": {
+    "title": "Motion",
+    "animations": "Animations",
+    "level_label": "Animations",
+    "level_full": "Full",
+    "level_reduced": "Less",
+    "level_off": "Off",
+    "hint_full": "Springy transitions and bunnies that join in.",
+    "hint_reduced": "Calmer: nothing flies around, transitions only fade softly.",
+    "hint_off": "No animations. A tap still answers right away.",
+    "system_reduced": "Your device asks for less motion – so it stays at least calmer here.",
+    "battery_active": "The battery is almost empty – saving right now.",
+    "bunnies": "Show bunnies",
+    "bunnies_hint": "{{bunny}}, his friends and {{hamster}} the hamster",
+    "bunnies_off_hint": "With “Off” the bunnies rest too.",
+    "night": "Sleep at night",
+    "night_hint": "From 11 pm to 7 am {{bunny}} and {{hamster}} sleep. Tap to wake them.",
+    "battery": "Save when the battery is low",
+    "battery_hint": "Below 20 % and not charging: fewer animations automatically",
+    "battery_unsupported": "This browser does not tell the battery level (for example Safari on iPhone) – automatic saving cannot work here.",
+    "device_only": "Applies to this device only.",
+    "feedback": "Vibration & sound",
+    "feedback_hint": "Brief feedback for taps and confirmations.",
+    "feedback_no_vibration": "The iPhone browser does not vibrate. Brief sounds confirm your actions.",
+    "shake": "Shake",
+    "shake_hint": "Shake your phone – {{bunny}} gets dizzy for a moment. The iPhone needs your permission for motion data.",
+    "shake_allow": "Allow",
+    "shake_allowed": "Allowed",
+    "shake_denied": "Not allowed – you can try again later."
+  }
+}

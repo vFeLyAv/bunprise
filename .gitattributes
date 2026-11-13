@@ -1,0 +1,8 @@
+# Keep LF line endings in the repository on every OS (Windows checkout included).
+* text=auto eol=lf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff2 binary

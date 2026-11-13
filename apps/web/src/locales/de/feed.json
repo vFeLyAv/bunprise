@@ -1,0 +1,57 @@
+{
+  "feed": {
+    "title": "Start",
+    "view_label": "Ansicht",
+    "view_list": "Liste",
+    "view_month": "Monat",
+    "group_today": "Heute",
+    "group_week": "In den nächsten Tagen",
+    "group_later": "Später",
+    "group_past": "Vergangen (30 Tage)",
+    "empty_title": "Noch nichts geplant",
+    "empty": "Leg einen Anlass an oder warte auf eine Einladung.",
+    "new_occasion": "Anlass anlegen",
+    "chip_host": "Du lädst ein",
+    "chip_guests_one": "{{count}} Gast",
+    "chip_guests_other": "{{count}} Gäste",
+    "chip_guests_none": "Noch keine Gäste",
+    "chip_rsvp_none": "Kommst du?",
+    "chip_rsvp_going": "Zugesagt",
+    "chip_rsvp_maybe": "Vielleicht",
+    "chip_rsvp_declined": "Abgesagt",
+    "hosted_by": "{{name}} lädt ein",
+    "time_in_host_tz": "Ortszeit des Anlasses: {{time}} ({{tz}})",
+    "offline_hint": "Sobald du wieder online bist, lädt deine Übersicht.",
+    "error_hint": "Deine Anlässe sind nicht weg – versuch es gleich nochmal.",
+    "empty_ideas": "Geburtstag, Spieleabend, Picknick – jeder Grund zum Feiern zählt.",
+    "empty_invite_hint": "Eine Einladung bekommen? Öffne einfach den Link aus der Nachricht.",
+    "chip_no_wishes": "Noch keine Wünsche",
+    "chip_bring": "Mitbringen",
+    "first_steps_title": "Erste Schritte",
+    "first_steps_hide": "Erste Schritte ausblenden",
+    "first_steps_occasion": "Eigenen Anlass anlegen",
+    "first_steps_wish": "Ersten Wunsch notieren",
+    "first_steps_link": "Deinen Folgen-Link teilen",
+    "birthday": {
+      "eyebrow": "Bald wieder",
+      "host_text": "„{{title}}“ ist am {{date}} – wieder feiern?",
+      "host_action": "Neuen Anlass anlegen",
+      "guest_text": "„{{title}}“ naht ({{date}}) – schau, ob {{name}} Wünsche hat.",
+      "guest_action": "Wünsche ansehen",
+      "dismiss": "Vorschlag ausblenden",
+      "someone": "die Person"
+    },
+    "comic": {
+      "title": "Wie haben sich Pompon und Tapsi kennengelernt?",
+      "read": "Geschichte lesen",
+      "hide": "Comic-Karte ausblenden"
+    }
+  },
+  "notice": {
+    "wish_deleted": "„{{title}}“ wurde entfernt – deine Reservierung ist aufgehoben",
+    "wish_changed": "„{{title}}“ wurde geändert – schau nochmal drauf",
+    "occasion_changed": "„{{title}}“ wurde geändert (Datum, Zeit oder Ort)",
+    "occasion_deleted": "„{{title}}“ wurde abgesagt und gelöscht",
+    "removed": "Du wurdest aus „{{title}}“ entfernt"
+  }
+}

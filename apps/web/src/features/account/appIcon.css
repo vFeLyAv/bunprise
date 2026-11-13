@@ -1,0 +1,71 @@
+/* Einstellungen → App-Symbol (AppIconPicker.tsx): four columns of icons (twelve = three rows on any phone), each a
+   rounded square like on a home screen; the chosen one gets an accent ring with a gap and a check. Pictures of the
+   icons, so they keep their own colours in every theme. Only transform / box-shadow / opacity move. */
+.app-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px 8px;
+  justify-items: center;
+}
+
+.app-icon-choice {
+  position: relative;
+  /* the tile itself; the button is the hit area around it (≥ 44 px) */
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 68px;
+  aspect-ratio: 1;
+  padding: 5px;
+  /* the picture's corner + the gap, so the ring runs parallel to it */
+  border-radius: calc(22.5% + 3px);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--dur-snappy) var(--ease-snappy);
+}
+.app-icon-choice:active { transform: scale(.94); }
+.app-icon-choice:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+
+.app-icon-choice img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* the iOS home-screen corner (≈ 22.5 % of the side) */
+  border-radius: 22.5%;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  box-shadow: 0 0 0 .5px color-mix(in srgb, var(--shade) 18%, transparent), 0 2px 6px -2px color-mix(in srgb, var(--shade) 30%, transparent);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* the ring: a gap in the card's colour, then the accent */
+.app-icon-choice::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2.5px var(--accent-text);
+  opacity: 0;
+  transform: scale(.92);
+  transition: opacity var(--dur-s) var(--ease-out), transform var(--dur-bouncy) var(--ease-bouncy);
+  pointer-events: none;
+}
+.app-icon-choice[aria-checked="true"]::after { opacity: 1; transform: none; }
+
+/* the check badge on the chosen one */
+.app-icon-choice::before {
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--r-full);
+  background: var(--accent-text) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.6 10.4l2.9 2.8 5.9-6.2' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 20px no-repeat;
+  box-shadow: 0 0 0 2px var(--surface);
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity var(--dur-s) var(--ease-out), transform var(--dur-bouncy) var(--ease-bouncy);
+  pointer-events: none;
+}
+.app-icon-choice[aria-checked="true"]::before { opacity: 1; transform: none; }

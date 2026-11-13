@@ -1,0 +1,28 @@
+{
+  "name": "bunprise",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Bunprise (code name wishcal) monorepo: PWA (apps/web), mascots (packages/mascot), DB/RLS tests (packages/db-tests), Cloudflare Worker (workers/edge).",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "workers/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w apps/web",
+    "dev:demo": "npm run dev:demo -w apps/web",
+    "build": "npm run build -w apps/web",
+    "preview": "npm run preview -w apps/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint -w apps/web",
+    "test": "npm test --workspaces --if-present",
+    "test:db": "npm test -w @bunprise/db-tests",
+    "test:concurrency": "npm run test:concurrency -w @bunprise/db-tests",
+    "size": "npm run size -w apps/web",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run test:concurrency && npm run build && npm run size",
+    "deploy": "npm run build && wrangler deploy -c workers/edge/wrangler.jsonc"
+  }
+}

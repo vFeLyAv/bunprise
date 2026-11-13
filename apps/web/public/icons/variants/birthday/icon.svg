@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+<defs>
+    <!-- background: tokens accent-300 (top) to accent-400 (bottom), apps/web/src/styles/tokens.css
+         (XML comments may not contain a double hyphen, so the custom property names are written without it) -->
+    <linearGradient id="bg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="1024">
+      <stop offset="0" stop-color="#F6C07E"/>
+      <stop offset="1" stop-color="#F0A04B"/>
+    </linearGradient>
+
+    <!-- The bunny in the mascot's own units (x = 0 centre line, y = 0 feet), coat "fawn". -->
+    <linearGradient id="bunny-body" gradientUnits="userSpaceOnUse" x1="0" y1="-165" x2="0" y2="0">
+      <stop offset="0" stop-color="#FCE7CC"/>
+      <stop offset="1" stop-color="#EFC79B"/>
+    </linearGradient>
+    <linearGradient id="bunny-ear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E9B784"/>
+      <stop offset="1" stop-color="#D59B60"/>
+    </linearGradient>
+    <radialGradient id="bunny-belly" gradientUnits="userSpaceOnUse" cx="0" cy="-44" r="56">
+      <stop offset="0" stop-color="#FFF9F1" stop-opacity=".8"/>
+      <stop offset=".55" stop-color="#FFF9F1" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#FFF9F1" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- head layer: drawn BEHIND the edge -->
+    <g id="bunny-head">
+      <path d="M0 -163 C40 -163 64 -140 67 -112 C70 -92 66 -72 67 -59 C72 -50 75 -42 75 -31 C75 -12 64 -1 50 -1 L-50 -1 C-64 -1 -75 -12 -75 -31 C-75 -42 -72 -50 -67 -59 C-66 -72 -70 -92 -67 -112 C-64 -140 -40 -163 0 -163 Z" fill="url(#bunny-body)"/>
+      <ellipse cx="-65" cy="-84" rx="12" ry="21" fill="url(#bunny-body)"/>
+      <ellipse cx="65" cy="-84" rx="12" ry="21" fill="url(#bunny-body)"/>
+      <ellipse cx="0" cy="-46" rx="56" ry="50" fill="url(#bunny-belly)"/>
+      <!-- face, lifted 4 units like the mascot's "look-up"; eyes 1.34x larger, highlights a little higher -->
+      <g transform="translate(0 -4)">
+        <ellipse cx="-43" cy="-77" rx="9" ry="5.5" fill="#FF9E9E" opacity=".3"/>
+        <ellipse cx="43" cy="-77" rx="9" ry="5.5" fill="#FF9E9E" opacity=".3"/>
+        <ellipse cx="-29" cy="-93" rx="8.3" ry="9.9" fill="#3A2622"/>
+        <circle cx="-26.05" cy="-97.82" r="2.55" fill="#FFFFFF"/>
+        <circle cx="-31.95" cy="-89.58" r="1.07" fill="#FFFFFF" opacity=".7"/>
+        <ellipse cx="29" cy="-93" rx="8.3" ry="9.9" fill="#3A2622"/>
+        <circle cx="31.95" cy="-97.82" r="2.55" fill="#FFFFFF"/>
+        <circle cx="26.05" cy="-89.58" r="1.07" fill="#FFFFFF" opacity=".7"/>
+        <ellipse cx="-4.6" cy="-76.6" rx="5.4" ry="4" fill="#FFF9F1" opacity=".9"/>
+        <ellipse cx="4.6" cy="-76.6" rx="5.4" ry="4" fill="#FFF9F1" opacity=".9"/>
+        <path d="M-3.6 -84 Q0 -86 3.6 -84 Q2.8 -80.8 0 -79.8 Q-2.8 -80.8 -3.6 -84 Z" fill="#F2899A"/>
+        <path d="M0 -79.8 L0 -77.6 M0 -77.6 Q-2.2 -75.2 -4.6 -76.2 M0 -77.6 Q2.2 -75.2 4.6 -76.2" fill="none" stroke="#6B4A42" stroke-width="1.4" stroke-linecap="round"/>
+      </g>
+      <!-- lop ears -->
+      <path d="M-24 -160 C-44 -170 -67 -155 -75 -128 C-81 -107 -77 -86 -66 -83 C-56 -81 -53 -96 -53 -111 C-53 -129 -44 -145 -29 -151 Z" fill="url(#bunny-ear)"/>
+      <path d="M-29 -151 C-44 -145 -53 -129 -53 -111 C-53 -99 -55 -90 -61 -86 C-58 -95 -57.5 -108 -58 -118 C-58.5 -134 -50 -146 -37 -153 Z" fill="#F4B2A0" opacity=".5"/>
+      <path d="M24 -160 C44 -170 67 -155 75 -128 C81 -107 77 -86 66 -83 C56 -81 53 -96 53 -111 C53 -129 44 -145 29 -151 Z" fill="url(#bunny-ear)"/>
+      <path d="M29 -151 C44 -145 53 -129 53 -111 C53 -99 55 -90 61 -86 C58 -95 57.5 -108 58 -118 C58.5 -134 50 -146 37 -153 Z" fill="#F4B2A0" opacity=".5"/>
+    </g>
+
+    <!-- paws layer: drawn IN FRONT of the edge; they straddle the edge line at y = -60, toes hang over it -->
+    <g id="bunny-paws">
+      <ellipse cx="-25" cy="-56" rx="13.3" ry="6.2" fill="#965A28" fill-opacity=".16"/>
+      <ellipse cx="-25" cy="-61.5" rx="13" ry="10" fill="#F5D6B0"/>
+      <path d="M-30.46 -59.5 v5.5 M-25 -59.5 v5.5 M-19.54 -59.5 v5.5" fill="none" stroke="#965A28" stroke-opacity=".38" stroke-width="1.3" stroke-linecap="round"/>
+      <ellipse cx="25" cy="-56" rx="13.3" ry="6.2" fill="#965A28" fill-opacity=".16"/>
+      <ellipse cx="25" cy="-61.5" rx="13" ry="10" fill="#F5D6B0"/>
+      <path d="M19.54 -59.5 v5.5 M25 -59.5 v5.5 M30.46 -59.5 v5.5" fill="none" stroke="#965A28" stroke-opacity=".38" stroke-width="1.3" stroke-linecap="round"/>
+    </g>
+  </defs><defs></defs>
+<rect width="1024" height="1024" fill="url(#bg)"/>
+<rect x="132" y="162" width="36" height="16" rx="4" fill="#6C8CFF" transform="rotate(20 150 170)"/><rect x="252" y="102" width="36" height="16" rx="4" fill="#FF7A9A" transform="rotate(-30 270 110)"/><rect x="802" y="142" width="36" height="16" rx="4" fill="#FFF9F1" transform="rotate(15 820 150)"/><rect x="882" y="292" width="36" height="16" rx="4" fill="#6C8CFF" transform="rotate(-10 900 300)"/><rect x="92" y="352" width="36" height="16" rx="4" fill="#FFF9F1" transform="rotate(40 110 360)"/><rect x="742" y="72" width="36" height="16" rx="4" fill="#7FD1AE" transform="rotate(60 760 80)"/><rect x="382" y="62" width="36" height="16" rx="4" fill="#7FD1AE" transform="rotate(-50 400 70)"/><rect x="912" y="512" width="36" height="16" rx="4" fill="#FF7A9A" transform="rotate(25 930 520)"/><rect x="62" y="552" width="36" height="16" rx="4" fill="#7FD1AE" transform="rotate(-20 80 560)"/><rect x="622" y="112" width="36" height="16" rx="4" fill="#FF7A9A" transform="rotate(10 640 120)"/>
+<use href="#bunny-head" transform="translate(512 1080) scale(4)"/>
+<g transform="translate(512 1080) scale(4)"><g transform="rotate(10 0 -160)">
+  <clipPath id="cone"><path d="M-27 -162 L0 -236 L27 -162 Z"/></clipPath>
+  <path d="M-27 -162 L0 -236 L27 -162 Z" fill="#6C8CFF"/>
+  <g clip-path="url(#cone)" fill="#FFF9F1">
+    <path d="M-40 -186 L40 -210 L40 -200 L-40 -176 Z"/>
+    <path d="M-40 -214 L40 -238 L40 -228 L-40 -204 Z"/>
+  </g>
+  <circle cx="0" cy="-238" r="9" fill="#FF7A9A"/>
+  <ellipse cx="0" cy="-162" rx="28" ry="5" fill="#4E6AD6"/>
+</g></g>
+<rect x="0" y="840" width="1024" height="184" fill="#E5923D"/>
+<use href="#bunny-paws" transform="translate(512 1080) scale(4)"/>
+
+</svg>

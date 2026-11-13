@@ -1,0 +1,22 @@
+/*
+ * src/styles/tint.css — the per-occasion tint of the ambient scene (ui/AmbientTint), imported by that
+ * component: it ships with the occasion screens only. A large soft glow in the occasion's colour at the top
+ * (behind the hero) and a second, smaller one at the right; a fixed static layer between the page backdrop
+ * (body::before) and the content. --tint-1…4 live in tokens.css (contrast check: TINT).
+ */
+@import './tints.css';
+.ambient-tint {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(100% 40% at 50% 4%, var(--tint) 0%, rgba(255,255,255,0) 72%),
+    radial-gradient(64% 26% at 100% 52%, var(--tint) 0%, rgba(255,255,255,0) 72%);
+  animation: bp-tint-in var(--dur-l) var(--ease-out) both;
+}
+.ambient-tint[data-tint="1"] { --tint: var(--tint-1); }
+.ambient-tint[data-tint="2"] { --tint: var(--tint-2); }
+.ambient-tint[data-tint="3"] { --tint: var(--tint-3); }
+.ambient-tint[data-tint="4"] { --tint: var(--tint-4); }
+@keyframes bp-tint-in { from { opacity: 0; } }

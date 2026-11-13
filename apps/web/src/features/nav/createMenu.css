@@ -1,0 +1,231 @@
+/*
+ * src/features/nav/createMenu.css — the create menu (K5): dimmed + blurred page, a floating glass panel
+ * above the tab bar with two big frosted buttons, the "×" docked exactly where the bar's "+" is.
+ * Imported by CreateMenu.tsx (a lazy chunk). Solid under reduced transparency (the --solid* switches of
+ * tokens.css); every movement is a spring of springs.ts or a --dur-* token.
+ */
+
+.cm-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-backdrop);
+}
+/* closing: the layer fades out on its own; from the first frame every tap goes to the page again */
+.cm-layer[data-closing],
+.cm-layer[data-closing] * {
+  pointer-events: none !important;
+}
+
+/* the page behind dims and blurs (a static overlay while the page cannot scroll; only its opacity fades) */
+.cm-scrim {
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in oklab, var(--sink) 22%, transparent);
+  -webkit-backdrop-filter: var(--solid-off, blur(10px) saturate(1.15));
+  backdrop-filter: var(--solid-off, blur(10px) saturate(1.15));
+}
+
+.cm-dialog {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  outline: none;
+}
+
+/* the panel floats above the tab bar, inset like the kit's floating sheet */
+.cm-sheet {
+  position: absolute;
+  left: max(var(--sheet-inset), var(--sa-left));
+  right: max(var(--sheet-inset), var(--sa-right));
+  bottom: calc(var(--nav-bar-bottom) + var(--nav-bar-h) + var(--sp-3));
+  max-width: 480px;
+  margin: 0 auto;
+  pointer-events: auto;
+  /* the finger pulls the panel down (drag); only the occasion list scrolls (pan-y below) */
+  touch-action: none;
+}
+.cm-glide {
+  display: flex;
+  flex-direction: column;
+}
+
+/* the bunny's stage above the panel: its host reaches into the panel (the paws rest on the glass) */
+.cm-bunny {
+  position: relative;
+  z-index: 1;
+  /* as wide as the panel: every moment comes out over the panel's own top edge (no side peeks "out of nothing") */
+  width: 100%;
+  /* room for the whole bunny over the bottom-anchored panel edge (a full silhouette, a greeting paw, a hop) */
+  height: 176px;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+.cm-panel {
+  position: relative;
+  border-radius: var(--r-xl);
+  padding: var(--sp-6) var(--sp-4) var(--sp-4);
+  max-height: calc(100dvh - var(--nav-bar-space) - max(16px, var(--sa-top)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.cm-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+/* a big frosted button: warm translucent white, a light rim, a highlight on top, a soft warm lift */
+.cm-action {
+  position: relative;
+  display: flex;
+  min-height: 176px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-1);
+  padding: var(--sp-4) var(--sp-4) var(--sp-5);
+  border-radius: 26px;
+  text-align: left;
+  color: var(--text);
+  background-color: var(--solid, color-mix(in oklab, var(--surface) 86%, transparent));
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--hl) 92%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--hl) 55%, transparent),
+    0 1px 2px color-mix(in srgb, var(--shade) 6%, transparent),
+    0 12px 26px -16px color-mix(in srgb, var(--shade) 34%, transparent);
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.cm-action[data-tone='wish'] {
+  background-image:
+    radial-gradient(120% 95% at 0% 0%, light-dark(rgba(255, 200, 150, 0.6), rgba(255, 160, 96, 0.2)) 0%, transparent 64%),
+    radial-gradient(90% 70% at 100% 100%, light-dark(rgba(252, 214, 140, 0.32), rgba(236, 180, 90, 0.12)) 0%, transparent 70%);
+}
+.cm-action[data-tone='occasion'] {
+  background-image:
+    radial-gradient(120% 95% at 0% 0%, light-dark(rgba(244, 176, 194, 0.5), rgba(236, 124, 150, 0.18)) 0%, transparent 64%),
+    radial-gradient(90% 70% at 100% 100%, light-dark(rgba(196, 186, 240, 0.34), rgba(150, 132, 226, 0.13)) 0%, transparent 70%);
+}
+.cm-action:active {
+  background-color: var(--solid, color-mix(in oklab, var(--surface) 70%, var(--accent-100)));
+}
+.cm-action:focus-visible {
+  outline: none;
+  box-shadow:
+    var(--ring),
+    0 12px 26px -16px color-mix(in srgb, var(--shade) 34%, transparent);
+}
+.cm-action-picture {
+  display: block;
+  margin-bottom: var(--sp-3);
+  border-radius: 18px;
+  box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--shade) 35%, transparent);
+}
+.cm-action-title {
+  font-size: var(--fs-headline);
+  line-height: var(--lh-headline);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.cm-action-hint {
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  color: var(--text-2);
+  text-wrap: pretty;
+}
+
+/* step 2: back · title */
+.cm-step-head {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: var(--sp-1);
+  margin: calc(-1 * var(--sp-2)) calc(-1 * var(--sp-2)) 0;
+}
+.cm-back {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--accent-text);
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.cm-back:active {
+  background-color: var(--fill-2);
+}
+
+.cm-choices {
+  display: flex;
+  max-height: min(46dvh, 344px);
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0 calc(-1 * var(--sp-1));
+  padding: var(--sp-1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  touch-action: pan-y;
+}
+.cm-choice {
+  display: flex;
+  width: 100%;
+  min-height: 68px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-2);
+  border-radius: 22px;
+  text-align: left;
+  background-color: var(--solid, color-mix(in oklab, var(--surface) 86%, transparent));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--hl) 92%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--hl) 50%, transparent),
+    0 8px 20px -14px color-mix(in srgb, var(--shade) 32%, transparent);
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.cm-choice:active {
+  background-color: var(--solid, color-mix(in oklab, var(--surface) 70%, var(--accent-100)));
+}
+.cm-choice-skeleton {
+  pointer-events: none;
+}
+
+/* the dialog's close button, docked in the bar's geometry (nav.css .tabbar / .tabbar-inner): the exact
+   centre, under the bar's own "+"/"×" (which the person sees). It draws nothing but its focus ring. */
+.cm-dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--nav-bar-bottom);
+  display: flex;
+  justify-content: center;
+  padding-left: max(var(--sp-4), var(--sa-left));
+  padding-right: max(var(--sp-4), var(--sa-right));
+  pointer-events: none;
+}
+.cm-dock-row {
+  display: grid;
+  width: 100%;
+  max-width: 400px;
+  height: var(--nav-bar-h);
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 10px;
+}
+.cm-close {
+  display: block;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.cm-close:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}

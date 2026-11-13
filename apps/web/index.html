@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- System theme by default (tokens.css); lib/theme.ts pins both tags when the person chose Hell / Dunkel -->
+    <meta name="theme-color" content="#F5EEE2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1C1612" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- the chosen theme and motion level on <html> before the first paint (the launch screen below starts in the right
+         colours); a file of our own origin, as the CSP wants (public/boot.js) -->
+    <script src="/boot.js"></script>
+    <title>Bunprise</title>
+    <meta name="description" content="Pläne und Wünsche an einem Ort – heimlich schenken, gemeinsam feiern." />
+
+    <!-- Static, non-personal Open Graph tags: the same preview for every link (framework-decision 9.2, legal 1.9). -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Bunprise" />
+    <meta property="og:title" content="Bunprise" />
+    <meta property="og:description" content="Pläne und Wünsche an einem Ort – heimlich schenken, gemeinsam feiern." />
+    <!-- og:image becomes an absolute https URL once the production domain exists (crawlers ignore relative ones) -->
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Der Bunprise-Hase schaut über den Rand" />
+    <meta property="og:locale" content="de_DE" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Bunprise" />
+<!--
+  Bunprise launch screen (Felix 26.10; docs/design/2026-10-26-splash.md). Lives in apps/web/index.html: the <style>
+  in <head>, the <div> as the first element of <body>. packages/mascot/demo/splash/splash.html is the gallery's
+  identical copy (apps/web/src/lib/splash.test.ts compares them): change both.
+  Pure CSS: it shows with the first paint and animates with no JavaScript (CSP: no inline scripts); main.tsx
+  only adds .bps-out (the exit) and removes the element afterwards. Colours: <html data-theme>, else the system.
+  Motion: prefers-reduced-motion or <html data-motion="reduce"> = fades only, data-motion="off" = nothing moves.
+  Only transform/opacity animate (the compositor keeps them smooth while the app boots); everything is finite;
+  if no script ever runs, it hides itself after 10 s.
+-->
+<style>
+#bp-splash{
+  /* --k scales movement, --f scales fades (reduce: k 0; off: both 0) */
+  --k:1;--f:1;
+  /* the app's springs (tokens.css --ease-bouncy / --ease-smooth) */
+  --bo:linear(0,.069,.237,.449,.662,.849,.994,1.092,1.146,1.163,1.153,1.127,1.092,1.057,1.026,1.002,.986,.977,.973,.975,.979,.985,.99,.995,1);
+  --sm:linear(0,.023,.081,.159,.248,.34,.429,.514,.591,.66,.721,.773,.818,.856,.887,.913,.934,.95,.964,.974,.982,.988,.993,.996,1);
+  /* the page backdrop of each theme (tokens.css / navy.css / ocean.css --page-*), so the hand-over shows no seam */
+  --t:#F7F0E5;--m:#F3EADC;--b:#F0E6D6;--g1:rgba(255,193,146,.58);--g2:rgba(248,180,170,.46);--g3:rgba(252,206,126,.5);--g4:rgba(204,194,242,.42);
+  --ink:#62554A;--sh:0 14px 30px -10px rgba(150,80,20,.42),0 2px 6px rgba(150,80,20,.14);
+  position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;contain:strict;will-change:opacity;
+  background:radial-gradient(78% 36% at -4% -2%,var(--g1),transparent 72%),radial-gradient(70% 34% at 104% 30%,var(--g2),transparent 72%),radial-gradient(84% 34% at 4% 98%,var(--g3),transparent 72%),radial-gradient(72% 30% at 102% 80%,var(--g4),transparent 72%),linear-gradient(var(--t),var(--m) 55%,var(--b));
+  color:var(--ink);font:600 17px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;letter-spacing:-.01em;
+  -webkit-user-select:none;user-select:none;
+  transition:opacity calc((.2s + .12s*var(--k))*var(--f)) cubic-bezier(.45,0,.2,1) calc(40ms*var(--k));
+  animation:bps-failsafe 1ms 10s forwards
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) #bp-splash{--t:#1C1612;--m:#18130F;--b:#15100D;--g1:rgba(255,150,84,.13);--g2:rgba(232,118,124,.1);--g3:rgba(236,172,82,.1);--g4:rgba(150,132,226,.09);--ink:#C3B5A6;--sh:0 14px 34px -8px rgba(0,0,0,.6)}}
+:root[data-theme=dark] #bp-splash{--t:#1C1612;--m:#18130F;--b:#15100D;--g1:rgba(255,150,84,.13);--g2:rgba(232,118,124,.1);--g3:rgba(236,172,82,.1);--g4:rgba(150,132,226,.09);--ink:#C3B5A6;--sh:0 14px 34px -8px rgba(0,0,0,.6)}
+:root[data-theme=navy] #bp-splash{--t:#131A2D;--m:#0F1527;--b:#0D1322;--g1:rgba(96,140,255,.14);--g2:rgba(150,120,255,.1);--g3:rgba(70,170,230,.09);--g4:rgba(255,150,84,.07);--ink:#AEB9CF;--sh:0 14px 34px -8px rgba(0,0,0,.6)}
+:root[data-theme=ocean] #bp-splash{--t:#15191F;--m:#111418;--b:#0F1215;--g1:rgba(80,160,255,.12);--g2:rgba(90,200,250,.08);--g3:rgba(120,140,255,.08);--g4:rgba(80,160,255,.05);--ink:#AAB4C2;--sh:0 14px 34px -8px rgba(0,0,0,.6)}
+:root[data-theme=black] #bp-splash{--t:#000;--m:#000;--b:#000;--g1:transparent;--g2:transparent;--g3:transparent;--g4:transparent;--ink:#B0B0B8;--sh:0 14px 34px -8px rgba(0,0,0,.6)}
+@media (prefers-reduced-motion:reduce){:root:not([data-motion=full]) #bp-splash{--k:0}}
+:root[data-motion=reduce] #bp-splash{--k:0}
+:root[data-motion=off] #bp-splash{--k:0;--f:0}
+@supports not (animation-timing-function:linear(0,1)){#bp-splash{--bo:cubic-bezier(.34,1.56,.64,1);--sm:cubic-bezier(.2,.7,.3,1)}}
+/* the app icon (public/icons/icon.svg) as layers: head behind the edge, paws in front; Pompon peeks up */
+.bps-mark{display:flex;flex-direction:column;align-items:center;gap:18px;margin-bottom:7vh;
+  animation:bps-in-fade calc(.22s*var(--f)) ease-out calc(60ms*var(--f)) both,bps-in-grow calc(.35s*var(--k)) var(--sm) calc(60ms*var(--k)) both}
+.bps-mark b{font:inherit}
+.bps-tile{position:relative;width:120px;height:120px;border-radius:27px;overflow:hidden;isolation:isolate;background:linear-gradient(#F6C07E,#F0A04B);box-shadow:var(--sh)}
+.bps-tile div,.bps-tile svg{position:absolute;inset:0;width:100%;height:100%}
+.bps-edge{position:absolute;inset:82% 0 0;background:#E5923D}
+.bps-head{animation:bps-in-peek calc(.48s*var(--k)) var(--bo) calc(80ms*var(--k)) both}
+.bps-eyes{transform-origin:50% 64.5%;animation:bps-blink calc(1.6s*var(--k)) linear calc(.8s*var(--k)) both}
+.bps-duck,.bps-paws{transition:transform calc(.22s*var(--k)) cubic-bezier(.5,0,.8,.5),opacity calc(.12s*var(--k)) ease-out}
+#bp-splash.bps-out{opacity:0;pointer-events:none}
+.bps-out .bps-duck{transform:translateY(calc(34%*var(--k)))}
+.bps-out .bps-paws{opacity:calc(1 - var(--k));transform:translateY(calc(4%*var(--k)))}
+@keyframes bps-in-fade{from{opacity:0}}
+@keyframes bps-in-grow{from{transform:scale(.94)}}
+@keyframes bps-in-peek{from{transform:translateY(30%)}}
+@keyframes bps-blink{9%,16%,81%,88%{transform:none}12.5%,84.5%{transform:scaleY(.1)}}
+@keyframes bps-failsafe{to{visibility:hidden}}
+</style>
+  </head>
+  <body>
+<div id="bp-splash" aria-hidden="true"><div class="bps-mark"><div class="bps-tile">
+<div class="bps-duck"><div class="bps-head"><svg viewBox="-105.57 -233.2 211.13 211.13"><defs><linearGradient id="bps-b" gradientUnits="userSpaceOnUse" x1="0" y1="-165" x2="0" y2="0"><stop offset="0" stop-color="#FCE7CC"/><stop offset="1" stop-color="#EFC79B"/></linearGradient><linearGradient id="bps-e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9B784"/><stop offset="1" stop-color="#D59B60"/></linearGradient><radialGradient id="bps-l" gradientUnits="userSpaceOnUse" cx="0" cy="-44" r="56"><stop offset="0" stop-color="#FFF9F1" stop-opacity=".8"/><stop offset=".55" stop-color="#FFF9F1" stop-opacity=".45"/><stop offset="1" stop-color="#FFF9F1" stop-opacity="0"/></radialGradient></defs>
+<path d="M0-163C40-163 64-140 67-112C70-92 66-72 67-59C72-50 75-42 75-31C75-12 64-1 50-1L-50-1C-64-1-75-12-75-31C-75-42-72-50-67-59C-66-72-70-92-67-112C-64-140-40-163 0-163Z" fill="url(#bps-b)"/><ellipse cx="-65" cy="-84" rx="12" ry="21" fill="url(#bps-b)"/><ellipse cx="65" cy="-84" rx="12" ry="21" fill="url(#bps-b)"/><ellipse cy="-46" rx="56" ry="50" fill="url(#bps-l)"/>
+<g transform="translate(0 -4)"><ellipse cx="-43" cy="-77" rx="9" ry="5.5" fill="#FF9E9E" opacity=".3"/><ellipse cx="43" cy="-77" rx="9" ry="5.5" fill="#FF9E9E" opacity=".3"/><ellipse cx="-4.6" cy="-76.6" rx="5.4" ry="4" fill="#FFF9F1" opacity=".9"/><ellipse cx="4.6" cy="-76.6" rx="5.4" ry="4" fill="#FFF9F1" opacity=".9"/><path d="M-3.6-84Q0-86 3.6-84Q2.8-80.8 0-79.8Q-2.8-80.8-3.6-84Z" fill="#F2899A"/><path d="M0-79.8L0-77.6M0-77.6Q-2.2-75.2-4.6-76.2M0-77.6Q2.2-75.2 4.6-76.2" fill="none" stroke="#6B4A42" stroke-width="1.4" stroke-linecap="round"/></g>
+<path d="M-24-160C-44-170-67-155-75-128C-81-107-77-86-66-83C-56-81-53-96-53-111C-53-129-44-145-29-151Z" fill="url(#bps-e)"/><path d="M-29-151C-44-145-53-129-53-111C-53-99-55-90-61-86C-58-95-57.5-108-58-118C-58.5-134-50-146-37-153Z" fill="#F4B2A0" opacity=".5"/><path d="M24-160C44-170 67-155 75-128C81-107 77-86 66-83C56-81 53-96 53-111C53-129 44-145 29-151Z" fill="url(#bps-e)"/><path d="M29-151C44-145 53-129 53-111C53-99 55-90 61-86C58-95 57.5-108 58-118C58.5-134 50-146 37-153Z" fill="#F4B2A0" opacity=".5"/></svg>
+<div class="bps-eyes"><svg viewBox="-105.57 -233.2 211.13 211.13"><g transform="translate(0 -4)"><ellipse cx="-29" cy="-93" rx="8.3" ry="9.9" fill="#3A2622"/><circle cx="-26.05" cy="-97.82" r="2.55" fill="#fff"/><circle cx="-31.95" cy="-89.58" r="1.07" fill="#fff" opacity=".7"/><ellipse cx="29" cy="-93" rx="8.3" ry="9.9" fill="#3A2622"/><circle cx="31.95" cy="-97.82" r="2.55" fill="#fff"/><circle cx="26.05" cy="-89.58" r="1.07" fill="#fff" opacity=".7"/></g></svg></div></div></div>
+<i class="bps-edge"></i>
+<div class="bps-paws"><svg viewBox="-105.57 -233.2 211.13 211.13"><g fill="#965A28" fill-opacity=".16"><ellipse cx="-25" cy="-56" rx="13.3" ry="6.2"/><ellipse cx="25" cy="-56" rx="13.3" ry="6.2"/></g><g fill="#F5D6B0"><ellipse cx="-25" cy="-61.5" rx="13" ry="10"/><ellipse cx="25" cy="-61.5" rx="13" ry="10"/></g><path d="M-30.46-59.5v5.5M-25-59.5v5.5M-19.54-59.5v5.5M19.54-59.5v5.5M25-59.5v5.5M30.46-59.5v5.5" fill="none" stroke="#965A28" stroke-opacity=".38" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+</div><b>Bunprise</b></div></div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

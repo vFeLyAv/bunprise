@@ -1,0 +1,16 @@
+{
+  "comic": {
+    "title": "Pompon & Tapsi",
+    "frame": "Comic: {{episode}}",
+    "episodes": "Folgen",
+    "episode": "Folge {{n}}",
+    "next": "Weiter: Folge 2",
+    "again": "Von vorn",
+    "soon": "Die nächste Folge kommt bald.",
+    "done": "Fertig",
+    "find_again": "Du findest die Geschichte jederzeit unter Profil › Über {{app}}.",
+    "loading": "Die Geschichte lädt …",
+    "failed": "Die Geschichte ließ sich nicht laden.",
+    "offline": "Für die Geschichte brauchst du eine Internetverbindung."
+  }
+}

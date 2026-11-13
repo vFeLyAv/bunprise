@@ -1,0 +1,200 @@
+/* "Gleich mit eintragen" in the new-occasion form (QuickExtras.tsx): the quick fields for wishes and the
+   bring-along list. Built from the form's own rows (.of-row, .of-item, .glass-panel groups — occasion-form.css);
+   only what is new lives here. Tokens only, so every theme (light, dark, Blau, Ozean) follows. */
+
+/* the field row: tile · one-line field · round "+" */
+.ox-field {
+  min-height: 56px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+/* while typing, the whole group wears the ring (like "Beschreibung"): it lies exactly on the group's edge */
+.ox-group:has(.ox-input:focus)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px var(--accent-text);
+  pointer-events: none;
+}
+.ox-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+.ox-input::placeholder {
+  color: var(--text-3);
+}
+.ox-input:focus,
+.ox-input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.ox-add {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -4px -6px -4px 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-on-accent);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ox-add-dot {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--accent-400);
+  transition:
+    transform var(--dur-xs) var(--ease-out),
+    background-color var(--dur-xs) var(--ease-out);
+}
+.ox-add:active .ox-add-dot {
+  transform: scale(0.92);
+}
+.ox-add:disabled {
+  cursor: default;
+  color: var(--text-3);
+}
+.ox-add:disabled .ox-add-dot {
+  background: var(--fill-2);
+}
+.ox-add:focus-visible {
+  outline: none;
+}
+.ox-add:focus-visible .ox-add-dot {
+  box-shadow: var(--ring);
+}
+
+/* the entries: a list under the field, each row with a top hairline after the leading column */
+.ox-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ox-list > li::before,
+.ox-list + .of-item::before,
+.ox-chips-item + .ox-list > li:first-child::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--ox-sep, 56px);
+  right: 0;
+  height: 1px;
+  background: var(--separator);
+  z-index: 1;
+}
+.ox-list-wishes {
+  --ox-sep: 65px;
+}
+.ox-entry {
+  min-height: 60px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 6px;
+}
+/* the bring-along entries line up with the field's text (after the icon column) */
+.ox-entry-plain {
+  min-height: 48px;
+  padding-left: 56px;
+}
+.ox-entry-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+}
+
+/* the leading picture of a wish row: the product photo (our own bytes), the shop's tile or the gift tile */
+.ox-lead {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  font-size: 1.125rem;
+}
+.ox-lead-photo {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--fill);
+}
+.ox-lead-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* the link is being read: the line breathes (calm motion: it just stands) */
+.ox-reading {
+  animation: ox-breathe 1.2s ease-in-out infinite alternate;
+}
+@keyframes ox-breathe {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.45;
+  }
+}
+:root[data-motion="reduce"] .ox-reading,
+:root[data-motion="off"] .ox-reading {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ox-reading {
+    animation: none;
+  }
+}
+
+.ox-remove {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.ox-remove:active {
+  background: var(--fill-2);
+}
+@media (hover: hover) {
+  .ox-remove:hover {
+    background: var(--fill);
+  }
+}
+.ox-remove:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--accent-text);
+}
+
+/* the suggestions of the bring-along list: one tap = one entry */
+.ox-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 2px 14px 14px 56px;
+}

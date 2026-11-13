@@ -1,0 +1,205 @@
+/*
+ * src/styles/tokens.css — the ONE place where design values live (docs/spec/design-system-motion.md §1).
+ *
+ * The default look (ADR docs/decisions/2026-10-20-design-direction-glass.md, Felix's choice):
+ *   1 colour     — direction A "Paper": cream paper, warm ink, the orange accent, soft white cards;
+ *   2 shape      — direction B "Glass": pills, larger radii, the floating sheet;
+ *   3 depth      — B: soft layered warm shadows (cards lie on the page, glass layers float above);
+ *   4 materials  — B's glass made VISIBLE: the top bar once content scrolls under it, sheets, small
+ *                  floating controls (the "+" FAB), toasts; the warm scene of the start screen;
+ *   5 type       — the system font everywhere (no serif), large title 34/700.
+ *
+ * Themes ("Pastel" later): a theme is ONE file that overrides tokens of section 1 and the four material
+ * tints of section 4 (and, if it wants, shapes in 2) on its own selector, e.g.
+ * `:root[data-palette="pastel"] { … }`. The dev directions (src/dev/directions/*.css) are such files.
+ *
+ * Two themes (Felix 25.10): light "Paper" and dark "Paper at night" (docs/design/2026-10-25-dark-theme.md). Every
+ * colour is light-dark(light, dark); shadows, rims and gradients are built from such colours, so ONE value serves
+ * both themes and no token is repeated in a dark block. Which theme: <html data-theme="light|dark"> when the person
+ * chose one (Einstellungen → Darstellung, src/lib/theme.ts), else the system's (no attribute = color-scheme
+ * "light dark"; Telegram's own scheme inside the Mini App).
+ * Contrast of the key pairs, both themes: node docs/design/contrast-check.mjs (docs/design/contrast-report.md).
+ * Two more dark choices (Felix 25.10): "Blau" (navy neutrals, src/styles/navy.css) and "Ozean" (graphite with a
+ * blue accent, src/styles/ocean.css), each loaded only when it is chosen (lib/themeBoot.ts) — until then their
+ * data-theme simply shows the dark theme. The same for "Schwarz" (Felix 27.10: true black with near-black greys,
+ * src/styles/black.css).
+ */
+:root { color-scheme: light dark; }            /* System (default): the OS decides */
+/* "only": a browser's own "darken every site" (Chrome/Edge auto dark mode) must not repaint a chosen Hell — it turned
+   the cream bunnies dark brown (Felix 26.10). The dark themes say "dark", which the browser leaves alone anyway. */
+:root[data-theme="light"] { color-scheme: only light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+:root[data-theme="navy"] { color-scheme: dark; }
+:root[data-theme="ocean"] { color-scheme: dark; }
+:root[data-theme="black"] { color-scheme: dark; }
+
+:root {
+  /* 1. colour — A "Paper" ---------------------------------------------------------------------------- */
+  /* accent: marmalade orange, one hue with the app icon and the fawn bunny; the text shade keeps ≥ 4.5:1
+     on the paper, on cards and on the glass bar */
+  /* 50–200 are the TINTED SURFACES (selected chips, soft badges, highlighted rows): at night they are warm dark
+     browns, so text on them keeps its contrast; 300–700 are the orange itself (fills, art) in both themes */
+  --accent-50: light-dark(#FEF4E7, #2B1F16); --accent-100: light-dark(#FCE5C9, #3D2A1A); --accent-200: light-dark(#F8D0A2, #553A22);
+  --accent-300: #F3B676;
+  --accent-400: #EE9443; --accent-500: #DC7B2C; --accent-600: #984A14; --accent-700: #783910;
+  --accent-text: light-dark(var(--accent-600), #F2A25A);
+  /* the deeper accent ink (pressed links, the "Erste Schritte" rows): --accent-700 by day, a light peach at night */
+  --accent-text-strong: light-dark(var(--accent-700), #FFC58A);
+  --text-on-accent: #2A1A0B;
+  /* paper and ink: the page a shade darker than the cards — the tone separates, a soft shadow lifts.
+     Night: warm charcoal-brown paper (never pure black), cards one step lighter, warm off-white ink */
+  --bg: light-dark(#F2EBDD, #17120F);
+  --surface: light-dark(#FFFDF8, #2A221D);
+  --surface-2: light-dark(#FAF5EC, #332A23);
+  /* the raised thumb of a segmented control: the card colour by day; at night a step lighter than the track
+     (a fill over a frosted panel), so the selected segment reads as lifted, not sunk */
+  --thumb: light-dark(var(--surface), #4B3E34);
+  --fill: light-dark(rgba(116,84,44,.07), rgba(255,230,205,.075));
+  --fill-2: light-dark(rgba(116,84,44,.11), rgba(255,230,205,.115));
+  --fill-3: light-dark(rgba(116,84,44,.17), rgba(255,230,205,.17));
+  --separator: light-dark(rgba(116,84,44,.15), rgba(255,230,205,.13));
+  --text: light-dark(#2A231C, #F5EDE3);
+  --text-2: light-dark(#62554A, #C3B5A6);        /* wave 1: a hair deeper, AA on the ambient scene + Segmented track */
+  --text-3: light-dark(#85786A, #918377);        /* placeholder / disabled only: ≥ 3:1 on page and card */
+  --text-inverse: light-dark(#FBF6EE, #241D17);
+  --ok-text: light-dark(#2D7146, #7ED39A); --ok-fill: #3B985E; --ok-bg: light-dark(#E5F0E2, #17311F);
+  --danger-text: light-dark(#AE2A1C, #FF8F7E); --danger-fill: #AE2A1C; --danger-bg: light-dark(#F9E7E0, #3D1A14);
+  /* switch "on": the app's orange (Felix 20.10: green looked foreign next to the Paper accent). The orange
+     fill alone is < 3:1 against a light card, so a darker inset rim carries the 3:1 boundary (WCAG 1.4.11); at
+     night the orange itself stands out, the rim is the lighter accent ink */
+  --switch-on: var(--accent-500);
+  --switch-on-rim: light-dark(var(--accent-600), var(--accent-text));
+  /* light and shade for rims, highlights and shadows of materials and cards. Day: white light, warm brown shade.
+     Night: the light is a faint warm glow (already translucent, so `color-mix(in srgb, var(--hl) 90%, transparent)`
+     gives ≈ .14 at night and .9 by day), the shade is plain black. Used through color-mix() by component styles. */
+  --hl: light-dark(#fff, rgb(255 236 214 / .16));
+  --shade: light-dark(rgb(80 50 22), rgb(0 0 0));
+  /* a colour that DARKENS what it is mixed into, in both themes (veils, the foot of a picture): the ink by day,
+     black at night — never --text for that, which is light at night */
+  --sink: light-dark(#2A231C, #000);
+  /* tints of gift tiles and avatars (--tile-1…4 + inks): src/styles/tiles.css — loaded with the screens
+     that show tiles */
+  /* the ambient scene behind EVERY screen (wave 1, "warm glass on paper"): Paper cream + four large soft
+     colour fields — apricot (top left), peach-rose (right), honey (bottom left) and one faint cool lilac
+     counter-tone (bottom right) — and, with the kit chunk, a very fine paper grain (≤ 4 %, styles/kit.css). One static fixed layer behind the
+     app (app.css body::before; the dev phone frame paints it on its screen): painted once, composited while
+     scrolling, no blur filter. The frosted panels (§4) and the floating glass read as glass because these
+     colours pass under them. Occasion screens add their own tint on top (ui/AmbientTint, --tint-1…4).
+     Every text colour keeps AA on every point (docs/design/contrast-check.mjs: PAGE, PANEL). */
+  --page-backdrop:
+    radial-gradient(78% 36% at -4% -2%, var(--page-glow-1) 0%, transparent 72%),
+    radial-gradient(70% 34% at 104% 30%, var(--page-glow-2) 0%, transparent 72%),
+    radial-gradient(84% 34% at 4% 98%, var(--page-glow-3) 0%, transparent 72%),
+    radial-gradient(72% 30% at 102% 80%, var(--page-glow-4) 0%, transparent 72%),
+    linear-gradient(180deg, var(--page-top) 0%, var(--page-mid) 55%, var(--page-bottom) 100%);
+  /* … its colours. Night: the same four fields as dim embers on warm charcoal (a lamp-lit room, not neon) */
+  --page-glow-1: light-dark(rgba(255,193,146,.58), rgba(255,150,84,.13));
+  --page-glow-2: light-dark(rgba(248,180,170,.46), rgba(232,118,124,.10));
+  --page-glow-3: light-dark(rgba(252,206,126,.5), rgba(236,172,82,.10));
+  --page-glow-4: light-dark(rgba(204,194,242,.42), rgba(150,132,226,.09));
+  --page-top: light-dark(#F7F0E5, #1C1612);
+  --page-mid: light-dark(#F3EADC, #18130F);
+  --page-bottom: light-dark(#F0E6D6, #15100D);
+  /* the per-occasion tints --tint-1…4 (the occasion's colour as a glow / wash): src/styles/tints.css — loaded
+     with the screens that show them (feed, occasion) */
+  /* the start screen's scene (--scene-backdrop): src/styles/scene.css — loaded with that screen only */
+  /* the page dimmed under an open sheet: warm ink (--text) at 18 %, light enough that the page shows
+     through the glass */
+  --scrim: light-dark(rgba(42,35,28,.18), rgba(6,4,2,.5));
+  /* browser bar / status bar = the top of the page (index.html theme-color, the manifest and lib/theme.ts repeat it) */
+  --theme-color: light-dark(#F5EEE2, #1C1612);
+
+  /* 2. shape — B "Glass" ----------------------------------------------------------------------------- */
+  --r-xs: 8px; --r-sm: 10px; --r-md: 12px; --r-lg: 24px; --r-xl: 34px; --r-full: 999px;
+  --r-button: var(--r-full);                     /* every text button is a pill, at 36, 44 and 52 px */
+  --r-control: var(--r-full);                    /* segmented control, chips, status tags */
+  --r-control-inner: max(0px, calc(var(--r-control) - 4px)); /* segmented thumb 4 px inside: concentric */
+  --r-hero: var(--r-lg);                         /* the occasion header card = a card like its neighbour */
+  --r-card: 28px;                                /* wave 1: a standalone frosted card (hero, RSVP, forms, empty states) */
+  --r-sheet: 40px;                               /* floating sheet: concentric with a 48 px screen corner */
+  --sheet-inset: 8px;                            /* … at 8 px off the sides and the bottom (iOS 26) */
+  --r-toast: 22px;                               /* a one-line toast is a capsule */
+
+  /* 3. depth — B, warm brown: level 1 lies on the page (every card), level 2 floats (FAB, toast) --------- */
+  /* night (spec §1.4): depth comes from lighter surfaces and a faint top rim; the shadows are near-black */
+  --shadow-1: 0 0.5px 1px light-dark(rgba(70,45,20,.07), rgba(0,0,0,.3)), 0 2px 8px light-dark(rgba(70,45,20,.05), rgba(0,0,0,.18)), 0 10px 24px -14px light-dark(rgba(70,45,20,.14), rgba(0,0,0,.5));
+  --shadow-2: 0 1px 2px light-dark(rgba(70,45,20,.08), rgba(0,0,0,.35)), 0 6px 16px light-dark(rgba(70,45,20,.10), rgba(0,0,0,.3)), 0 14px 28px -10px light-dark(rgba(80,50,22,.22), rgba(0,0,0,.55));
+  --shadow-3: 0 -1px 0 light-dark(rgba(70,45,20,.04), rgba(255,236,214,.06)), 0 -18px 50px -12px light-dark(rgba(80,50,22,.24), rgba(0,0,0,.6));
+  --ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent-text);
+
+  /* 4. materials — glass you cannot miss (wave 1) -----------------------------------------------------
+     Two families. (a) FROSTED PANELS — every card, grouped list and input (.glass-panel, .glass-field):
+     a translucent warm white + a 1 px light rim + an inner top highlight + a soft warm shadow, NO
+     backdrop-filter (perf rule: never blur under a scrolling list) — over the ambient scene they read as
+     frosted glass, because its colours pass softly through. (b) FLOATING GLASS — real backdrop blur +
+     saturation, only on floating chrome: the top bar after scrolling (.glass-bar) and its capsule
+     controls, the tab bar, sheets (.glass-sheet), small floating controls and menus (.glass-float,
+     + .glass-accent), toasts (.glass-toast). Reduced transparency, the app setting and browsers without
+     backdrop-filter get solid materials (the --solid* switches in src/styles/kit.css). If the glass judders on an
+     iPhone: lower the blur first (ADR "Чем платим"). */
+  /* (a) the frosted panel and field tokens (--panel-*, --field-*): src/styles/kit.css, with their classes */
+  /* (b) the floating-glass tokens (--bar-*, --sheet-*, --float-*, --toast-*): src/styles/glass.css, with their
+     classes — they ship with the kit chunk (the start scene's docked card reads --sheet-* there too) */
+  /* the icon-tile hues of grouped settings rows (--icon-*): src/styles/icontile.css, with ui/IconTile */
+
+  /* spacing and sizes */
+  --sp-1: .25rem; --sp-2: .5rem; --sp-3: .75rem; --sp-4: 1rem; --sp-5: 1.25rem; --sp-6: 1.5rem;
+  --sp-8: 2rem; --sp-10: 2.5rem; --sp-12: 3rem; --sp-16: 4rem;
+  --gutter: var(--sp-4); --page-max: 560px;
+  --hit: 44px; --topbar-h: 52px; --tabbar-h: 56px;
+  --sa-top: env(safe-area-inset-top, 0px); --sa-right: env(safe-area-inset-right, 0px);
+  --sa-bottom: env(safe-area-inset-bottom, 0px); --sa-left: env(safe-area-inset-left, 0px);
+  --content-pad-bottom: calc(var(--tabbar-h) + var(--sa-bottom) + var(--sp-4));
+
+  /* 5. type — the system font everywhere (Apple-like, no serif) -------------------------------------- */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-display: var(--font-sans);              /* large title + title-1 */
+  /* bold large titles with tight tracking (wave 1): 36/42 heavy; SF falls back to 700 where 800 is missing */
+  --fw-display: 800; --tracking-display: -0.032em;
+  --fw-title: 700; --tracking-title: -0.02em;    /* title-2: section titles */
+  --fs-display: 2.25rem; --lh-display: 2.625rem;
+  --fs-title-1: 1.875rem; --lh-title-1: 2.25rem;
+  --fs-title-2: 1.375rem; --lh-title-2: 1.75rem;
+  --fs-title-3: 1.25rem; --lh-title-3: 1.5625rem;
+  --fs-headline: 1.0625rem; --lh-headline: 1.375rem;
+  --fs-body: 1.0625rem; --lh-body: 1.375rem;
+  --fs-callout: 1rem; --lh-callout: 1.3125rem;
+  --fs-subhead: .9375rem; --lh-subhead: 1.25rem;
+  --fs-footnote: .8125rem; --lh-footnote: 1.125rem;
+  --fs-caption-1: .75rem; --lh-caption-1: 1rem;
+  --fs-caption-2: .6875rem; --lh-caption-2: .8125rem;
+
+  /* 6. mascots: host width = size (s 96 · m 160 · l 240 · xl 320) × scale, never wider than --mascot-max */
+  --mascot-scale-s: 1; --mascot-scale-m: 1; --mascot-scale-l: 1;
+  --mascot-max: 320px;
+  /* the cream bunny on cream paper needs an edge (blocker 17; packages/mascot BASE_CSS reads these through
+     its Shadow DOM — also the welcome stage): a darker floor shadow and a warm 1.5 px contour (the ear
+     colour at 50 %) under the silhouette. A theme may set the contour to none. */
+  --mascot-shadow: light-dark(rgba(70,40,15,.20), rgba(0,0,0,.42));
+  /* night: the cream coat stands out on its own; a faint warm rim keeps the silhouette soft */
+  --mascot-outline: light-dark(rgba(224,171,116,.5), rgba(255,214,170,.2));
+
+  /* z */
+  --z-base: 0; --z-sticky: 10; --z-bar: 20; --z-fab: 30; --z-backdrop: 40; --z-sheet: 41;
+  --z-overlay: 50; --z-toast: 60; --z-debug: 100;
+
+  /* motion — values from §2 */
+  --dur-xs: 100ms; --dur-s: 160ms; --dur-m: 220ms; --dur-l: 320ms;
+  --ease-out: cubic-bezier(.2,.7,.3,1); --ease-in-out: cubic-bezier(.45,0,.2,1); --ease-in: cubic-bezier(.5,0,.8,.5);
+  --dur-snappy: 280ms; --dur-smooth: 350ms; --dur-bouncy: 480ms;
+  --ease-snappy: linear(0, 0.036, 0.123, 0.234, 0.352, 0.468, 0.573, 0.665, 0.744, 0.808, 0.860, 0.901, 0.932, 0.956, 0.973, 0.985, 0.994, 0.999, 1.003, 1.004, 1.005, 1.005, 1.005, 1.005, 1);
+  --ease-smooth: linear(0, 0.023, 0.081, 0.159, 0.248, 0.340, 0.429, 0.514, 0.591, 0.660, 0.721, 0.773, 0.818, 0.856, 0.887, 0.913, 0.934, 0.950, 0.964, 0.974, 0.982, 0.988, 0.993, 0.996, 1);
+  --ease-bouncy: linear(0, 0.069, 0.237, 0.449, 0.662, 0.849, 0.994, 1.092, 1.146, 1.163, 1.153, 1.127, 1.092, 1.057, 1.026, 1.002, 0.986, 0.977, 0.973, 0.975, 0.979, 0.985, 0.990, 0.995, 1);
+}
+@supports not (animation-timing-function: linear(0, 1)) {
+  :root { --ease-snappy: cubic-bezier(.25,.8,.3,1); --ease-smooth: cubic-bezier(.2,.7,.3,1); --ease-bouncy: cubic-bezier(.34,1.56,.64,1); }
+}
+/* The motion level (src/motion/level.ts writes <html data-motion="full|reduce|off">; before boot the OS
+   setting decides). reduce: nothing moves, short crossfades stay. off: nothing animates at all — durations
+   are 0, so a tap's pressed colour still shows at once. */
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion="full"]) { --dur-snappy: 0ms; --dur-smooth: 0ms; --dur-bouncy: 0ms; --dur-l: 150ms; --dur-m: 150ms; } }
+:root[data-motion="reduce"] { --dur-snappy: 0ms; --dur-smooth: 0ms; --dur-bouncy: 0ms; --dur-l: 150ms; --dur-m: 150ms; }
+:root[data-motion="off"] { --dur-snappy: 0ms; --dur-smooth: 0ms; --dur-bouncy: 0ms; --dur-xs: 0ms; --dur-s: 0ms; --dur-m: 0ms; --dur-l: 0ms; }
+
+/* Solid materials (§1.2: reduced transparency, the app setting, no backdrop-filter): the --solid* switches live in
+   src/styles/kit.css — every material that reads them (glass.css, kit.css, scene.css) ships with the kit. */

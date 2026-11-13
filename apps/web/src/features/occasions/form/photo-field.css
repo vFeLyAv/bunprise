@@ -1,0 +1,73 @@
+/*
+ * photo-field.css — the cover photo row of the occasion form (form/PhotoField.tsx, wave 2). A satellite of
+ * occasion-form.css with the same rules: plain classes + tokens, no backdrop-filter inside the group (it lies
+ * on the scrolling page; the buttons on the preview are the kit's glass pills), colour / opacity / transform
+ * only, hit targets ≥ 44 px (the sm pills grow their tap area), focus always visible.
+ */
+.of-photo-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(50%);
+}
+.of-photo {
+  display: flex;
+  flex-direction: column;
+}
+/* the photo as the hero will show it: the hero's own crop (photo/photo.css .occ-cover: aspect-ratio 1 / 1.08 —
+   both from COVER_ASPECT_RATIO in photo/coverGeometry.ts), so a wide photo shows here what it loses at the sides. A poster-sized
+   preview, centred and capped (it is a preview, the form stays short); concentric with the group (24 − 8 = 16 px) */
+.of-photo-frame {
+  position: relative;
+  width: min(calc(100% - 16px), 300px);
+  margin: 8px auto 0;
+  aspect-ratio: var(--of-photo-ratio, 1 / 1.08);
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: var(--fill-2);
+}
+.of-photo-frame[data-state="loading"] {
+  animation: bp-pulse 1.2s ease-in-out infinite;
+}
+:root[data-motion="reduce"] .of-photo-frame[data-state="loading"],
+:root[data-motion="off"] .of-photo-frame[data-state="loading"] {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .of-photo-frame[data-state="loading"] { animation: none; }
+}
+.of-photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--dur-m) var(--ease-out);
+}
+.of-photo-img[data-loaded] {
+  opacity: 1;
+}
+.of-photo-actions {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 8px;
+}
+.of-photo-caption {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 54px;
+  padding: 8px 14px 10px 13px;
+}
+.of-photo-caption .spinner {
+  flex: none;
+}
+.of-photo-removed .of-row-label {
+  color: var(--text-2);
+}

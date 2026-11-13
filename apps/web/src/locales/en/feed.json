@@ -1,0 +1,57 @@
+{
+  "feed": {
+    "title": "Home",
+    "view_label": "View",
+    "view_list": "List",
+    "view_month": "Month",
+    "group_today": "Today",
+    "group_week": "Next few days",
+    "group_later": "Later",
+    "group_past": "Past (30 days)",
+    "empty_title": "Nothing planned yet",
+    "empty": "Create an occasion or wait for an invite.",
+    "new_occasion": "New occasion",
+    "chip_host": "You're hosting",
+    "chip_guests_one": "{{count}} guest",
+    "chip_guests_other": "{{count}} guests",
+    "chip_guests_none": "No guests yet",
+    "chip_rsvp_none": "Are you coming?",
+    "chip_rsvp_going": "Going",
+    "chip_rsvp_maybe": "Maybe",
+    "chip_rsvp_declined": "Not going",
+    "hosted_by": "{{name}} is hosting",
+    "time_in_host_tz": "Occasion local time: {{time}} ({{tz}})",
+    "offline_hint": "Your overview loads as soon as you're back online.",
+    "error_hint": "Your occasions aren't lost – try again in a moment.",
+    "empty_ideas": "Birthday, games night, picnic – every reason to celebrate counts.",
+    "empty_invite_hint": "Got an invite? Just open the link from the message.",
+    "chip_no_wishes": "No wishes yet",
+    "chip_bring": "Bring along",
+    "first_steps_title": "First steps",
+    "first_steps_hide": "Hide first steps",
+    "first_steps_occasion": "Create your own occasion",
+    "first_steps_wish": "Write down your first wish",
+    "first_steps_link": "Share your follow link",
+    "birthday": {
+      "eyebrow": "Coming up again",
+      "host_text": "“{{title}}” is on {{date}} — celebrate again?",
+      "host_action": "Create a new occasion",
+      "guest_text": "“{{title}}” is coming up ({{date}}) — see if {{name}} has wishes.",
+      "guest_action": "See wishes",
+      "dismiss": "Hide suggestion",
+      "someone": "them"
+    },
+    "comic": {
+      "title": "How did Pompon and Tapsi meet?",
+      "read": "Read the story",
+      "hide": "Hide the comic card"
+    }
+  },
+  "notice": {
+    "wish_deleted": "“{{title}}” was removed – your reservation is canceled",
+    "wish_changed": "“{{title}}” was changed – take another look",
+    "occasion_changed": "“{{title}}” was changed (date, time or place)",
+    "occasion_deleted": "“{{title}}” was canceled and deleted",
+    "removed": "You were removed from “{{title}}”"
+  }
+}

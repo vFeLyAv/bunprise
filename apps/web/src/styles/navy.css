@@ -1,0 +1,88 @@
+/*
+ * src/styles/navy.css — the third theme "Nachtblau" (Felix 25.10: "like our dark one, but with blue colours").
+ *
+ * The dark theme with a deep navy night instead of the warm charcoal: the SAME structure (lighter surfaces for depth,
+ * smoked glass with a faint rim, the orange accent stays the brand colour), only the neutrals and the glows turn
+ * blue. It is the dark half of tokens.css with these values on top: <html data-theme="navy"> sets color-scheme dark
+ * (tokens.css), so every light-dark() token not repeated here keeps its night value (accent, ok/danger, occasion
+ * tints, tiles, list banners, shadows).
+ *
+ * Loaded ONLY when the person chose it (lib/themeBoot.ts loadNavy(), before the first render) — never part of the
+ * first screens' budget. Specificity (:root + attribute) beats the :root definitions whatever loads first.
+ * Contrast (AA) of the key pairs: text 13.4:1 / text-2 7.6:1 / text-3 4.3:1 / accent text 7.3:1 on a card.
+ */
+:root[data-theme="navy"] {
+  /* tokens.css §1 — paper and ink: navy paper, cards one step lighter, cool off-white ink */
+  --bg: #0F1526;
+  --surface: #1D263B;
+  --surface-2: #243049;
+  --thumb: #3A4766;
+  --fill: rgba(200,220,255,.075);
+  --fill-2: rgba(200,220,255,.115);
+  --fill-3: rgba(200,220,255,.17);
+  --separator: rgba(200,220,255,.13);
+  --text: #EEF2FA;
+  --text-2: #AEB9CF;
+  --text-3: #7D89A3;
+  --text-inverse: #161D2E;
+  /* the tinted surfaces (selected chips, soft badges): a warm touch of the accent on navy */
+  --accent-50: #2E2328; --accent-100: #3F2C2B; --accent-200: #563C33;
+  --hl: rgb(214 228 255 / .16);
+  --scrim: rgba(2,4,10,.55);
+  /* the scene behind every screen: indigo top left, violet right, a cyan breath bottom left and one faint warm
+     ember (the accent) as the counter-tone bottom right — night sky, not neon */
+  --page-glow-1: rgba(96,140,255,.14);
+  --page-glow-2: rgba(150,120,255,.10);
+  --page-glow-3: rgba(70,170,230,.09);
+  --page-glow-4: rgba(255,150,84,.07);
+  --page-top: #131A2D;
+  --page-mid: #0F1527;
+  --page-bottom: #0D1322;
+  --theme-color: #131A2D;
+  --shadow-3: 0 -1px 0 rgba(214,228,255,.06), 0 -18px 50px -12px rgba(0,0,0,.6);
+  --mascot-outline: rgba(220,232,255,.18);
+
+  /* glass.css — the same smoked glass, navy-tinted, with a cool rim */
+  --bar-bg: rgba(22,30,50,.72);
+  --bar-edge: inset 0 -1px 0 rgba(214,228,255,.07), 0 0.5px 0 var(--separator);
+  --sheet-bg: rgba(22,30,50,.8);
+  --sheet-edge: inset 0 1px 0 rgba(214,228,255,.16), inset 0 0 0 1px rgba(214,228,255,.07);
+  --float-bg: rgba(30,40,64,.8);
+  --float-sheen: radial-gradient(130% 90% at 30% 0%, rgba(214,228,255,.1) 0%, transparent 58%);
+  --float-edge: inset 0 1px 0 rgba(214,228,255,.18), inset 0 0 0 1px rgba(214,228,255,.08), inset 0 -1px 2px rgba(0,0,0,.18);
+  --toast-bg: rgba(232,239,252,.92);
+
+  /* kit.css — frosted panels and fields */
+  --panel-bg: rgba(30,40,64,.7);
+  --panel-sheen: linear-gradient(180deg, rgba(214,228,255,.05) 0%, transparent 42%);
+  --panel-edge: inset 0 0 0 1px rgba(214,228,255,.075), inset 0 1px 0 rgba(214,228,255,.11);
+  --field-bg: rgba(214,228,255,.06);
+  --field-border: #7F8CA8;
+
+  /* scene.css — the start screen: a cool moonlight where the bunnies stand */
+  --scene-glow-1: rgba(120,160,255,.17);
+  --scene-glow-2: rgba(150,120,255,.10);
+  --scene-glow-3: rgba(70,170,230,.10);
+  --scene-glow-4: rgba(255,150,84,.08);
+  --scene-glow-5: rgba(150,120,255,.07);
+  --scene-top: #131A2D;
+  --scene-bottom: #0F1526;
+  --scene-card-edge: inset 0 1px 0 rgba(214,228,255,.15);
+
+  /* gifts.css, wishes.css — the plate under product photos */
+  --gift-photo-plate: #1F2840;
+  --gift-photo-rim: rgba(214,228,255,.08);
+  --gift-credit-bg: rgb(14 20 36 / .88);
+  --wish-photo-bg: #1F2840;
+
+  /* occasion-form.css — row and pill films */
+  --of-row-press: rgba(200,220,255,.09);
+  --of-row-hover: rgba(200,220,255,.05);
+  --of-pill-bg: rgba(200,220,255,.08);
+}
+/* lists.css — the Lists buddy's little effects (defined on his stage, not on :root) */
+:root[data-theme="navy"] .lt-buddy-stage {
+  --buddy-puff: #2C3650;
+  --buddy-puff-rim: rgba(200,220,255,.3);
+  --buddy-dust: rgba(170,190,225,.35);
+}

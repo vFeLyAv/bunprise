@@ -1,0 +1,39 @@
+{
+  "name": "@bunprise/mascot",
+  "version": "0.1.0",
+  "description": "Bunprise mascots (bunny + hamster): SVG puppets with Web Animations, framework-agnostic, zero runtime dependencies.",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./buddy": "./src/buddy/index.ts",
+    "./timeline": "./src/timeline.ts",
+    "./homeicon": "./src/homeicon.ts",
+    "./tower": "./src/tower.ts",
+    "./fur": "./src/fur.ts",
+    "./wardrobe": "./src/wardrobe/index.ts",
+    "./wardrobe-rules": "./src/wardrobe/rules.ts",
+    "./comic": "./src/comic/index.ts",
+    "./night": "./src/night/index.ts",
+    "./night-clock": "./src/night/clock.ts",
+    "./listplay": "./src/listplay/index.ts",
+    "./alive": "./src/alive/index.ts"
+  },
+  "types": "./src/index.ts",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "demo": "vite",
+    "build:demo": "vite build",
+    "preview": "vite preview --port 4173",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}

@@ -1,0 +1,74 @@
+/*
+ * src/features/nav/tabSwipe.css — the swipe between the main tabs (TabSwipe.tsx, a lazy chunk loaded after the
+ * first screen). Only transforms and opacity move, every frame.
+ */
+
+/* On the four tab screens the page keeps vertical scrolling and pinch-zoom, and a sideways move reaches the
+   gesture instead of the browser (without it the browser takes every pan and cancels the pointer). Things that
+   scroll sideways themselves (rails, chips rows) are their own scroll containers: this does not reach them. */
+html[data-tab-swipe] body,
+html[data-tab-swipe] .pf-app {
+  touch-action: pan-y pinch-zoom;
+}
+
+/* v2 (Felix 26.10 «трясет»): the page moved to the right made the document twice as wide — at the next layout
+   (the router rendering the arriving tab) the mobile browser widened its layout viewport to 780 px for a frame:
+   the fixed bars and the copy jumped, and a phone may zoom out. The app root clips sideways (`clip` makes no
+   scroll container: sticky bars and the vertical scroll stay as they are). */
+html[data-tab-swipe] #root,
+html[data-tab-swipe] .pf-app {
+  overflow-x: clip;
+}
+
+/* while the page follows the finger: no text selection (the dev frame's mouse) */
+html[data-tab-swiping] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* the neighbour tab beside the moving page: the copy of its last look, or a calm skeleton. Transparent — the
+   ambient backdrop behind every screen stays where it is, like a wallpaper behind pages */
+.tab-swipe-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  /* off screen until the first frame places it (and a containing block for its fixed top bar) */
+  transform: translate3d(100%, 0, 0);
+}
+.tab-swipe-layer,
+.tab-swipe-layer * {
+  /* a copy must never take part in (or break) a router view transition */
+  view-transition-name: none !important;
+}
+
+/* a tab not seen yet in this session: the shape of a screen (large title, a card, two rows) */
+.tab-swipe-skeleton {
+  gap: var(--sp-3);
+  width: 100%;
+  max-width: var(--page-w);
+  margin-inline: auto;
+  left: 0;
+  right: 0;
+  padding: calc(var(--sa-top) + var(--topbar-h) + var(--sp-2)) var(--sp-4) 0;
+}
+.tab-swipe-block {
+  flex: none;
+  border-radius: var(--r-lg);
+  background-color: var(--fill-2);
+  opacity: 0.8;
+}
+.tab-swipe-block[data-kind='title'] {
+  width: 46%;
+  height: 40px;
+  margin-bottom: var(--sp-5);
+  border-radius: var(--r-md);
+}
+.tab-swipe-block[data-kind='card'] {
+  height: 168px;
+}
+.tab-swipe-block[data-kind='row'] {
+  height: 72px;
+}

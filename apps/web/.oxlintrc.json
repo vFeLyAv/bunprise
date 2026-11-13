@@ -1,0 +1,50 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "unicorn", "oxc"],
+  "categories": {
+    "correctness": "error"
+  },
+  "ignorePatterns": [
+    "dist/**",
+    "dev-dist/**",
+    "node_modules/**",
+    "public/**",
+    "src/routeTree.gen.ts"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          { "name": "framer-motion", "message": "Use 'motion/react' (LazyMotion + m), see docs/spec/design-system-motion.md 2.9." }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "src/main.tsx",
+        "src/router.tsx",
+        "src/routes/__root.tsx",
+        "src/routes/_authed.tsx",
+        "src/routes/i.tsx",
+        "src/features/shell/**/*.tsx"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              { "name": "framer-motion", "message": "Use 'motion/react' (LazyMotion + m)." },
+              { "name": "@bunprise/mascot", "message": "Mascots load lazily, never in the shell (performance-plan 4.3)." },
+              { "name": "../ui", "message": "Shell files import kit components by file (../ui/Page), never the barrel: it drags motion into every route's initial chunk." },
+              { "name": "../../ui", "message": "Shell files import kit components by file (../../ui/Page), never the barrel: it drags motion into every route's initial chunk." }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "feed": {
+    "title": "Головна",
+    "view_label": "Вигляд",
+    "view_list": "Список",
+    "view_month": "Місяць",
+    "group_today": "Сьогодні",
+    "group_week": "Найближчими днями",
+    "group_later": "Пізніше",
+    "group_past": "Минулі (30 днів)",
+    "empty_title": "Поки нічого не заплановано",
+    "empty": "Створи подію або дочекайся запрошення.",
+    "new_occasion": "Створити подію",
+    "chip_host": "Ти запрошуєш",
+    "chip_guests_one": "{{count}} гість",
+    "chip_guests_few": "{{count}} гості",
+    "chip_guests_many": "{{count}} гостей",
+    "chip_guests_other": "{{count}} гостя",
+    "chip_guests_none": "Поки без гостей",
+    "chip_rsvp_none": "Прийдеш?",
+    "chip_rsvp_going": "Іду",
+    "chip_rsvp_maybe": "Можливо",
+    "chip_rsvp_declined": "Не йду",
+    "hosted_by": "{{name}} запрошує",
+    "time_in_host_tz": "Місцевий час події: {{time}} ({{tz}})",
+    "offline_hint": "Щойно знову будеш онлайн, огляд завантажиться.",
+    "error_hint": "Твої події нікуди не зникли — спробуй ще раз трохи згодом.",
+    "empty_ideas": "День народження, вечір настолок, пікнік — будь-який привід для свята підійде.",
+    "empty_invite_hint": "Маєш запрошення? Просто відкрий посилання з повідомлення.",
+    "chip_no_wishes": "Поки без бажань",
+    "chip_bring": "Принести з собою",
+    "first_steps_title": "Перші кроки",
+    "first_steps_hide": "Сховати перші кроки",
+    "first_steps_occasion": "Створити свою подію",
+    "first_steps_wish": "Записати перше бажання",
+    "first_steps_link": "Поділитися посиланням для підписки",
+    "birthday": {
+      "eyebrow": "Незабаром знову",
+      "host_text": "«{{title}}» — {{date}}. Знову святкуємо?",
+      "host_action": "Створити подію",
+      "guest_text": "Незабаром «{{title}}» ({{date}}) — подивись, що в списку, який веде {{name}}.",
+      "guest_action": "Подивитися бажання",
+      "dismiss": "Сховати пропозицію",
+      "someone": "ця людина"
+    },
+    "comic": {
+      "title": "Як познайомилися Помпон і Тапсі?",
+      "read": "Читати історію",
+      "hide": "Сховати картку з коміксом"
+    }
+  },
+  "notice": {
+    "wish_deleted": "Бажання «{{title}}» видалено — твою бронь скасовано",
+    "wish_changed": "Бажання «{{title}}» змінилося — поглянь ще раз",
+    "occasion_changed": "Подію «{{title}}» змінено (дата, час або місце)",
+    "occasion_deleted": "Подію «{{title}}» скасовано й видалено",
+    "removed": "Тебе видалено з події «{{title}}»"
+  }
+}

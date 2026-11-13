@@ -1,0 +1,132 @@
+/*
+ * photo.css — the occasion's cover photo (wave 2): the hero backdrop of the occasion screen (photo/HeroCover.tsx,
+ * OccasionHero). A satellite stylesheet: imported by HeroCover, it ships with the occasion screen's chunk only.
+ * Plain classes + tokens (unlayered, like the form's stylesheet: it wins over the kit's component layer).
+ *
+ * Apple Invites-like: the photo runs full-bleed from the top of the screen (under the top bar's glass controls)
+ * and dissolves into the paper over its last --occ-cover-fade (a mask: the page's own colours show through,
+ * no seam); the day pill and the title overlap that dissolving edge by --occ-cover-overlap; the frosted cards
+ * follow on the page. Both values come from photo/coverGeometry.ts (also the contrast proof:
+ * coverContrast.test.ts — the title keeps AA over any photo, even a black one).
+ * Loading: the cover's box is there from the first frame (the screen knows the photo's size) in the occasion's
+ * tint, pulsing softly; the photo fades in (--dur-l; reduce: short, off: none).
+ * Reduced transparency: no dissolve and nothing over the photo — the cover ends with a straight edge and the
+ * title starts below it; the pills are solid (kit switches).
+ */
+.occ-cover {
+  position: relative;
+  z-index: 0;
+  flex: none;
+  /* full bleed: up to the screen's top (the bar + safe area + the content's pt-4) and edge to edge */
+  margin-top: calc(-1 * (var(--topbar-h) + var(--sa-top) + var(--sp-4)));
+  margin-left: calc(-1 * max(var(--gutter), var(--sa-left)));
+  margin-right: calc(-1 * max(var(--gutter), var(--sa-right)));
+  margin-bottom: calc(-1 * var(--occ-cover-overlap));
+  /* the crop: COVER_ASPECT_RATIO (coverGeometry.ts) — the form preview shows the same */
+  aspect-ratio: var(--occ-cover-ratio, 1 / 1.08);
+  max-height: 480px;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - var(--occ-cover-fade)), transparent 100%);
+  mask-image: linear-gradient(to bottom, black calc(100% - var(--occ-cover-fade)), transparent 100%);
+}
+/* the tint the photo arrives on (also its skeleton): the occasion's colour, deep enough to read as "a picture
+   is coming" and not as empty space, with a soft light from the top left */
+.occ-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--occ-cover-tint);
+  background-image:
+    radial-gradient(90% 70% at 22% 18%, color-mix(in srgb, var(--hl) 42%, transparent) 0%, rgba(255, 255, 255, 0) 62%),
+    linear-gradient(200deg, rgba(255, 255, 255, 0) 40%, color-mix(in srgb, var(--hl) 18%, transparent) 100%);
+}
+.occ-cover[data-tint="1"] { --occ-cover-tint: color-mix(in srgb, var(--tint-1-solid) 64%, transparent); }
+.occ-cover[data-tint="2"] { --occ-cover-tint: color-mix(in srgb, var(--tint-2-solid) 64%, transparent); }
+.occ-cover[data-tint="3"] { --occ-cover-tint: color-mix(in srgb, var(--tint-3-solid) 64%, transparent); }
+.occ-cover[data-tint="4"] { --occ-cover-tint: color-mix(in srgb, var(--tint-4-solid) 64%, transparent); }
+.occ-cover[data-state="loading"]::before {
+  animation: bp-pulse 1.2s ease-in-out infinite;
+}
+:root[data-motion="reduce"] .occ-cover::before,
+:root[data-motion="off"] .occ-cover::before {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .occ-cover::before { animation: none; }
+}
+
+.occ-cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--dur-l) var(--ease-out);
+}
+.occ-cover-img[data-loaded] {
+  opacity: 1;
+}
+
+/* the pills that sit on the dissolving photo: the same glass, but nearly opaque (AA over any photo: the
+   share is COVER_PILL_SURFACE in coverGeometry.ts); solid under reduced transparency (kit switches) */
+.occ-hero-covered .occ-cover-pill {
+  background-color: var(--solid-panel, color-mix(in srgb, var(--surface) 88%, transparent));
+  background-image: none;
+  -webkit-backdrop-filter: var(--solid-off, blur(12px) saturate(1.6));
+  backdrop-filter: var(--solid-off, blur(12px) saturate(1.6));
+}
+
+/* the host's upload on its way: a small pill next to the day */
+.occ-cover-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px 0 10px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  font-weight: 600;
+  color: var(--text-2);
+}
+.occ-cover-status .spinner {
+  width: 14px;
+  height: 14px;
+}
+
+/* offline / not saved: a frosted line under the title with what to do */
+.occ-cover-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+  padding: 12px 14px;
+  border-radius: 20px;
+}
+.occ-cover-notice-text {
+  flex: 1 1 12rem;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  color: var(--text);
+}
+.occ-cover-notice-actions {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .occ-cover {
+    -webkit-mask-image: none;
+    mask-image: none;
+    margin-bottom: 0;
+  }
+}
+:root[data-transparency="reduce"] .occ-cover {
+  -webkit-mask-image: none;
+  mask-image: none;
+  margin-bottom: 0;
+}

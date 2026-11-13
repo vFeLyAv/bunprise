@@ -1,0 +1,9 @@
+/*
+ * src/lib/telegram/bridge.css — ships with the lazy Telegram bridge only (lib/telegram/bridge.ts).
+ * Inside Telegram (Bot API ≥ 6.1, <html data-tg>) the Back button in Telegram's own header replaces our glass
+ * "Zurück" in the top bar (Felix: not two back buttons; docs/spec/telegram-mini-app.md §3.2). The hidden button
+ * stays in the DOM: the bridge clicks it on back_button_pressed. Back buttons inside sheets stay visible.
+ */
+:root[data-tg] .glass-bar [data-tg-back] {
+  display: none;
+}

@@ -1,0 +1,149 @@
+/* Dev-only phone frame (src/dev/PhoneFrame.tsx). Not part of the production bundle. */
+.pf-stage {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 24px;
+  background: color-mix(in oklab, var(--bg) 90%, black);
+  font-family: var(--font-sans);
+  color: var(--text);
+}
+.pf-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 20px;
+}
+.pf-brand {
+  font-weight: 600;
+  color: var(--text-2);
+  margin-right: 4px;
+}
+.pf-group {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--fill-2);
+}
+.pf-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.pf-btn:hover {
+  color: var(--text);
+}
+.pf-btn.is-active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-1);
+}
+.pf-link {
+  background: var(--fill-2);
+}
+.pf-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--accent-100);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+.pf-phone {
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 60px;
+  background: rgb(28 28 30);
+  box-shadow:
+    0 30px 80px rgb(70 45 20 / 0.28),
+    inset 0 0 0 2px rgb(62 62 66);
+}
+/* The screen (not the scroller) is the containing block of the app's position: fixed bars,
+   sheets and toasts (contain: paint), so they stay pinned while .pf-app scrolls — like on a
+   phone. overflow: clip (not hidden) means nothing can scroll the screen itself, not even
+   focus() or scrollIntoView() of an element that sticks out during an animation. */
+.pf-screen {
+  position: relative;
+  overflow: clip;
+  contain: paint;
+  border-radius: 48px;
+  /* the page backdrop lives on the simulated screen (in production: the fixed body::before of app.css,
+     which the desktop stage covers here): it stays put while .pf-app scrolls, like a wallpaper */
+  background-color: var(--bg);
+  background-image: var(--page-backdrop);
+}
+/* The app lives here and scrolls; isolation keeps the app's z-indexes below the simulated status
+   bar and island. The --sa-* overrides simulate the notch and the home indicator (the app's
+   layout reads these tokens). */
+.pf-app {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  isolation: isolate;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  --sa-top: 54px;
+  --sa-bottom: 34px;
+  --sat: 54px;
+  --sab: 34px;
+}
+.pf-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px 0 40px;
+  pointer-events: none;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  z-index: 1;
+}
+.pf-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.pf-island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 125px;
+  height: 37px;
+  border-radius: 20px;
+  background: rgb(0 0 0);
+  pointer-events: none;
+  z-index: 2;
+}
+.pf-home {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgb(0 0 0 / 0.85);
+  pointer-events: none;
+  z-index: 1;
+}

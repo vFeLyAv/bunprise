@@ -1,0 +1,8 @@
+/*
+ * src/styles/icontile.css — the hues of the small rounded-square icons of grouped settings rows (ui/IconTile,
+ * Telegram-like): Paper colours with a white glyph. Decorative (the row's label carries the meaning).
+ */
+:root {
+  --icon-apricot: #EE8F3E; --icon-rose: #E0707E; --icon-sage: #5FA374; --icon-lilac: #8F7FD3;
+  --icon-sky: #5B9BD5; --icon-honey: #E2A42E; --icon-ink: #7D6E62;
+}

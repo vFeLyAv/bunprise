@@ -1,0 +1,48 @@
+{
+  "common": {
+    "app_name": "{{app}}",
+    "wip": "Work in progress – this screen is coming soon.",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "back": "Back",
+    "retry": "Try again",
+    "ok": "Got it",
+    "close": "Close",
+    "copy": "Copy",
+    "copied": "Copied",
+    "share": "Share",
+    "loading": "Loading…",
+    "time_span": "{{start}}–{{end}}",
+    "time_span_next_day": "{{start}} to {{end}} (next day)",
+    "offline_banner": "No connection – showing saved data",
+    "offline_short": "No connection",
+    "update_available": "New version available",
+    "update_now": "Update",
+    "not_found_title": "This page doesn't exist",
+    "not_found_body": "The link may be incomplete, or the page was removed.",
+    "error_title": "Something went wrong",
+    "to_feed": "Back to overview",
+    "to_start": "Go to start page",
+    "language": "Language",
+    "today": "Today",
+    "tomorrow": "Tomorrow"
+  },
+  "start": {
+    "title": "Plans and wishes\u00a0– together with friends",
+    "subtitle": "One occasion, one wishlist, secretly reserved gifts.",
+    "login": "Sign in"
+  },
+  "footer": {
+    "title": "Legal",
+    "impressum": "Legal notice",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "pilot_badge": "Private test version · adults only (18+)"
+  },
+  "mascot": {
+    "bunny_tap": "*wiggles ears*",
+    "bunny_label": "Bunny",
+    "hamster_label": "Hamster – feed"
+  }
+}

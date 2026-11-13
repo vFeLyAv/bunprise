@@ -1,0 +1,57 @@
+import { expect, test } from '@playwright/test'
+
+test('first wish creates a private list; a friend gift opens the selected available wish', async ({ page }, info) => {
+  const errors: string[] = []
+  page.on('pageerror', (error) => errors.push(error.message))
+  await page.setViewportSize({ width: 320, height: 900 })
+  await page.goto('/login?mode=signup&method=email&frame=0')
+  await page.getByLabel('E-Mail', { exact: true }).fill('lists-c@example.test')
+  await page.getByRole('checkbox').nth(0).check()
+  await page.getByRole('checkbox').nth(1).check()
+  await page.getByRole('button', { name: 'Code schicken', exact: true }).click()
+  await page.getByLabel('Sechsstelliger Code', { exact: true }).fill('123456')
+  await page.getByLabel('Name', { exact: true }).fill('Mila')
+  await page.getByRole('button', { name: 'Fertig', exact: true }).click()
+  await page.getByRole('button', { name: 'Überspringen', exact: true }).click()
+
+  await page.getByRole('button', { name: 'Neu erstellen', exact: true }).click()
+  await page.getByRole('button', { name: /Wunsch hinzufügen/ }).click()
+  const create = page.getByRole('button', { name: '„Meine Wünsche“ anlegen' })
+  await expect(create).toBeVisible()
+  await expect(page.getByRole('dialog')).toContainText('Nur du siehst diese Liste')
+  await create.click()
+  await page.getByRole('button', { name: 'Ohne Link hinzufügen', exact: true }).click()
+  await page.getByLabel('Titel', { exact: true }).fill('Mein erstes Buch')
+  await page.getByRole('slider').focus()
+  await page.keyboard.press('End')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.getByRole('button', { name: 'Wunsch hinzufügen', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Meine Wünsche', exact: true })).toBeVisible()
+  await expect(page.getByRole('note')).toContainText('Nur du siehst diese Liste')
+  await expect(page.getByText('Reserviert', { exact: true })).toHaveCount(0)
+  // A visible destination heading can precede the native old-screen snapshot fading out.
+  await page.evaluate(async () => {
+    await Promise.all(document.getAnimations().filter(animation =>
+      animation.effect instanceof KeyframeEffect && animation.effect.target === document.documentElement,
+    ).map(animation => animation.finished.catch(() => undefined)))
+  })
+  await page.screenshot({ path: info.outputPath('C-private-first-wish-320.png') })
+
+  await page.getByRole('button', { name: 'Zurück', exact: true }).click()
+  await page.getByRole('navigation', { name: 'Hauptnavigation' }).getByRole('link', { name: /^Listen/ }).click()
+  await page.getByRole('radio', { name: 'Freunde', exact: true }).click()
+  await page.getByRole('link', { name: /Annas Wünsche/ }).click()
+  await expect(page.getByRole('heading', { name: 'Annas Wünsche', exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Verstanden', exact: true }).click()
+  await page.getByRole('button', { name: /Ideen für Anna/ }).click()
+  const free = page.getByRole('region', { name: 'Noch frei auf Annas Listen' })
+  await expect(free.getByRole('button').first()).toBeVisible()
+  const count = await free.getByRole('button').count()
+  expect(count).toBeGreaterThan(0)
+  expect(count).toBeLessThanOrEqual(5)
+  const chosen = (await free.getByRole('button').first().innerText()).replace('›', '').trim()
+  await free.getByRole('button').first().click()
+  await expect(page.getByRole('dialog')).toContainText(chosen)
+  await expect(page.getByRole('dialog').getByRole('button', { name: 'Ich schenke das', exact: true })).toBeVisible()
+  expect(errors).toEqual([])
+})

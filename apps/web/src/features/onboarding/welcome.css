@@ -1,0 +1,107 @@
+/*
+ * The welcome screens (Felix 25.10; approved in the mascot gallery): wish bubbles, occasion cards, Pompon's tap
+ * target and his effects layer. Imported by the /welcome chunks only, so none of it reaches the CSS of every
+ * first visit (/soon sits at its 200 KB budget). Tokens only (tokens.css); a picked/selected thing is tinted with
+ * the accent (color-mix), so it reads in the light and the dark tokens alike.
+ */
+.wl-bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  border-radius: 999px;
+  background-color: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-1);
+  font-weight: 600;
+}
+.wl-bubble[aria-pressed="true"] {
+  background-color: color-mix(in srgb, var(--accent-400) 15%, transparent);
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 1.5px var(--accent-text);
+}
+.wl-bubble-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--accent-text);
+}
+.wl-bubble[aria-pressed="true"] .wl-bubble-icon {
+  color: var(--ok-text);
+}
+
+.wl-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.625rem;
+  min-height: 6.5rem;
+  padding: 0.875rem;
+  border-radius: var(--r-xl);
+  background-color: var(--surface);
+  color: var(--text);
+  text-align: left;
+  box-shadow: var(--shadow-1);
+}
+.wl-card[aria-pressed="true"] {
+  background-color: color-mix(in srgb, var(--accent-400) 15%, transparent);
+  box-shadow: inset 0 0 0 2px var(--accent-text), var(--shadow-1);
+}
+.wl-bubble:focus-visible,
+.wl-card:focus-visible {
+  outline: none;
+  box-shadow: var(--ring), var(--shadow-1);
+}
+
+/* one line that keeps its height while empty (no layout shift) */
+.wl-line {
+  min-height: 1.25rem;
+}
+/* "psst … streichel mich mal": fades in after a while */
+.wl-hint {
+  min-height: 1.25rem;
+  opacity: 0;
+  transition: opacity var(--dur-m) var(--ease-out);
+}
+.wl-hint[data-pet-hint="shown"] {
+  opacity: 1;
+}
+
+/* Pompon: the stage host lets clicks through, he takes them */
+.wl-pompon {
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
+  border-radius: 40px;
+  outline: none;
+}
+.wl-pompon:focus-visible {
+  box-shadow: var(--ring);
+}
+/* hearts, confetti, a flying bubble: fixed and click-through above everything of the page */
+.wl-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* «Здесь я буду жить» (the Home Screen step): the seated Pompon steps aside while the icon scene is up (opacity only,
+   then hidden for clicks and screen readers via `inert`); the scene fills the stage, its bottom = the card's top edge */
+.wl-seat {
+  position: absolute;
+  inset: 0;
+  transition: opacity var(--dur-s) var(--ease-out);
+}
+.wl-seat-away {
+  opacity: 0;
+}
+.wl-home-icon {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}

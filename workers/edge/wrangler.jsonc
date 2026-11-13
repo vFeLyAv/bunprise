@@ -1,0 +1,47 @@
+// Cloudflare Worker config (framework-decision 9.4). Deploy only after Felix's OK:
+//   npm run deploy   (from the repo root; builds apps/web first)
+// Dry run without an account: npx wrangler deploy --dry-run -c workers/edge/wrangler.jsonc
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Felix 24.10: the Bunprise Cloudflare account. Pinned so a deploy never lands on another account
+  // wrangler is logged into or has cached. The account ID is not a secret.
+  "account_id": "<DEINE_CLOUDFLARE_ACCOUNT_ID>",
+  "name": "app",
+  // The app lives at https://bunprise.de only (domain at INWX, DNS zone in this account). One origin: no
+  // *.workers.dev or preview address, so PWA storage, sign-in redirects and Telegram all see the same site.
+  "routes": [{ "pattern": "bunprise.de", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false,
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  // Workers Logs: keep only our own log lines (function, status, duration; 3 days on Free). Cloudflare's
+  // invocation log would store "<method> <full URL>" of every /api call, i.e. place-search text and shop
+  // domains, which the privacy notice says we do not log (docs/legal-drafts/pilot-2/research-2026-10-24.md §15).
+  "observability": { "enabled": true, "logs": { "invocation_logs": false } },
+  "vars": {
+    "SUPABASE_URL": "https://wqubtdwpnsbnergjkhzl.supabase.co",
+    // "Ideen" from our checked catalogue of real products (docs/handoffs/2026-10-25-gift-catalog.md). Only
+    // together with the pilot-2 texts that describe it (20261025120000_legal_versions_pilot_2.sql).
+    "GIFT_IDEAS_SOURCES": "catalog",
+    // The small map next to a chosen place (OpenStreetMap tiles through /api/map-tile, src/mapTile.ts;
+    // docs/handoffs/2026-10-27-place-minimap.md). ON with the 5th release (Felix 27.10: «так все включаем»), together
+    // with the pilot-5 texts that describe it (20261027220000_legal_versions_pilot_5.sql).
+    "MAP_TILES": "osm",
+    // The Kalender-Abo GET /api/calendar/<token>.ics (src/calendar/feed.ts, docs/handoffs/2026-10-27-calendar.md).
+    // ON with the 5th release (pilot-5 texts, 20261027170000_calendar_feed.sql pushed first). It also needs
+    // SUPABASE_PUBLISHABLE_KEY — the app's VITE_SUPABASE_PUBLISHABLE_KEY (public, not a secret), set by Felix as a
+    // Worker secret (`npx wrangler secret put SUPABASE_PUBLISHABLE_KEY`) so it never sits in this file; without it 501.
+    // NEVER a service-role key: the database function public.calendar_feed(token) is made for the publishable key.
+    // The invocation log above must stay off — it would store every feed URL, i.e. every secret token.
+    "CALENDAR_FEED": "on"
+  },
+  "assets": {
+    // relative to this file
+    "directory": "../../apps/web/dist",
+    "binding": "ASSETS",
+    // /i/abc -> index.html with status 200, so crawlers see the static OG tags
+    "not_found_handling": "single-page-application",
+    // pages and assets never invoke the Worker; only /api/* does
+    "run_worker_first": ["/api/*"]
+  }
+}

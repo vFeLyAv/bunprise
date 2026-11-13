@@ -1,0 +1,59 @@
+{
+  "feed": {
+    "title": "Главная",
+    "view_label": "Вид",
+    "view_list": "Список",
+    "view_month": "Месяц",
+    "group_today": "Сегодня",
+    "group_week": "В ближайшие дни",
+    "group_later": "Позже",
+    "group_past": "Прошедшие (30 дней)",
+    "empty_title": "Пока ничего не запланировано",
+    "empty": "Создай повод или дождись приглашения.",
+    "new_occasion": "Создать повод",
+    "chip_host": "Ты приглашаешь",
+    "chip_guests_one": "{{count}} гость",
+    "chip_guests_few": "{{count}} гостя",
+    "chip_guests_many": "{{count}} гостей",
+    "chip_guests_other": "{{count}} гостя",
+    "chip_guests_none": "Пока без гостей",
+    "chip_rsvp_none": "Придёшь?",
+    "chip_rsvp_going": "Иду",
+    "chip_rsvp_maybe": "Возможно",
+    "chip_rsvp_declined": "Не иду",
+    "hosted_by": "{{name}} приглашает",
+    "time_in_host_tz": "Местное время повода: {{time}} ({{tz}})",
+    "offline_hint": "Как только снова будешь онлайн, обзор загрузится.",
+    "error_hint": "Твои поводы никуда не делись — попробуй ещё раз чуть позже.",
+    "empty_ideas": "День рождения, вечер настолок, пикник — любой повод для праздника подойдёт.",
+    "empty_invite_hint": "Есть приглашение? Просто открой ссылку из сообщения.",
+    "chip_no_wishes": "Пока без желаний",
+    "chip_bring": "Принести с собой",
+    "first_steps_title": "Первые шаги",
+    "first_steps_hide": "Скрыть первые шаги",
+    "first_steps_occasion": "Создать свой повод",
+    "first_steps_wish": "Записать первое желание",
+    "first_steps_link": "Поделиться ссылкой для подписки",
+    "birthday": {
+      "eyebrow": "Скоро снова",
+      "host_text": "«{{title}}» — {{date}}. Снова отпразднуем?",
+      "host_action": "Создать событие",
+      "guest_text": "Скоро «{{title}}» ({{date}}) — загляни, что в списке, который ведёт {{name}}.",
+      "guest_action": "Посмотреть желания",
+      "dismiss": "Скрыть предложение",
+      "someone": "этот человек"
+    },
+    "comic": {
+      "title": "Как познакомились Помпон и Тапси?",
+      "read": "Читать историю",
+      "hide": "Скрыть карточку с комиксом"
+    }
+  },
+  "notice": {
+    "wish_deleted": "Желание «{{title}}» удалено — твоя бронь отменена",
+    "wish_changed": "Желание «{{title}}» изменилось — взгляни ещё раз",
+    "occasion_changed": "Повод «{{title}}» изменился (дата, время или место)",
+    "occasion_deleted": "Повод «{{title}}» отменён и удалён",
+    "removed": "Тебя удалили из повода «{{title}}»"
+  }
+}

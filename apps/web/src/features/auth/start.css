@@ -1,0 +1,25 @@
+/*
+ * The signed-out start screen (routes/index.tsx) on short phones — iPhone SE/8 (375 × 667), 320 px Androids:
+ * the promise takes the title-1 size instead of the display size and the bunny stage between it and the card
+ * gives up some of its minimum height, so the whole card with "Bereits ein Konto? Anmelden" stays above the
+ * fold (QA ACCOUNT-5). Taller screens keep the hero as it is (the stage still takes all free height there).
+ */
+@media (max-height: 760px) {
+  .start-title {
+    font-size: var(--fs-title-1);
+    line-height: var(--lh-title-1);
+  }
+  .scene-stage.start-stage {
+    min-height: 6rem;
+  }
+}
+/* the smallest phones (320 × 568): the promise one step smaller again, so the three sign-in buttons still fit */
+@media (max-height: 620px) {
+  .start-title {
+    font-size: var(--fs-title-2);
+    line-height: var(--lh-title-2);
+  }
+  .scene-stage.start-stage {
+    min-height: 5rem;
+  }
+}

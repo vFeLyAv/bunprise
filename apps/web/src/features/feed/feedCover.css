@@ -1,0 +1,40 @@
+/*
+ * feedCover.css — the photo on a Start card's cover (features/feed/FeedCoverImage.tsx, a lazy chunk; the box itself is
+ * in styles/feed.css so the first frame never jumps). A soft light on the tinted box, which pulses while the photo
+ * waits (reduced motion: still); the photo fades in once decoded (--dur-l); a past occasion's photo is quieter.
+ */
+.feed-cover {
+  position: relative;
+  overflow: hidden;
+}
+.feed-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(90% 70% at 22% 18%, color-mix(in srgb, var(--hl) 42%, transparent) 0%, rgba(255, 255, 255, 0) 62%);
+}
+.feed-cover[data-state="loading"]::before {
+  animation: bp-pulse 1.2s ease-in-out infinite;
+}
+:root[data-motion="reduce"] .feed-cover::before,
+:root[data-motion="off"] .feed-cover::before {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .feed-cover::before { animation: none; }
+}
+.feed-cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--dur-l) var(--ease-out);
+}
+.feed-cover-img[data-loaded] {
+  opacity: 1;
+}
+.feed-card[data-past] .feed-cover-img[data-loaded] {
+  opacity: 0.8;
+}

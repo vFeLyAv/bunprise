@@ -1,0 +1,445 @@
+/*
+ * src/features/gifts/gifts.css — the look of "Geschenk finden" ("warm glass on paper", wave 2, agent H).
+ * Imported by the gift components, so it ships only with the /gifts chunks. Colours come from the tokens
+ * (tokens.css, tiles.css); the few new values are feature tokens (--gift-*): the palette of the demo
+ * drawings (oklch, like wishes.css — candidates for tokens.css once the design system adopts them).
+ * Animate only transform / opacity / colour; spring curves = the tokens of src/motion/springs.ts.
+ * Reduced transparency (--solid switches) → solid surfaces; reduced motion → the spring tokens are 0 ms.
+ */
+:root {
+  /* the drawings' palette: warm, a little dusty, every ink ≥ 3:1 against its own light shade */
+  /* the shadow under a drawn object: ink at 13 % by day, a deeper black at night (ink is light there) */
+  --gift-shadow: light-dark(rgb(42 35 28 / .13), rgb(0 0 0 / .32));
+  --gift-charcoal: oklch(0.36 0.02 60);
+  --gift-cream: oklch(0.965 0.02 85);
+  --gift-wood: oklch(0.63 0.085 60);
+  --gift-wood-dark: oklch(0.5 0.075 52);
+  --gift-wood-light: oklch(0.8 0.07 72);
+  --gift-leaf: oklch(0.63 0.11 150);
+  --gift-leaf-dark: oklch(0.5 0.1 152);
+  --gift-leaf-light: oklch(0.77 0.1 142);
+  --gift-clay: oklch(0.69 0.11 45);
+  --gift-clay-dark: oklch(0.58 0.12 40);
+  --gift-sky: oklch(0.76 0.065 245);
+  --gift-sky-dark: oklch(0.56 0.075 258);
+  --gift-sky-light: oklch(0.9 0.03 240);
+  --gift-rose: oklch(0.77 0.085 15);
+  --gift-rose-dark: oklch(0.6 0.12 15);
+  --gift-butter: oklch(0.9 0.1 92);
+  --gift-butter-dark: oklch(0.79 0.13 82);
+  --gift-steel: oklch(0.84 0.008 80);
+  --gift-steel-dark: oklch(0.65 0.012 80);
+  --gift-steel-light: oklch(0.94 0.006 85);
+  /* real product photos (catalog): the plate under the shot, its rim, and the "Bild: …" chip (both themes) */
+  --gift-photo-plate: light-dark(#fff, #2B231D);
+  --gift-photo-rim: light-dark(transparent, rgba(255,236,214,.08));
+  --gift-credit-bg: light-dark(rgb(255 255 255 / .82), rgb(23 18 15 / .88));
+  --gift-credit-ink: light-dark(#5f554b, var(--text-2));
+  /* the deck: the card's height follows the screen a little (phones from 640 px), never less than this */
+  --gift-deck-h: clamp(372px, calc(100dvh - 500px), 460px);
+}
+/* "Für jemanden" has the people row above the deck: the card gives the room back, so the buttons stay above
+   the tab bar on a 900 px phone too */
+[data-gift-mode="for_someone"] {
+  --gift-deck-h: clamp(356px, calc(100dvh - 546px), 452px);
+}
+
+/* the components live in the components layer (like app.css): a utility class on an element still wins */
+@layer components {
+  /* ---- the picture: an object on a softly lit, tinted card ------------------------------------------------ */
+  .gift-picture {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: var(--gift-tint);
+    background-image:
+      radial-gradient(90% 70% at 50% 34%, var(--gift-glow) 0%, transparent 70%),
+      linear-gradient(180deg, transparent 62%, color-mix(in oklab, var(--gift-tint) 82%, var(--sink) 6%) 100%);
+  }
+  .gift-picture[data-tone="1"] { --gift-tint: var(--tile-1); --gift-glow: color-mix(in oklab, var(--tile-1) 25%, var(--surface)); }
+  .gift-picture[data-tone="2"] { --gift-tint: var(--tile-2); --gift-glow: color-mix(in oklab, var(--tile-2) 25%, var(--surface)); }
+  .gift-picture[data-tone="3"] { --gift-tint: var(--tile-3); --gift-glow: color-mix(in oklab, var(--tile-3) 25%, var(--surface)); }
+  .gift-picture[data-tone="4"] { --gift-tint: var(--tile-4); --gift-glow: color-mix(in oklab, var(--tile-4) 25%, var(--surface)); }
+  .gift-picture-art {
+    position: absolute;
+    inset: 8% 14% 2%;
+  }
+  .gift-picture[data-size="thumb"] .gift-picture-art { inset: 6%; }
+  .gift-picture img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8%;
+  }
+  /* a real product photo (shops shoot on white): one calm white plate instead of the tinted light — at night a
+     neutral dark plate with a faint inner rim, so the white product shot sits on it like a print, not a glare */
+  .gift-picture[data-photo] { background: var(--gift-photo-plate); box-shadow: inset 0 0 0 1px var(--gift-photo-rim); }
+  .gift-picture[data-photo][data-size="thumb"] img { padding: 4%; }
+  /* "Bild: Thalia" — whose photo it is, small and quiet in the free top corner */
+  .gift-picture-credit {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--gift-credit-bg);
+    color: var(--gift-credit-ink);
+    font-size: var(--fs-caption-2);
+    line-height: 1.4;
+  }
+
+  /* ---- the deck --------------------------------------------------------------------------------------------- */
+  .gift-deck {
+    position: relative;
+    height: var(--gift-deck-h);
+    /* the cards behind peek out below the top card */
+    margin-bottom: 19px;
+  }
+  .gift-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--r-card);
+    background-color: var(--solid-panel, var(--surface));
+    box-shadow: var(--panel-edge), 0 1px 2px color-mix(in srgb, var(--shade) 6%, transparent), 0 16px 34px -14px color-mix(in srgb, var(--shade) 30%, transparent);
+    transform-origin: 50% 100%;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  .gift-card[data-depth]:not([data-depth="0"]) {
+    pointer-events: none;
+  }
+  /* The cards behind show their picture and name — the next idea is already there while the top card is
+     dragged away (it moves up, it does not pop in) — but never their actions: a back card's orange buttons
+     would look like duplicate actions. They fade in when the card comes up (opacity only). */
+  .gift-card [data-gift-actions],
+  .gift-card .gift-where {
+    transition: opacity var(--dur-s) var(--ease-out), visibility 0s;
+  }
+  .gift-card[data-depth]:not([data-depth="0"]) [data-gift-actions],
+  .gift-card[data-depth]:not([data-depth="0"]) .gift-where {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .gift-card:focus-visible {
+    outline: none;
+    box-shadow: var(--ring), var(--panel-edge), 0 16px 34px -14px color-mix(in srgb, var(--shade) 30%, transparent);
+  }
+  .gift-card[data-grab] {
+    cursor: grab;
+  }
+  .gift-card[data-grab]:active {
+    cursor: grabbing;
+  }
+
+  /* the verdict stamps: they appear while the card is pulled to a side (opacity follows the finger) */
+  .gift-stamp {
+    position: absolute;
+    top: 18px;
+    z-index: 2;
+    padding: 5px 12px 6px;
+    border: 3px solid currentColor;
+    border-radius: 14px;
+    background-color: color-mix(in srgb, var(--surface) 78%, transparent);
+    font-size: 1.0625rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    pointer-events: none;
+    white-space: nowrap;
+    /* "Nicht für Maximiliane" stays on the card */
+    max-width: calc(100% - 40px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .gift-stamp[data-kind="like"] {
+    left: 16px;
+    color: var(--ok-text);
+    transform: rotate(-11deg);
+  }
+  .gift-stamp[data-kind="skip"] {
+    right: 16px;
+    color: var(--danger-text);
+    transform: rotate(11deg);
+  }
+
+  /* corner labels on the picture: the partner / „Anzeige“ slot (left, reserved even when empty) and „Demo“ */
+  .gift-corner {
+    position: absolute;
+    top: 12px;
+    z-index: 1;
+    display: flex;
+    min-height: 24px;
+    align-items: center;
+  }
+  .gift-corner[data-side="start"] { left: 12px; min-width: 72px; }
+  .gift-corner[data-side="end"] { right: 12px; }
+  .gift-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 9px;
+    border-radius: var(--r-full);
+    font-size: var(--fs-caption-1);
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .gift-tag[data-kind="demo"] {
+    background-color: var(--solid, color-mix(in srgb, var(--surface) 72%, transparent));
+    color: var(--text-2);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 60%, transparent);
+  }
+  .gift-tag[data-kind="ad"] {
+    background-color: var(--text);
+    color: var(--text-inverse);
+  }
+  .gift-tag[data-kind="new"] {
+    background-color: var(--accent-400);
+    color: var(--text-on-accent);
+  }
+
+  /* "Wo erhältlich" on the picture: a small glass pill (allowed: a floating control over content) */
+  .gift-where {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    z-index: 1;
+    display: inline-flex;
+    max-width: calc(100% - 24px);
+    height: 44px;
+    align-items: center;
+    gap: 7px;
+    padding: 0 12px 0 13px;
+    border-radius: var(--r-full);
+    color: var(--text);
+    font-size: var(--fs-subhead);
+    font-weight: 600;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* the round deck buttons */
+  .gift-action {
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+  }
+  .gift-action[data-size="s"] { width: 44px; height: 44px; }
+  .gift-action[data-kind="undo"] { color: var(--text-2); }
+  .gift-action:disabled { opacity: 0.4; }
+  /* the decisions without a swipe for keyboards and screen readers: out of sight until focused (like a skip
+     link), then a pill in the middle of the row — the pointer's way is the card's "Wo erhältlich" sheet */
+  .gift-verdict {
+    display: inline-flex;
+    height: 44px;
+    max-width: 50%;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+    border-radius: var(--r-full);
+    background-color: var(--fill);
+    color: var(--text);
+    font-size: var(--fs-subhead);
+    font-weight: 600;
+  }
+  .gift-verdict[data-kind="skip"] svg { color: var(--danger-text); }
+  .gift-verdict[data-kind="like"] { background-color: var(--accent-400); color: var(--text-on-accent); }
+  .gift-verdict:not(:focus-visible) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .gift-verdict:focus-visible { outline: none; box-shadow: var(--ring); }
+  /* the first-time swipe hint (27.10): a small line in the middle of the row, in and out by opacity only */
+  .gift-swipe-hint {
+    position: absolute;
+    left: 56px;
+    right: 56px;
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--fs-footnote);
+    font-weight: 600;
+    color: var(--text-2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-m, 240ms) var(--ease-out);
+  }
+  .gift-swipe-hint[data-shown] { opacity: 1; }
+
+  /* ---- "Warum diese Ideen?" ---------------------------------------------------------------------------------- */
+  .gift-interest {
+    display: inline-flex;
+    height: 36px;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px 0 13px;
+    border-radius: var(--r-control);
+    background-color: var(--accent-100);
+    box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--accent-text) 55%, transparent);
+    color: var(--text);
+    font-size: var(--fs-subhead);
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color var(--dur-xs) var(--ease-out);
+  }
+  .gift-interest:active { background-color: var(--accent-200); }
+  .gift-interest-x {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: color-mix(in oklab, var(--accent-text) 16%, transparent);
+    color: var(--accent-text);
+  }
+  .gift-interest[data-kind="add"] {
+    padding: 0 13px 0 10px;
+    background-color: var(--fill);
+    box-shadow: inset 0 0 0 1.5px var(--separator);
+    color: var(--text);
+  }
+  .gift-interest[data-kind="add"]:active { background-color: var(--fill-2); }
+  .gift-interest[data-kind="toggle"][aria-pressed="false"],
+  .gift-interest[data-kind="toggle"][aria-checked="false"] {
+    background-color: var(--fill);
+    box-shadow: none;
+  }
+
+  /* ---- the budget's two-thumb range (two native range inputs on one track: keyboard + screen reader) ---------- */
+  .gift-range {
+    position: relative;
+    height: 44px;
+    --gift-range-inset: 22px;
+  }
+  .gift-range-track {
+    position: absolute;
+    top: 50%;
+    left: var(--gift-range-inset);
+    right: var(--gift-range-inset);
+    height: 6px;
+    margin-top: -3px;
+    border-radius: 3px;
+    background-color: var(--fill-2);
+  }
+  .gift-range-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 3px;
+    background-color: var(--accent-400);
+  }
+  .gift-range input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    background: transparent;
+    pointer-events: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .gift-range input::-webkit-slider-runnable-track { height: 44px; background: transparent; }
+  .gift-range input::-moz-range-track { height: 44px; background: transparent; }
+  /* a 44 px touch target that shows a 28 px knob */
+  .gift-range input::-webkit-slider-thumb {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, var(--surface) 0 13px, color-mix(in srgb, var(--text) 16%, transparent) 13.5px 14px, color-mix(in srgb, var(--text) 9%, transparent) 14.5px, transparent 17px);
+    pointer-events: auto;
+    cursor: grab;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .gift-range input::-moz-range-thumb {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, var(--surface) 0 13px, color-mix(in srgb, var(--text) 16%, transparent) 13.5px 14px, color-mix(in srgb, var(--text) 9%, transparent) 14.5px, transparent 17px);
+    pointer-events: auto;
+    cursor: grab;
+  }
+  .gift-range input:focus-visible { outline: none; }
+  .gift-range input:focus-visible::-webkit-slider-thumb {
+    background:
+      radial-gradient(circle, var(--surface) 0 12px, var(--accent-text) 12.5px 15px, transparent 15.5px);
+  }
+  .gift-range input:focus-visible::-moz-range-thumb {
+    background:
+      radial-gradient(circle, var(--surface) 0 12px, var(--accent-text) 12.5px 15px, transparent 15.5px);
+  }
+
+  /* ---- offers ------------------------------------------------------------------------------------------------ */
+  .gift-offer {
+    display: flex;
+    min-height: 60px;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+  }
+  .gift-offer + .gift-offer {
+    box-shadow: inset 0 1px 0 var(--separator);
+  }
+  a.gift-offer {
+    transition: background-color var(--dur-xs) var(--ease-out);
+  }
+  a.gift-offer:active {
+    background-color: var(--fill);
+  }
+
+  /* the horizontally scrolling rows (people, interests) bleed to the screen edges and fade there */
+  .gift-scroller {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 4px var(--gutter);
+    scrollbar-width: none;
+    scroll-padding-inline: var(--gutter);
+  }
+  .gift-scroller::-webkit-scrollbar { display: none; }
+
+  .gift-person {
+    display: inline-flex;
+    flex: none;
+    height: 44px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px 0 6px;
+    border-radius: var(--r-full);
+    background-color: var(--solid-panel, var(--panel-bg));
+    box-shadow: var(--panel-edge), 0 1px 2px color-mix(in srgb, var(--shade) 5%, transparent), 0 6px 14px -8px color-mix(in srgb, var(--shade) 22%, transparent);
+    font-size: var(--fs-subhead);
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    transition: background-color var(--dur-xs) var(--ease-out), box-shadow var(--dur-s) var(--ease-out);
+  }
+  .gift-person[aria-checked="true"] {
+    background-color: var(--accent-100);
+    box-shadow: inset 0 0 0 1.5px var(--accent-text), 0 6px 14px -8px color-mix(in srgb, var(--shade) 22%, transparent);
+  }
+}

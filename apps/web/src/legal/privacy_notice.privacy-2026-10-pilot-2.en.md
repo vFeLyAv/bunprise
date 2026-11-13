@@ -1,0 +1,245 @@
+> **DRAFT — review before publishing**
+
+# Privacy notice — Bunprise (pilot)
+
+Version: privacy-2026-10-pilot-2 · As of: 24 October 2026
+
+## 1. Controller
+
+Feliks Kolomoiets
+Email: hello@bunprise.de
+
+**[REVIEW: Whether a postal address of the controller must also be given.]**
+
+Provider details are also in the [legal notice](/legal/impressum?lang=en). We have not appointed a data protection officer; in our assessment there is no obligation to do so for this private pilot.
+
+## 2. The essentials
+
+- Bunprise is a private pilot for a limited circle of personally invited friends aged 18 or over.
+- We process data for your account, profile, occasions, wishlists, invitations, following relationships and reservations, for photos you add, and for the security of the service.
+- There are no advertisements, advertising trackers, analytics or statistics tools, automated decisions or sales of your data. The pilot is evaluated through voluntary feedback.
+- The “Ideas” feature derives interest categories on your device from wishes you are allowed to see. You can switch this off (section 3.13). **[REVIEW: classification as profiling.]**
+- Your device does not fetch content directly from shops: link previews, product photos, shop icons and place suggestions are fetched only by our server (sections 3.11 and 3.12).
+- You can delete your account yourself and download your main application data, including your photos. We also handle statutory data protection requests by email.
+- You sign in with a code sent by email and, where offered, with Google; inside Telegram only with the email code. Apple sign-in and Turnstile are not enabled. This notice must be updated before they are enabled.
+
+## 3. What data we process and why
+
+### 3.1 Account and sign-in
+
+We process your email address, your chosen display name, language, registration time, profile setup status, short-lived sign-in codes and session data. We do not collect a date of birth or gender. Our server only knows German and English: if you use the app in Russian, we store German as your language; the choice “Russian” stays on your device only.
+
+The purpose is to provide your account and sign-in. The legal basis is Article 6(1)(b) GDPR, including steps before a contract when you request a code yourself. If someone requests a code for another person's email address, only the person with access to that mailbox receives the code; without a successful sign-in, we delete any provisional record created in the process (see below). Our sign-in service limits the number of code requests. For processing in the case of mistaken or abusive requests we rely on Article 6(1)(f) GDPR; our legitimate interest is a secure sign-in process. **[REVIEW: balancing of interests for code requests for other people's addresses.]**
+
+Sign-in with Google: if you choose “Continue with Google”, Google (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland) processes the sign-in independently as a controller under the [Google Privacy Policy](https://policies.google.com/privacy); Google is not our processor for this. Through our database and sign-in service Supabase we receive from Google your email address, an identifier of your Google account and information from your Google profile, such as your name and, if any, the address of your Google profile picture; Supabase stores it with your sign-in account. The app itself does not read this profile information: you choose your display name yourself, and a Google profile picture is neither shown nor loaded. Sign-in with Google is optional; the email code remains available. You can remove the connection in your Google account. **[REVIEW: which Google data Supabase actually stores; legal basis and third-country transfer.]**
+
+For a new registration, we delete the provisional account record no later than 25 hours after its creation if no successful sign-in has taken place. Delivery logs, security logs and backups have the separate retention periods stated below. An existing account is not deleted merely because a sign-in code requested later is left unused.
+
+### 3.2 Occasions, wishlists and wishes
+
+The data includes titles, dates, times, time zones, locations as text, descriptions, wishes with a title, price, currency, link, note and priority (“How much do you want it?”), and creation and update times. A wish may also include a description, colour, brand, shop name, a product number (GTIN/EAN), a product photo (section 3.11) and the time you marked it as “Received”. It also includes membership, role, joining time and attendance status (RSVP).
+
+You can also create wishlists without an occasion, with a title, an optional date and a design (colour tone and icon, or a cover photo, section 3.10). New lists without an occasion start as “Only me”. If you choose “My followers”, people whose follow request you have approved can see the list (section 3.9). Occasion lists are intended for the occasion's active members. There is no public people search or public profile directory. A date you enter in a list is visible to the people who have access to that list.
+
+If you mark a wish as “Received”, people with access to the list see it in the “Received” section; new reservations are then no longer possible. You can move a wish to another list of your own; its details, photo and “Received” mark move with it. For the effect on reservations, see section 3.4.
+
+We use this information for shared occasions and lists. The legal basis is Article 6(1)(b) GDPR. Members of the same occasion see your display name, your attendance status and, if set, your profile picture and banner photo (section 3.10). An occasion's content is intended for its active members. After leaving or being removed, former members do not receive new content from that occasion. Wishes, with their details and photos, are visible to exactly the people allowed to see the list concerned.
+
+Do not create accounts or wishlists for other people. Do not enter personal information about people who are not participating themselves. For locations, use the name of a public meeting place where possible instead of another person's private address. Please do not enter health information or other particularly sensitive information about yourself or anyone else.
+
+### 3.3 Invitations
+
+We process a random invitation link, its hash, the associated occasion, the inviter, expiry, revocation, number of uses and the resulting membership. You share the link yourself outside the app; creating a link does not require you to provide the recipient's contact details.
+
+The purpose is access to the occasion. The legal basis is Article 6(1)(b) GDPR. Anyone holding a valid link can explicitly join. Opening the link alone does not create membership. Before joining, we explain that your display name, profile picture (if any) and attendance status will become visible to the members. After joining, the members can also see your banner photo, if you have set one.
+
+### 3.4 Reservations
+
+We process the associations with the wish, list, recipient and reserver, the time, status, any ending reason and a stored wish title. The purpose is secret gift-giving and avoiding duplicate gifts; the legal basis is Article 6(1)(b) GDPR.
+
+Active members of an occasion and, on “My followers” lists, approved followers can reserve. Other eligible people see “Reserved”, without the reserver's name. The reserver sees their own reservations. In the app and the automatic data download, you do not see reservations relating to your own wishes. We assess statutory access requests separately. Where information also concerns other people, we consider their rights and freedoms and restrict access only to the extent permitted by law. Your statutory data protection rights remain unaffected.
+
+On lists without an occasion, you can reserve at most five wishes of the same person at once; reservations of wishes already marked as received do not count. If your access to a list ends, for example because it is set to “Only me”, you unfollow or are removed, a block exists or the list is deleted, your reservation ends too; later access does not restore it automatically. If the person moves a wish to a list you cannot see, your reservation also ends; your reservation overview can then show the stored title and the reason “moved”. Nobody can newly reserve a wish marked as received; an existing reservation stays visible to the reserver.
+
+If a wish is deleted or moved, or a membership or access ends, the title stored when the reservation was made may remain in the personal reservation history for up to 90 days after it ends. Updated titles or information about an occasion or list that can no longer be accessed are not loaded. The records are then removed by the daily cleanup; see section 6.
+
+### 3.5 Terms, age declaration and privacy information
+
+We store the version of the accepted terms of use, the declaration “at least 18 years old”, the version of the privacy information shown, the server-recorded time and the language of the text shown. The legal texts exist in German and English; in the Russian interface the app shows the German version and stores German as the language. The purpose is evidence of the terms and the information provided. The legal basis is Article 6(1)(b) and (f) GDPR; our legitimate interest is maintaining this evidence.
+
+The privacy notice provides information; it is not consent to processing. Agreement to it is not required. Even without accepting new terms of use, downloading your data, deleting your account and exercising your data protection rights remain available.
+
+### 3.6 Reports and safety
+
+In the pilot, you can report content using “Report” to hello@bunprise.de; the app opens a prepared email in your email program for this. We process the sender, the content concerned, the reason and handling status. Hosts can remove members and renew invitation links. You can block other people (section 3.9).
+
+The purposes are protecting participants and enforcing the terms of use. The legal basis is Article 6(1)(f) GDPR; our legitimate interests are a safe service and handling abuse.
+
+### 3.7 Technical access data
+
+When you access the app or its interfaces, hosting, database and email providers may process your IP address, browser information, time and requested address. The purposes are delivery, protection against attacks and troubleshooting. The legal basis is Article 6(1)(f) GDPR; the legitimate interests are security and correct operation. We do not use this data for advertising or behavioural analytics. The providers' retention periods are listed in section 6.
+
+The functions of our server at Cloudflare (sections 3.11 and 3.12) require a valid sign-in token. The server associates caches and request limits with your user identifier and counts requests per user identifier and IP address per minute in memory. Our server code logs only the function called, the response status and the duration. The address of a place search contains the search text; the address of a shop icon request contains the shop's domain name. We have switched off Cloudflare's request log (with the method and the full address): at Cloudflare, only these log lines of our server code are stored, without addresses, search texts or IP addresses, and they are deleted after 3 days. **[REVIEW: after launch, confirm in the Cloudflare dashboard that the logs contain no addresses.]**
+
+### 3.8 Contact by email
+
+If you write to us, we process the sender and message to respond. Contractual support is based on Article 6(1)(b) GDPR; other enquiries are based on paragraph (f), with the legitimate interest of handling your request. Article 6(1)(c) GDPR applies to compliance with legal obligations that actually apply.
+
+Our contact address hello@bunprise.de is forwarded to a Gmail mailbox via Cloudflare (Email Routing); emails to this address are therefore also processed by Cloudflare and by Google. **[REVIEW: Google's role without a processing agreement (own responsibility or impermissible processing) and whether a mailbox with a contract is required; which data Cloudflare stores when forwarding and for how long.]**
+
+### 3.9 Profile, following and blocking
+
+Profile: we process your display name, the initials derived from it, the chosen banner preset or your own banner photo, a profile picture if you set one (section 3.10) and your setting “Appear in suggestions from occasions”. We do not ask for gender or date of birth.
+
+Who sees your profile: members of occasions in which you both actively take part; people who follow you or whom you follow; both sides of a follow request that has not yet expired, the requester also after a silent decline until the request expires. Signed-in people holding a valid follow link of yours see only your display name, initials and banner preset before they send a request, no photos. People between whom a block exists cannot see each other's profile. A request alone does not grant access to your lists.
+
+Suggestions: the setting “Appear in suggestions from occasions” is off at first. If you switch it on, participants of shared upcoming occasions or occasions that ended at most 30 days ago may see you in their suggestions.
+
+Following: following is only possible with the approval of the person to be followed. We store the accounts involved, the status and the times of requests and approved relationships. Declines are not disclosed to the requester as declines. After a decline or after a follower is removed, the person concerned or their requests remain hidden for 30 days so that they cannot ask again immediately. Removed followers are not notified, although they may notice the loss of access.
+
+Follow links: we process your follow links, their validity, deactivation and number of new requests; the database holds only a hash of the code. At most five links are active at once, each for at most 30 days and up to 20 new requests. A follow link allows only a request, never automatic following. You can disable links.
+
+Blocking: if you block someone, following relationships and open requests in both directions end, as do direct occasion memberships and reservations between the two of you. You may both remain members of a third person's occasion but cannot see each other there. There is no block notification, although the loss of access may be noticeable. Hidden requests remain hidden until their period ends, even if you unblock earlier. We store the accounts involved and the time of the block until it is removed or an account is deleted.
+
+The purpose is to share the content you choose with approved people and to limit unwanted contact. The proposed legal bases are Article 6(1)(b) GDPR for the features you use and Article 6(1)(f) GDPR for protection against abuse and unwanted contact. **[REVIEW: necessity, balancing of interests (particularly blocking, hiding and suggestions), information of affected third parties and the legal basis for each processing operation.]**
+
+### 3.10 Photos
+
+You can add your own photos: as a host, a cover photo for an occasion; a cover photo for a wishlist of your own; a profile picture; and a banner photo. Before a photo reaches our systems, the app resizes it on your device (at most 1600 pixels along the longest edge; the profile picture as a 512-pixel square; at most 400 KB each) and re-encodes it as WebP or JPEG. Embedded metadata such as location (GPS), capture time and camera information are not copied; information visible within the picture remains visible. We store the picture, file format, pixel dimensions and the time of the last change, for cover and product photos also the account that made the change, in the project database at Supabase in the EU (Paris).
+
+Who sees a photo: an occasion cover photo, the host and the active members; a list cover photo, everyone allowed to see the list; your profile picture and banner photo, everyone allowed to see your profile (section 3.9). Photos are not shown publicly or through a link outside the app. When a person's access ends, they can no longer retrieve the photo through the app; we cannot recall copies they have already viewed or saved. You can replace or remove your photos at any time.
+
+Only upload photos you may share. If people can be recognised, ask them first. Please do not upload photos that reveal health information or other particularly sensitive information about yourself or others. Anyone who recognises themselves in a photo and does not agree can contact hello@bunprise.de.
+
+The purpose is the design of your occasions, lists and profile. Article 6(1)(b) GDPR is provisionally proposed for you as the uploader; this does not establish a legal basis for every person depicted. **[REVIEW: legal basis for identifiable third parties, photos of children, Article 9 GDPR, reporting and removal procedure.]**
+
+### 3.11 Link previews, product photos and shop icons
+
+Link preview: when you paste a shop link into a wish, the app sends the URL to our server at Cloudflare. The server removes known tracking parameters, resolves the host name via Cloudflare's DNS service for a security check and fetches the public page using its own connection; for Amazon links it requests a shortened product address. It does not forward your sign-in data, browser cookies, browser referrer or IP address as request headers to the shop. It reads the title, price in euros, shop name, description, brand, colour, product number (GTIN/EAN) and the address of a product image as text; the shop page's HTML is not taken into the app. You can change or delete the suggestions before saving. The URL you enter may still contain personal information; please use only public product links without personal access data.
+
+Product photo: if the page names a product image, our server fetches this one image from the shop or its image server, with fixed request headers and without your data, checks file type and size and passes only the image data to the app. The app resizes it on your device as described in section 3.10; when the wish is saved, we store it in the project database. Everyone allowed to see the wish can see it. You can remove the photo before or after saving.
+
+Shop icons: so that a shop's icon can appear next to its name, the app sends only the shop's domain name to our server. The server fetches the shop's public start page and its icon files and passes only the image to the app. The shop receives only our server's connection data, not your IP address, cookies or sign-in data. The app requests icons automatically as soon as a tile with a shop name comes into view; this also applies to the comparison sites under “Find it elsewhere”.
+
+In all of these fetches, your device does not connect to the shop. Under “Find it elsewhere” the app shows search links to idealo, Google Shopping, Amazon and eBay with the wish's product number or title; the app shows no prices for them. Only when you open one of these links or “Go to shop” do you leave the app; the provider then receives the address with the search term and your connection data, and its privacy notice applies.
+
+The purpose is to create wishes faster and more clearly. Article 6(1)(b) GDPR is proposed for the preview you request. **[REVIEW: legal basis, particularly for the automatically loaded shop icons; shops and their image servers as recipients; copyright and usage rights in product photos and shop icons taken from shops.]**
+
+### 3.12 Place search and map links
+
+When you search in the place field of an occasion, our server sends the search text and language to the public Photon service (photon.komoot.io), which uses OpenStreetMap data. In the Russian interface, German is sent as the language. As the search focus we use fixed coordinates in Germany, not your location; no location permission is requested. Our server does not forward your sign-in data, cookies or IP address to Photon. Only a name, category and a text description of the place are returned to the app, no coordinates. You can also enter the place by hand. Please search for public places and do not enter other people's private addresses. Recently used places are taken from your own occasions; they are not stored separately for this.
+
+The Apple Maps and Google Maps buttons open the entered place with the respective provider; only then do you leave the app, and its privacy notice applies. The app does not embed maps.
+
+Article 6(1)(b) GDPR is proposed for the search you request. **[REVIEW: role of komoot (independent recipient without a contract), legal basis for passing on the search text, retention at Photon unknown.]**
+
+### 3.13 Ideas
+
+The app can derive categories such as books or plants on your device from the wishes you are allowed to see. “Don’t personalise” switches this derivation off for suggestions. A product request to our server contains the mode (“For someone” or “For me”), categories, budget, language and product identifiers already shown, but no names, no profile, list or occasion identifiers, no wish titles and no wish links. For access control the request is still associated with your signed-in account. Reservations do not change the content of the product request. “Still available” is a separate section for gift givers showing accessible free wishes; it is not requested in “For me” mode.
+
+The suggestions come from a selection of real products from online shops that we put together. Our server picks them from its own list using only the categories and the budget it receives; it does not pass any data to shops or other third parties. The categories are neither stored nor logged; our server's log contains only the function, status and duration of the request. Prices are approximate, with the date of our last check. We receive no payment from the shops and use no affiliate links. Only when you open “Zum Shop” do you leave the app; the shop then receives your connection data, and its privacy policy applies. The derived categories are not saved as a lasting interest profile. The app stores your setting and ideas you explicitly save on your device (section 7). The feature does not decide on contracts, entitlements or access to services.
+
+**[REVIEW: legal basis for analysing other people's wishes, classification as profiling under Article 4(4) GDPR, information and objection, and § 25 TDDDG for each device storage operation. No blanket promise of “no profiling”.]**
+
+### 3.14 Use in Telegram
+
+You can also open Bunprise inside the Telegram app as a “Mini App” via our Telegram bot. It is the same web app: account, data and rules are the same as in the browser. In Telegram you sign in only with the code from the email; sign-in with Google is not available there. Bunprise never asks for your Telegram password or a Telegram code. Bunprise is not a Telegram service.
+
+What Telegram processes: under its own rules, Telegram processes that and when you open the bot and the Mini App. External links from the Mini App, such as “Go to shop” or map links, are opened by your Telegram app. If you share a link to Bunprise in a Telegram chat, it is transmitted like any other Telegram message. Telegram's privacy policy applies to this. The provider is Telegram Messenger Inc., Commerce House, Wickhams Cay 1, PO Box 3140, Road Town, Tortola, VG1110, British Virgin Islands; its representative in the EU under Art. 27 GDPR is the European Data Protection Office (EDPO), Avenue Huart Hamoir 71, 1030 Brussels, Belgium ([Telegram Privacy Policy](https://telegram.org/privacy)). According to Telegram's terms for Mini Apps, Telegram has no access to the data you exchange with Bunprise in the Mini App; your IP address is received directly by the server delivering the app. **[REVIEW: whether Telegram fetches shared links on its servers for previews (no official information found); allocation of roles; transfer to a provider in a third country without an adequacy decision, which you initiate yourself by using Telegram.]**
+
+What the app receives from Telegram: at launch, Telegram passes start data to the app on your device in the part of the address after the “#” sign, which the browser does not send to servers: your Telegram user ID, first name and, if any, last name and username, language setting, premium status, if any the address of your profile photo, information about the type of chat you start from, time and signature, and the version, platform and colour scheme of your Telegram app. We do not use this start data: the app removes it from the address bar and history right at launch, does not send it to our server, does not store it and does not link it to your Bunprise account. It only remembers that it is running in Telegram, with the platform and version of the Telegram app (section 7).
+
+What our server sees: as with any browser, the servers delivering the app (Cloudflare) receive your IP address and your browser's identifier (user agent). On Android, Telegram adds the app version, device model and a performance class to this identifier.
+
+Telegram in the browser (web.telegram.org): there Bunprise runs in an embedded frame. Your browser stores sign-in and settings for it separately from a normal Bunprise tab; you sign in there separately.
+
+Article 6(1)(b) GDPR is proposed for the use via Telegram that you start. **[REVIEW: legal basis; § 25 TDDDG for the device entry.]**
+
+## 4. Recipients and processors
+
+Active members of an occasion, approved followers and other eligible people receive only the content described in section 3 that is shared with them. The following service providers are also involved:
+
+- Supabase Pte. Ltd., Singapore: database, including photos, and sign-in. The project database is operated in the EU (Paris). The EU location does not exclude processing outside the EEA, particularly for support and operations. The contracting party is Supabase Pte. Ltd., 65 Chulia Street #38-02/03, OCBC Centre, Singapore 049513. The Supabase Data Processing Addendum (version 1 of 1 August 2026) applies; it forms part of the Supabase terms of service, and Supabase acts as a processor under it. Supabase undertakes to store the data in the selected region and to process it primarily there. Transfers are covered by the EU Standard Contractual Clauses (Module 2). Supabase uses sub-processors, mostly based in the USA, including Supabase, Inc. for support and Amazon Web Services for hosting: [Supabase sub-processors](https://supabase.com/legal/customer-resources/subprocessor-list). Information and a copy of the relevant clauses: hello@bunprise.de. [Supabase DPA](https://supabase.com/legal/dpa).
+- Cloudflare: delivery of the app, hosting/CDN and DNS, forwarding of emails to our contact address, and our server for link previews, product photos, shop icons, place search and idea requests, including DNS resolution for these fetches and the cache for shop icons. The contracting party is Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, USA. The Cloudflare Data Processing Addendum (version 6.4) applies; it forms part of the Self-Serve Subscription Agreement, and Cloudflare acts as a processor for logs of requests and for content transmitted over its network. Cloudflare, Inc. is certified under the EU-US Data Privacy Framework; in addition, the contract provides for the EU Standard Contractual Clauses (Module 2). Cloudflare uses affiliates worldwide and further sub-processors: [Cloudflare sub-processors](https://www.cloudflare.com/gdpr/subprocessors/cloudflare-services/). The network is global; an EU database location does not limit this processing.
+- Brevo: sending sign-in codes by email. The contracting party is Brevo SAS, 9-17 rue Salneuve, 75017 Paris, France, and for customers in Germany, under Brevo's terms, Brevo GmbH, Köpenicker Str. 126, 10179 Berlin. The data processing agreement is Appendix 3 of the Brevo terms of service. Brevo hosts the data with OVH in France and with Google Cloud in Belgium; individual sub-processors, such as Cloudflare, may also process data in the USA (EU-US Data Privacy Framework or Standard Contractual Clauses). For each email sent, Brevo keeps a delivery log with the recipient address, subject, time, delivery and, where applicable, open events and IP addresses. We limit the retention of these logs to one month and do not let Brevo store a preview of the email content (and thus of the sign-in codes). **[REVIEW: Brevo contracting entity for a private person; retention “1 month” and “no preview” set in Brevo; open-tracking pixel in the code emails; Brevo's clause on use exclusively for professional purposes.]**
+- Contact mailbox: Gmail (Google), see section 3.8. The provider is Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland. Google does not offer a data processing agreement for a free Gmail account; Google processes the emails under its terms of service and the [Google Privacy Policy](https://policies.google.com/privacy). Google also processes data outside the EEA, in particular at Google LLC in the USA, which is certified under the EU-US Data Privacy Framework; otherwise, according to Google, it uses Standard Contractual Clauses.
+
+Other recipients that do not act on our behalf:
+
+- Google, for sign-in with Google (section 3.1).
+- Photon (photon.komoot.io), for place suggestions (section 3.12). The operator is komoot GmbH, Kienberger Allee 4, 12529 Schönefeld, Germany. We have no contract with komoot; komoot provides the public service without any availability commitment and only for moderate use. komoot does not publish a separate privacy notice for Photon; the [komoot privacy policy](https://www.komoot.com/privacy) covers komoot.com and the komoot apps. Photon receives the search text, the language and our server's connection data from our server, not your IP address.
+- Shops and their image servers: they receive the requested address or domain name from our server, not your IP address (section 3.11).
+- Telegram, if you use the Mini App (section 3.14).
+
+Links in wishes, the search links under “Find it elsewhere” and the map links lead to third-party providers. You leave the app only when you open them, and their privacy notices apply there. Your device does not load content from shops, external fonts or embedded maps.
+
+## 5. Transfers outside the EEA
+
+Paris identifies the project database location, rather than the location of all processing. Support, operations and subprocessors may be outside the EEA. Supabase: the contracting party is Supabase Pte. Ltd. in Singapore; there is no adequacy decision of the EU Commission for Singapore. The basis is the EU Standard Contractual Clauses (Module 2) in the Supabase Data Processing Addendum; Supabase's sub-processors are mostly based in the USA. Cloudflare: Cloudflare, Inc. (USA) is certified under the EU-US Data Privacy Framework; in addition, the Data Processing Addendum provides for Standard Contractual Clauses. Brevo: hosting in France and Belgium; individual sub-processors in the USA on the basis of the EU-US Data Privacy Framework or Standard Contractual Clauses. Google (sign-in and contact mailbox): Google Ireland Limited; Google transfers data under its own responsibility, in particular to Google LLC in the USA, which is certified under the EU-US Data Privacy Framework, and otherwise uses Standard Contractual Clauses. Photon: the operator is komoot GmbH in Germany; komoot does not state where the servers are located. Telegram: Telegram Messenger Inc. is based in the British Virgin Islands, for which there is no adequacy decision; according to Telegram, it stores data of users from the EEA in data centres in the Netherlands and bases intra-group transfers on Standard Contractual Clauses. You can obtain a copy of the Standard Contractual Clauses at hello@bunprise.de. **[REVIEW: additional measures (transfer impact assessment) for Singapore and the USA; current status of Cloudflare and Google under the EU-US Data Privacy Framework.]**
+
+## 6. Retention and deletion
+
+- Account, your own occasions, lists and wishes including their details: until the respective item or the account is deleted from the active application database. Memberships and invitations remain until the occasion or account is deleted; expiry of a link alone does not delete its stored record.
+- New provisional account records without a successful sign-in: no later than 25 hours after creation, through hourly cleanup.
+- Sign-in codes: 10 minutes; session information until sign-out, expiry or revocation.
+- Invitation links: valid until revocation or expiry, normally for at least 14 days and until seven days after the occasion starts. Renewing a link revokes the previous active invitation.
+- Open follow requests: at most 30 days; then removed by the daily cleanup. Approved following: until it is ended, the follower is removed, a block is set or either account is deleted.
+- Follow links: valid for at most 30 days; expired and disabled links are removed by the daily cleanup.
+- Hidden requests and people: 30 days, then removed by the daily cleanup.
+- Blocks: until they are removed or the account is deleted.
+- Photos: until you remove or replace them (the previous photo is overwritten) or the related occasion, list, wish or your account is deleted, in each case in the active application database.
+- “Received” mark: until you undo it or the wish is deleted.
+- Active reservations: until they end or the account is deleted. Ended reservations, including the stored title, are removed by daily cleanup after 90 days, at the next daily run. When an associated account is deleted, its reservations are removed.
+- Records of terms, age and privacy information: until account deletion.
+- Handled reports stored in the application: removed by daily cleanup after 90 days, at the next daily run; your own reports are deleted with your account.
+- Caches of our server: link previews for up to 10 minutes and place suggestions for up to 24 hours in memory, separated by user identifier (at most 200 and 500 entries in total per server instance); expired entries are no longer used and are removed on later access or when the server instance ends. Product images are not cached on our server.
+- Shop icons: on our server per shop and shared by all users for up to 14 days, the information “no icon” for up to 12 hours, in memory and in Cloudflare's cache.
+- Counters for request limits: in our server's memory for the current minute.
+- Backups: the free Supabase plan does not include automatic backups that we can access; we do not currently create our own backup copies. According to Supabase, its internal backups are encrypted (AES-256). If the project is paused because of low use, Supabase keeps the database for up to one year so that it can be resumed. Deleted data, including photos, may still be contained in such backups; deletions must be reapplied following restoration. **[REVIEW: whether Supabase keeps internal backups of free projects and for how long (the pricing page and the Data Processing Addendum contradict each other).]**
+- Technical authentication, API, hosting and delivery logs: at Supabase, logs of the interfaces and the database, including IP address, requested address and browser identifier, 1 day; at Cloudflare, logs of our server for at most 3 days (section 3.7); at Brevo, delivery logs for one month, without stored email content. The entries are deleted automatically by the respective provider when these periods expire. Account deletion does not automatically delete these.
+- Contact emails: we delete emails sent to our contact address no later than 12 months after the matter has been dealt with, unless we need them longer to establish or defend legal claims or because of legal obligations. Gmail permanently removes deleted messages from the trash after 30 days; according to Google, complete removal from active systems generally takes about two months and from backup systems up to six months.
+- Google, Photon and Telegram apply their own periods: Google keeps data in your Google Account until you delete it; according to Google, complete removal generally takes about two months, and up to six months in backup systems. According to Telegram, it stores metadata such as IP addresses for at most 12 months. komoot does not publish retention periods for Photon.
+
+If our database is temporarily paused because of low use, no clean-up runs take place during that time; deletions that have become due are carried out in the first run after it resumes. **[REVIEW: that the hourly and daily cleanups actually run in the production database; validity of sign-in codes (10 minutes) and the sign-in log in the database in the Supabase settings.]**
+
+## 7. Local storage
+
+We store session information in your browser for sign-in. We also use session storage for ongoing invitation, follow and sign-in flows. The app removes an invitation or follow code from the address bar and keeps it in the tab's session storage until you join or send the request, choose “Not now”, sign out or close the tab; the server checks whether the code is valid. Browsers can restore closed tabs.
+
+Settings you choose, such as language (German, English or Russian) and animations, remain stored locally, also after sign-out. The app also stores locally the vibration and sound switches, which hints you have already seen and the date of mascot moments already shown; these entries contain no content of your occasions or lists and are removed on sign-out. On sign-out, we remove sign-in data and personal caches; language and motion settings remain.
+
+Ideas: the app stores on this device your “Don’t personalise” setting and ideas you explicitly save, with the recipient's identifier and short name (at most 20 recipients with 30 ideas each), bound to your account. These saved ideas are not sent to a server or to the recipient. You can remove ideas; signing out or switching accounts deletes these entries. Closing the app alone does not delete them. Without working browser storage they exist only in the memory of this session. The app also stores the interests you tapped yourself in Pompon’s wish box during the welcome (at most 8 categories from a fixed list), likewise bound to your account. “Ideas” starts with them; as with the derived interests, only the category identifiers of an ideas request reach our server. You can remove them in “Ideas”; signing out deletes them.
+
+Telegram: in the Mini App, the app keeps in session storage only a note that it runs in Telegram, with the platform and version of the Telegram app, without Telegram user data. The entry also remains after sign-out until the session ends.
+
+The app keeps photos (yours and other people's) only in memory; they are not stored in browser storage or for offline use. A selected photo that has not yet been uploaded is lost when the app is closed. Your browser may keep shop icons in its cache for up to 7 days.
+
+The personal offline list is off by default. Only if you enable “Quick start: save my list offline” in settings is your occasion list stored in the browser for up to 24 hours. Reservation status and your profile are not persistently stored as part of this feature. Lists, other people's profiles, reservations and photos are not stored for offline use. Disabling it or signing out removes the saved list snapshot. Public application code may remain cached for offline startup. A downloaded export file is then managed by your browser or by you; signing out does not delete it.
+
+**[REVIEW: § 25 TDDDG for each storage operation on the device, particularly saved ideas, the interests from the wish box, hints, mascot moments, the Telegram entry and the browser cache of shop icons.]**
+
+## 8. Your rights
+
+Subject to the applicable legal conditions, you have rights of access (Article 15 GDPR), rectification (Article 16), erasure (Article 17), restriction (Article 18), portability (Article 20) and objection to processing based on Article 6(1)(f) (Article 21).
+
+Settings provide [Download my data](/settings/export) and [Delete account](/settings/delete). The download contains your main application data, including your lists, your photos (occasion and list cover photos, product photos of your wishes, profile picture and banner photo), your following relationships and requests, requests and people you have hidden, and information about your follow links without the secret code. It does not show you other people's reservations on your wishes or silent declines of your requests. Ideas saved on your device are not part of this download. You can also request full access under Article 15 GDPR at hello@bunprise.de. We normally respond within one month. If an extension is necessary, we notify you within that month and explain why. The first copy is generally free. Other people's rights are considered separately. **[REVIEW: access procedure, including Article 15(4) GDPR and data stored only on the device.]**
+
+Under Article 77 GDPR you can complain to a data protection supervisory authority, particularly in the Member State where you usually live, work or believe an infringement occurred.
+
+## 9. Must you provide data?
+
+There is no legal obligation to create a Bunprise account. To use the service, we need a reachable email address, a display name and confirmation that you are at least 18 years old. Without this information, we cannot enable participation. Your legal name is not required. You provide other content voluntarily, such as photos, wish details or following relationships; required fields are marked in the app.
+
+## 10. Security
+
+The service uses encrypted connections and access rules in the database. Photos can only be retrieved through database functions that check access, and the functions of our server require sign-in. We protect access to the administrator accounts at our service providers with two-factor authentication where the provider offers it. We do not currently create our own backup copies (section 6). **[REVIEW: two-factor protection actually enabled; restoration without our own backup copies.]**
+
+## 11. Minors
+
+Bunprise is intended exclusively for people aged 18 or over. We do not collect a date of birth. If there are specific indications that a minor is using the service, we investigate and may temporarily restrict access. If underage use is confirmed, we end participation and delete the data under our deletion procedure.
+
+## 12. Changes
+
+If we update our privacy information, we inform you about the changes. Agreement to the privacy notice is not required. The version and language shown are recorded. The current version and the archived version requested here are available through this page.
+
+Changes: privacy-2026-10-pilot-2 (24 October 2026) — controller entered; newly described: wishlists without an occasion, wish details, “Received” and moving wishes, profile, following and blocking, photos, link previews with product photos, shop icons, place search, Ideas, sign-in with Google, use in Telegram and the Russian interface; recipients with contracting parties, transfers, retention, local storage (including the interests from the welcome) and download extended; “Ideas” shows real products from a catalogue we checked instead of demo products. privacy-2026-10-pilot-1 — first pilot version.

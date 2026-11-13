@@ -1,0 +1,48 @@
+{
+  "common": {
+    "app_name": "{{app}}",
+    "wip": "In Arbeit – dieser Bildschirm kommt bald.",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "back": "Zurück",
+    "retry": "Nochmal versuchen",
+    "ok": "Verstanden",
+    "close": "Schließen",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "share": "Teilen",
+    "loading": "Lädt …",
+    "time_span": "{{start}}–{{end}}",
+    "time_span_next_day": "{{start}} bis {{end}} (nächster Tag)",
+    "offline_banner": "Kein Netz – du siehst den letzten Stand",
+    "offline_short": "Kein Netz",
+    "update_available": "Neue Version da",
+    "update_now": "Aktualisieren",
+    "not_found_title": "Diese Seite gibt es nicht",
+    "not_found_body": "Vielleicht ist der Link unvollständig, oder die Seite wurde entfernt.",
+    "error_title": "Da ist etwas schiefgelaufen",
+    "to_feed": "Zur Übersicht",
+    "to_start": "Zum Start",
+    "language": "Sprache",
+    "today": "Heute",
+    "tomorrow": "Morgen"
+  },
+  "start": {
+    "title": "Pläne und Wünsche\u00a0– gemeinsam im Freundeskreis",
+    "subtitle": "Ein Anlass, eine Wunschliste, heimlich reservierte Geschenke.",
+    "login": "Anmelden"
+  },
+  "footer": {
+    "title": "Rechtliches",
+    "impressum": "Impressum",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "pilot_badge": "Private Testversion · nur für Erwachsene (18+)"
+  },
+  "mascot": {
+    "bunny_tap": "*wackelt mit den Ohren*",
+    "bunny_label": "Hase",
+    "hamster_label": "Hamster – füttern"
+  }
+}

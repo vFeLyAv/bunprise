@@ -1,0 +1,78 @@
+{
+  "invitations": {
+    "name_fallback": "Someone",
+    "card": {
+      "section_label_one": "{{count}} invitation",
+      "section_label_other": "{{count}} invitations",
+      "title": "{{name}} invites you",
+      "when": "“{{title}}” · {{date}}",
+      "valid_until": "valid until {{date}}",
+      "more_one": "{{count}} more invitation",
+      "more_other": "{{count}} more invitations"
+    },
+    "sheet": {
+      "title": "{{name}} invites you",
+      "host": "Host: {{name}}",
+      "privacy": "When you join, {{host}} and the guests see your name “{{me}}”, your profile photo and whether you're coming.",
+      "your_name": "your name",
+      "privacy_inviter": "{{host}} sees that {{inviter}} invited you.",
+      "after": "Then you'll see the place, the guests and the wish list.",
+      "join": "Join",
+      "joining": "Joining …",
+      "decline": "Decline",
+      "decline_block": "Decline and block",
+      "report": "Report",
+      "silent": "{{name}} won't find out if you decline.",
+      "gone": "This invitation is no longer valid.",
+      "declined": "Declined",
+      "declined_blocked": "Declined – {{name}} is blocked",
+      "report_mail_subject": "Report about an invitation ({{id}})",
+      "report_mail_body": "Hi, I'd like to report this invitation in Bunprise. What happened?",
+      "block_title": "Block {{name}}?",
+      "block_message": "The invitation is declined. Afterwards you won't see each other – neither as friends nor in guest lists – and {{name}} can't invite you any more. {{name}} won't get a message."
+    },
+    "picker": {
+      "title": "Invite friends",
+      "lead": "These are people you follow who follow you back.",
+      "guest_note": "{{host}} lets guests invite friends. {{host}} sees whom you invited once they join.",
+      "invite": "Invite",
+      "invite_label": "Invite {{name}}",
+      "invited_until": "Invited · until {{date}}",
+      "invited": "Invited",
+      "withdraw": "Withdraw",
+      "withdraw_label": "Withdraw the invitation to {{name}}",
+      "withdrawn": "Withdrawn",
+      "footer": "Once they join, they see the date, place, guests and the wish list. You won't find out if someone declines.",
+      "empty_title": "No friends here yet",
+      "empty_text": "Friends are people you follow who follow you back.",
+      "empty_link": "My follow link",
+      "limit": "That's enough invitations for today. More tomorrow.",
+      "unavailable": "Inviting isn't possible here right now.",
+      "load_failed": "Your friends couldn't be loaded. Please try again in a moment.",
+      "done": "Done",
+      "guests_switch": "Guests may invite friends",
+      "guests_hint": "Once they join, they see the place, the guests and your wish list.",
+      "guests_failed": "The setting wasn't saved."
+    },
+    "entry": {
+      "host_button": "Invite friends",
+      "guest_row": "Invite friends",
+      "guest_row_hint": "{{host}} allows guests to",
+      "invited_by": "invited by {{name}}"
+    },
+    "privacy": {
+      "label": "Invitations to occasions",
+      "friends": "From friends",
+      "nobody": "Nobody",
+      "hint_friends": "Friends can invite you straight into their occasions.",
+      "hint_nobody": "Nobody invites you directly – you join by link only.",
+      "failed": "The setting wasn't saved."
+    },
+    "email": {
+      "label": "Send me an email about new invitations",
+      "hint": "Just “Someone invited you” – no names, no occasion, to your sign-in address. Every email has an unsubscribe link.",
+      "no_address": "Your account has no confirmed email address.",
+      "failed": "The setting wasn't saved."
+    }
+  }
+}

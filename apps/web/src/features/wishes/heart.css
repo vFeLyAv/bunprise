@@ -1,0 +1,27 @@
+/*
+ * heart.css — "how much" as the wish-o-meter's heart on a wish tile (HeartGlyph.tsx PriorityHeart; Felix 23.10).
+ * The heart's colour per level is the meter's (--wish-heart-1/2/3 in wishes.css); the disc is a light glass that
+ * reads on any product photo and on the tinted no-photo tile.
+ */
+.wish-prio-heart {
+  --wish-meter-color: var(--wish-heart-2);
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: var(--r-full);
+  background-color: color-mix(in oklab, var(--surface) 90%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 70%, transparent), 0 2px 8px -3px color-mix(in srgb, var(--shade) 38%, transparent);
+}
+.wish-prio-heart[data-level="1"] { --wish-meter-color: var(--wish-heart-1); }
+.wish-prio-heart[data-level="3"] { --wish-meter-color: var(--wish-heart-3); }
+/* on the tile: the picture's bottom right corner (top left = "Erhalten", top right = ⋯, bottom left = the shop) */
+.wt-heart {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+}
+@media (max-width: 359px) {
+  .wish-prio-heart { width: 32px; height: 32px; }
+  .wt-heart { right: 6px; bottom: 6px; }
+}

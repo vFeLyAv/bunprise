@@ -1,0 +1,89 @@
+/* Selection mode's bars (SelectionChrome.tsx — a lazy chunk). Glass only on these floating bars, never under the
+   grid; solid under reduced transparency (glass.css reads --solid / --solid-off). */
+:root { --ws-bar-h: 64px; }
+
+/* the top bar lies over the screen's own top bar (same height), above it */
+.ws-top {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-fab);
+}
+/* …and the screen's own bar ("Zurück", ⋯) fades out under it, so its capsules never show through the glass */
+header.glass-bar:not(.ws-top) { transition: opacity var(--dur-s) var(--ease-out); }
+:root[data-wish-selecting] header.glass-bar:not(.ws-top) { opacity: 0; pointer-events: none; }
+.ws-top-row {
+  display: grid;
+  height: var(--topbar-h);
+  max-width: var(--page-w);
+  margin: 0 auto;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 var(--sp-3);
+}
+.ws-count {
+  min-width: 0;
+  margin: 0;
+  padding: 0 var(--sp-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--text);
+}
+
+/* the action bar: one glass capsule at the bottom, like the tab bar */
+.ws-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--sa-bottom) + var(--sp-3));
+  z-index: var(--z-fab);
+  display: flex;
+  justify-content: center;
+  padding-left: max(var(--sp-4), var(--sa-left));
+  padding-right: max(var(--sp-4), var(--sa-right));
+  pointer-events: none;
+}
+.ws-bar-inner {
+  display: flex;
+  width: 100%;
+  max-width: 420px;
+  min-height: var(--ws-bar-h);
+  align-items: stretch;
+  justify-content: space-around;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 999px;
+  pointer-events: auto;
+}
+.ws-act {
+  display: flex;
+  min-width: 44px;
+  min-height: 44px;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px 2px;
+  border-radius: 999px;
+  color: var(--accent-text);
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--dur-xs) var(--ease-out), opacity var(--dur-xs) var(--ease-out);
+}
+.ws-act[data-danger] { color: var(--danger-text); }
+.ws-act:disabled { opacity: 0.4; }
+.ws-act:focus-visible { outline: none; box-shadow: var(--ring); }
+.ws-act-icon { display: grid; place-items: center; }
+.ws-act-label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-caption-2);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+/* room under the grid for the bar */
+.ws-spacer { height: calc(var(--ws-bar-h) + var(--sp-6)); }

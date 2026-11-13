@@ -1,0 +1,35 @@
+/*
+ * features/potluck/potluck.css — the rows of "Mitbringen" (Felix 27.10: entry, who brings it and the action clearly
+ * apart). Ships with the lazy PotluckSection chunk. Tokens only; contrast of accent-text on accent-100 (the "Du" chip)
+ * ≥ 5:1 in every theme (light 5.2, dark 6.5, Navy 6.3, Ozean 6.3); on the card itself it is the app's link colour.
+ */
+
+/* who brings it: a small pill with the person's avatar and first name (mine: "✓ Du" in the accent tint) */
+.potluck-chip {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  max-width: 9.5rem;
+  height: 32px;
+  padding: 0 12px 0 4px;
+  border-radius: 999px;
+  background-color: var(--fill);
+  color: var(--text);
+}
+.potluck-chip-me {
+  padding-left: 10px;
+  background-color: var(--accent-100);
+  color: var(--accent-text);
+}
+
+/* "Ich bring's mit": the way to take a free entry — an outlined accent pill, so the action never looks like the
+   filled "✓ Du" chip it turns into */
+.potluck-bring {
+  background-color: transparent;
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 1.5px var(--accent-text);
+}
+.potluck-bring:active {
+  background-color: var(--accent-100);
+}

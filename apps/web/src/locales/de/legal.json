@@ -1,0 +1,21 @@
+{
+  "legal": {
+    "impressum_title": "Impressum",
+    "privacy_title": "Datenschutzerklärung",
+    "terms_title": "Nutzungsbedingungen",
+    "age_title": "Altersbestätigung",
+    "de_binding": "Rechtlich verbindlich ist die deutsche Fassung",
+    "draft_notice": "ENTWURF – vor Veröffentlichung prüfen",
+    "version_line": "Version {{version}} · Stand {{date}}",
+    "contact": "Kontakt",
+    "archive_version": "Archivierte Fassung: {{version}} · {{language}}",
+    "version_unavailable": "Die angeforderte Fassung {{version}} ist in dieser Sprache nicht verfügbar. Es wird keine andere Fassung angezeigt. Bitte öffne die aktuelle Fassung erneut oder kontaktiere den Anbieter.",
+    "load_failed": "Der Rechtstext konnte nicht geladen werden. Bitte versuche es erneut.",
+    "only_de_en": "Rechtstexte gibt es nur auf Deutsch und Englisch. Unten steht die deutsche Fassung."
+  },
+  "report": {
+    "action": "Melden",
+    "mail_subject": "[{{app}}] Meldung: {{kind}} {{id}}",
+    "mail_body": "Was ist das Problem? (bitte keine Daten anderer Personen über das Nötige hinaus)"
+  }
+}

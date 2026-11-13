@@ -1,0 +1,44 @@
+# dependencies
+node_modules/
+.npm/
+
+# build output
+dist/
+build/
+.vite/
+.wrangler/
+.tanstack/
+*.tsbuildinfo
+
+# environment — never commit secrets (document them in .env.example)
+.env
+.env.*
+# wrangler dev reads local Worker secrets from here (research 2026-10-25-real-gift-ideas.md)
+.dev.vars
+.dev.vars.*
+!.env.example
+!.env.demo
+
+# vite-plugin-pwa dev output
+dev-dist/
+
+# supabase local state
+supabase/.branches/
+supabase/.temp/
+
+# tests and tools
+coverage/
+playwright-report/
+test-results/
+.lighthouseci/
+
+# editors and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# promo videos, GIFs and other big rendered media (packages/mascot/scripts/render-promo.mjs)
+media/

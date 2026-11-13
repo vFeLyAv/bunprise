@@ -1,0 +1,21 @@
+{
+  "legal": {
+    "impressum_title": "Legal notice",
+    "privacy_title": "Privacy notice",
+    "terms_title": "Terms of use",
+    "age_title": "Age declaration",
+    "de_binding": "The German version is legally binding",
+    "draft_notice": "DRAFT – review before publishing",
+    "version_line": "Version {{version}} · as of {{date}}",
+    "contact": "Contact",
+    "archive_version": "Archived version: {{version}} · {{language}}",
+    "version_unavailable": "The requested version {{version}} is not available in this language. No other version is shown. Please reopen the current version or contact the provider.",
+    "load_failed": "The legal text could not be loaded. Please try again.",
+    "only_de_en": "Legal texts are only available in German and English. Below is the German version."
+  },
+  "report": {
+    "action": "Report",
+    "mail_subject": "[{{app}}] Report: {{kind}} {{id}}",
+    "mail_body": "What's the problem? (please no more personal data about others than necessary)"
+  }
+}

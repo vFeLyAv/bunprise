@@ -1,0 +1,83 @@
+/*
+ * covers.css — the cover motifs (features/occasions/covers): their palette and their boxes. A satellite stylesheet of
+ * the lazy CoverArt chunk: it ships only where a motif shows (a Start card, the occasion's hero, the form's picker).
+ *
+ * The palette: every colour a picture uses is a --cv-<key> variable (art/kit.ts C), here as light-dark() pairs —
+ * the dark values also serve "Blau" and "Ozean" (both set color-scheme: dark, styles/tokens.css). Values are the
+ * app's own tokens (the comment names the source; a few are derived for the night). art.test.ts proves that every
+ * colour of every picture is one of these and that each one is defined here.
+ * The boxes: the picture fills its box like a cover photo (preserveAspectRatio slice) and fades in once drawn
+ * (opacity only; reduced motion: at once).
+ */
+.cv-art {
+  --cv-bg1: light-dark(#FCE5C9, #3A2A1C); /* --tile-1 */
+  --cv-bg2: light-dark(#F8E0D8, #3A2424); /* --tile-2 */
+  --cv-bg3: light-dark(#E3E6F1, #23283A); /* --tile-3 */
+  --cv-bg4: light-dark(#F7EDC9, #353016); /* --tile-4 */
+  --cv-bg5: light-dark(#DFEAB6, #333912); /* --person-7 */
+  --cv-bg6: light-dark(#243049, #161D2E); /* navy theme --surface-2 / --text-inverse (the evening sky) */
+  --cv-bg7: light-dark(#E5DCFB, #3A2D52); /* --person-4 */
+  --cv-glow: light-dark(rgba(255,255,255,.55), rgba(255,236,214,.07)); /* --hl */
+  --cv-table: light-dark(rgba(80,50,22,.08), rgba(0,0,0,.22)); /* --shade, derived alpha */
+  --cv-shade: light-dark(rgba(80,50,22,.16), rgba(0,0,0,.34)); /* --shade / --gift-shadow, derived alpha */
+  --cv-cream: light-dark(#FFFDF8, #E8DED1); /* --surface; night: derived (no glaring white on dark paper) */
+  --cv-paper: light-dark(#F2EBDD, #C9BBAB); /* --bg; night: derived */
+  --cv-apricot: light-dark(#F9A86C, #D88D58); /* --tint-1-solid */
+  --cv-orange: light-dark(#EE9443, #D07F34); /* --accent-400 */
+  --cv-deep: light-dark(#DC7B2C, #B9661F); /* --accent-500 */
+  --cv-rose: light-dark(#EE9AA8, #C9808D); /* --tint-2-solid */
+  --cv-berry: light-dark(#ED737B, #B46669); /* --person-2-dot */
+  --cv-blue: light-dark(#9AACE6, #7C8FCB); /* --tint-3-solid */
+  --cv-butter: light-dark(#F3C55E, #D7AA45); /* --tint-4-solid */
+  --cv-green: light-dark(#60B46F, #54915D); /* --person-3-dot */
+  --cv-leaf: light-dark(#3B985E, #2F7A4B); /* --ok-fill */
+  --cv-lilac: light-dark(#9C7FD7, #8873B4); /* --person-4-dot */
+  --cv-teal: light-dark(#40B1B7, #0D9298); /* --person-5-dot */
+  --cv-wood: light-dark(#B98A5A, #8E6A45); /* --gift-wood (oklch .63 .085 60) */
+  --cv-charcoal: light-dark(#4A4038, #5E5248); /* --gift-charcoal; night: lighter, so it still shows on dark paper */
+  --cv-ink: light-dark(#62554A, #B5A696); /* --text-2 (strings, ropes) */
+  --cv-flame: light-dark(#FFC58A, #FFC58A); /* --accent-text-strong (night) */
+  --cv-white: light-dark(#FFFFFF, #F5EDE3); /* highlights; night: --text */
+  --cv-fur: light-dark(#FBE3C4, #F1D5B2); /* the fawn bunny (packages/mascot bunny.ts), flat */
+  --cv-ear: light-dark(#DFA872, #CF9862);
+  --cv-earIn: light-dark(#F4B2A0, #E3A08F);
+  --cv-eye: light-dark(#3A2622, #2A1A16);
+  --cv-nose: light-dark(#F2899A, #E07B8C);
+  --cv-mouth: light-dark(#6B4A42, #5A3D36);
+  --cv-paw: light-dark(#F5D6B0, #E8C7A0);
+  --cv-pawLine: light-dark(rgba(150,90,40,.38), rgba(110,64,28,.45));
+  --cv-cheek: light-dark(rgba(255,158,158,.38), rgba(255,158,158,.3));
+  --cv-ham: light-dark(#F8C68A, #E9B477); /* the golden hamster (hamster.ts HAMSTER_COATS golden) */
+  --cv-hamLight: light-dark(#FFF9F0, #EFE4D6);
+  --cv-hamIn: light-dark(#F4A487, #E3937A);
+  display: block;
+  opacity: 0;
+  transition: opacity var(--dur-m) var(--ease-out);
+}
+.cv-art[data-state="ready"] {
+  opacity: 1;
+}
+:root[data-motion="reduce"] .cv-art,
+:root[data-motion="off"] .cv-art {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .cv-art { transition: none; }
+}
+/* the picture over a whole box (the Start card's cover, the hero, the form's preview) */
+.cv-fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* the Start card (feed/FeedCard.tsx): the box itself is .feed-cover in styles/feed.css (laid out from the first
+   frame); a past occasion's motif is quieter, like its photo */
+.feed-motif {
+  position: relative;
+  overflow: hidden;
+}
+.feed-card[data-past] .feed-motif .cv-art[data-state="ready"] {
+  opacity: 0.8;
+}

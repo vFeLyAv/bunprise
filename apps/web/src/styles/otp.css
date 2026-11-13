@@ -1,0 +1,7 @@
+/* src/styles/otp.css — the caret of the one-time-code slots (ui/OtpField), shipped with that component. */
+.otp-caret { animation: bp-caret 1.05s steps(1, end) infinite; }
+@keyframes bp-caret { 50% { opacity: 0; } }
+:root[data-motion="reduce"] .otp-caret, :root[data-motion="off"] .otp-caret { animation: none; }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion="full"]) .otp-caret { animation: none; } }
+/* the slot that takes the next digit: the accent rim (like a focused field) */
+.otp-slot[data-active] { box-shadow: inset 0 0 0 1.5px var(--accent-text), var(--field-edge); }

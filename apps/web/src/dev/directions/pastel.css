@@ -1,0 +1,87 @@
+/*
+ * DEV ONLY — direction C "Pastell & Verspielt" (pastel) as an OVERRIDE of the default look.
+ *
+ * Felix (2026-10-20): Pastel comes LATER as an optional theme in the settings. This file is the shape
+ * such a theme takes — one file of token overrides on top of src/styles/tokens.css — and shows C as it
+ * was in the comparison: a cool, quiet lilac interface with white cards; the warm colours come from the
+ * mascots (their coats tint the gift tiles and the avatars); one berry accent for actions; round shapes,
+ * soft lilac shadows; a solid sheet edge to edge, a lilac frosted bar (scroll edge), a solid toast.
+ *
+ * Token overrides only; light theme. Contrast: node docs/design/contrast-check.mjs
+ */
+html[data-direction="pastel"] {
+  /* accent: berry, HSL 331° (OKLCH 354°), deep enough for a WHITE label (5.18:1 on 400) */
+  --accent-50: #FFF6F9; --accent-100: #FBE8EF; --accent-200: #F5D2DF; --accent-300: #E68DB4;
+  --accent-400: #B8407A; --accent-500: #A3396C; --accent-600: #8E3561; --accent-700: #742B4F;
+  --accent-text: light-dark(var(--accent-600), var(--accent-300));
+  --text-on-accent: #FFFFFF;
+
+  /* lilac page, white cards, cocoa-plum ink */
+  --bg: light-dark(#F0ECF8, #0B0B0E);
+  --surface: light-dark(#FFFFFF, #1C1C1E);
+  --surface-2: light-dark(#FAF8FD, #2C2C2E);
+  --fill: light-dark(rgba(92,72,150,.07), rgba(255,255,255,.07));
+  --fill-2: light-dark(rgba(92,72,150,.11), rgba(255,255,255,.11));
+  --fill-3: light-dark(rgba(92,72,150,.17), rgba(255,255,255,.16));
+  --separator: light-dark(rgba(92,72,150,.13), rgba(84,84,88,.6));
+  --text: light-dark(#2B2433, #F5F5F7);
+  --text-2: light-dark(#675E73, #A1A1A6);
+  --text-3: light-dark(#857C93, #6E6E73);
+  --text-inverse: light-dark(#FBF7FF, #1D1D1F);
+  --ok-text: light-dark(#1C7550, #5FCF8A); --ok-fill: #2E9E6E; --ok-bg: light-dark(#DCF3E8, #12301E);
+  --danger-text: light-dark(#B4321F, #F2726A); --danger-fill: #B4321F; --danger-bg: light-dark(#FBE6DF, #3A1512);
+  /* switch "on": the berry itself (5.18:1 against a card) */
+  --switch-on: var(--accent-400);
+
+  /* the coat palette on gift tiles and avatars; icons and initials in --text-2 */
+  --tile-1: #F8E6D2; --tile-1-fg: var(--text-2); /* fawn */
+  --tile-2: #EEDFD6; --tile-2-fg: var(--text-2); /* choc */
+  --tile-3: #E1E6F6; --tile-3-fg: var(--text-2); /* blue */
+  --tile-4: #F3EFEA; --tile-4-fg: var(--text-2); /* himalayan */
+
+  /* materials: a lilac frosted bar (scroll edge); solid sheet edge to edge, solid FAB and toast */
+  --bar-bg: light-dark(rgba(240,236,248,.82), rgba(22,22,24,.72));
+  --bar-backdrop: blur(18px) saturate(1.3);
+  --sheet-bg: light-dark(#FAF8FD, rgba(22,22,24,.72));
+  --sheet-backdrop: none;
+  --sheet-inset: 0px;
+  --r-sheet: var(--r-xl) var(--r-xl) 0 0;
+  --sheet-shadow: var(--shadow-3);
+  --scrim: rgba(43,36,51,.28);
+  --float-accent-bg: var(--accent-400);
+  --float-backdrop: none;
+  --float-sheen: none;
+  --toast-bg: var(--text);
+  --toast-backdrop: none;
+  --r-toast: var(--r-md);
+
+  /* shape: round and soft; small parts less round (a 44 px gift tile is a tile, not a drop) */
+  --r-xs: 8px; --r-sm: 12px; --r-md: 15px; --r-lg: 26px; --r-xl: 36px;
+
+  /* depth: wide, light, lilac-tinted shadows */
+  --shadow-1: 0 1px 2px rgba(80,60,140,.05), 0 8px 22px -6px rgba(80,60,140,.15);
+  --shadow-2: 0 2px 6px rgba(80,60,140,.10), 0 16px 34px -10px rgba(80,60,140,.32);
+  --shadow-3: 0 -12px 44px -10px rgba(80,60,140,.24);
+
+  /* mascots larger where they ARE the moment: m × 1.1 (160 → 176) */
+  --mascot-scale-m: 1.1;
+
+  /* type: friendliness in the large title only (600); section titles keep 700 */
+  --fw-display: 600;
+
+  /* the app icon in C (mock-up: header mark + start page) and the browser bar in the page colour.
+     Dev file, served by Vite from src/. */
+  --app-mark: url("/src/dev/directions/icon-pastel.svg");
+  --theme-color: #F0ECF8;
+  /* C had no mascot contour (the default has one since the cream paper, blocker 17) */
+  --mascot-shadow: rgba(70,40,15,.12);
+  --mascot-outline: none;
+
+  /* backdrop: lilac that warms to blush at the bottom; the start scene: the same lilac with the coat
+     colours as soft light (C's lighter --text-2 needs a lighter scene than the default's) */
+  --page-backdrop: linear-gradient(180deg, #F2EEFB 0%, #F0ECF8 45%, #F6EDF3 100%);
+  --scene-backdrop:
+    radial-gradient(75% 34% at 50% 20%, rgba(248,230,210,.7) 0%, rgba(248,230,210,0) 72%),
+    radial-gradient(60% 30% at 96% 34%, rgba(225,230,246,.8) 0%, rgba(225,230,246,0) 72%),
+    linear-gradient(180deg, #F4F0FB 0%, #F2EEF8 100%);
+}

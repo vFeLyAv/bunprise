@@ -1,0 +1,14 @@
+/*
+ * src/styles/mascot.css — the mascot host box (features/mascot-ui/Mascot.tsx, blocker 5), imported by the
+ * wrapper: it ships with the (lazy) mascot chunks, not in the CSS of every first visit.
+ * Width = the size class (s 96 · m 160 · l 240 · xl 320 px, --mascot-w) × its token --mascot-scale-s|m|l,
+ * at most --mascot-max and the container. The wrapper hands the resulting width to the package (which
+ * then writes it inline).
+ */
+.mascot-box {
+  width: min(var(--mascot-max), calc(var(--mascot-w, 160px) * var(--mascot-scale, 1)));
+  max-width: 100%;
+}
+.mascot-box[data-mascot-size="s"] { --mascot-scale: var(--mascot-scale-s); }
+.mascot-box[data-mascot-size="m"] { --mascot-scale: var(--mascot-scale-m); }
+.mascot-box[data-mascot-size="l"] { --mascot-scale: var(--mascot-scale-l); }

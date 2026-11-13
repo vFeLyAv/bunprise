@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Bunprise · маскоты</title>
+<style>
+  :root {
+    --bg: #F4F1EC; --card: rgba(255, 255, 255, .72); --card-border: rgba(255, 255, 255, .8);
+    --text: #1D1D1F; --text-2: #6E6E73; --tile: rgba(0, 0, 0, .05); --accent-ui: #F0A04B;
+    --shadow-card: 0 24px 60px rgba(70, 45, 20, .12);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B0B0E; --card: rgba(30, 30, 34, .72); --card-border: rgba(255, 255, 255, .08);
+    --text: #F5F5F7; --text-2: #A1A1A6; --tile: rgba(255, 255, 255, .07); --shadow-card: 0 24px 60px rgba(0, 0, 0, .5);
+  }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh; display: flex; justify-content: center; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+  }
+  .app { width: 100%; max-width: 1000px; padding: 24px 16px 40px; box-sizing: border-box; }
+  h1 { margin: 4px 6px 4px; font-size: 28px; letter-spacing: -.02em; }
+  .sub { margin: 0 6px 14px; font-size: 14px; color: var(--text-2); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; align-items: start; }
+  .card {
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 30px; box-shadow: var(--shadow-card);
+    -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); padding: 14px 14px 18px;
+  }
+  .card h2 { margin: 4px 6px 10px; font-size: 20px; }
+  .stage-wrap { display: flex; justify-content: center; padding: 8px 0 4px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 6px 0 12px; }
+  .btn {
+    appearance: none; border: 0; border-radius: 999px; padding: 10px 16px; cursor: pointer; font-family: inherit;
+    font-size: 15px; font-weight: 600; background: var(--tile); color: var(--text); -webkit-tap-highlight-color: transparent;
+    transition: transform .25s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .btn:active { transform: scale(.93); }
+  .btn.on, .chip[aria-checked="true"] { background: color-mix(in srgb, var(--accent-ui) 22%, transparent); box-shadow: inset 0 0 0 1.5px var(--accent-ui); }
+  .chip { padding: 7px 12px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+  .chip i { width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(0, 0, 0, .1); }
+  .small { padding: 7px 12px; font-size: 13px; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; margin: 14px 0 18px; font-size: 13px; color: var(--text-2); }
+  .toolbar label { display: inline-flex; align-items: center; gap: 8px; }
+  .toolbar input[type="range"] { width: 160px; accent-color: var(--accent-ui); }
+  .toolbar select { font: inherit; border-radius: 999px; border: 0; padding: 6px 10px; background: var(--tile); color: var(--text); }
+  .hint, .note { text-align: center; font-size: 13px; color: var(--text-2); margin: 8px 0 0; }
+  .note { font-size: 12px; margin-top: 16px; }
+  code { font-size: 12px; }
+  /* ?static=1: only the mascot on the page background, for screenshots */
+  .app.static { max-width: none; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+
+  /* ---------- welcome stage ---------- */
+  .welcome-card { grid-column: 1 / -1; }
+  .welcome-wrap { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; justify-content: center; }
+  .welcome-controls { flex: 1 1 300px; max-width: 460px; display: flex; flex-direction: column; gap: 10px; padding: 6px 4px; }
+  .welcome-controls .row { justify-content: flex-start; margin: 0; }
+  .welcome-controls label { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-2); }
+  .welcome-controls select { font: inherit; border-radius: 999px; border: 0; padding: 6px 10px; background: var(--tile); color: var(--text); }
+  .welcome-controls input[type="range"] { flex: 1; accent-color: var(--accent-ui); }
+  .scrub { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+  /* a phone-sized mock of the start screen: title, the stage, a bottom card */
+  .phone-box { width: min(360px, 100%); flex: none; }
+  .phone { --phone-bg: #F4F1EC; position: relative; width: 100%; aspect-ratio: 360 / 720; border-radius: 40px; overflow: hidden; background: var(--phone-bg);
+    box-shadow: 0 0 0 10px #1D1D1F, 0 30px 70px rgba(40, 25, 10, .25); flex: none; }
+  :root[data-theme="dark"] .phone { --phone-bg: #0B0B0E; box-shadow: 0 0 0 10px #2C2C2E, 0 30px 70px rgba(0, 0, 0, .6); }
+  .phone-title { position: absolute; left: 0; right: 0; top: 7%; text-align: center; z-index: 3; pointer-events: none; }
+  .phone-title b { display: block; font-size: 30px; letter-spacing: -.02em; color: var(--text); }
+  .phone-title span { display: block; margin-top: 4px; font-size: 14px; color: var(--text-2); }
+  .phone-stage { position: absolute; left: 0; right: 0; top: 0; z-index: 2; }
+  .phone-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; background: #FFFFFF; border-radius: 30px 30px 0 0;
+    box-shadow: 0 -10px 30px rgba(70, 45, 20, .08); display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 0 26px; box-sizing: border-box; }
+  :root[data-theme="dark"] .phone-sheet { background: #1C1C1E; }
+  .phone-sheet i { display: block; height: 48px; border-radius: 999px; background: #F0A04B; }
+  .phone-sheet i + i { background: rgba(0, 0, 0, .06); }
+  :root[data-theme="dark"] .phone-sheet i + i { background: rgba(255, 255, 255, .1); }
+  .phone.flat .phone-sheet { display: none; }
+
+  /* ?sheet=…: a contact sheet of frozen frames; ?frame=…: one frozen frame */
+  .app.sheet { max-width: none; padding: 14px 18px; }
+  .sheet-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 2px 10px; font-size: 13px; color: var(--text-2); }
+  .sheet-head b { font-size: 16px; color: var(--text); }
+  .sheet-grid { display: grid; gap: 12px; }
+  .cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .cell .phone { width: 100%; height: 100%; aspect-ratio: auto; border-radius: 16px; box-shadow: 0 0 0 1px rgba(60, 40, 20, .12); }
+  .cell .phone-title { display: none; }
+  .cell .phone-sheet { border-radius: 14px 14px 0 0; padding: 0 12%; gap: 6px; }
+  .cell .phone-sheet i { height: 18%; min-height: 8px; }
+  .cell small { font-size: 12px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+  .app.frame { max-width: none; min-height: 100vh; display: flex; align-items: center; justify-content: center; gap: 28px; padding: 16px; }
+  .frame-label { font-size: 14px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<main class="app" id="app"></main>
+<script type="module" src="./main.ts"></script>
+</body>
+</html>

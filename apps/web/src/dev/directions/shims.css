@@ -1,0 +1,25 @@
+/*
+ * DEV ONLY — previews of the component fixes that are still open ("Блокеры" in docs/design/directions.md).
+ * Imported only by src/dev/DirectionSwitcher.tsx (dev frame), never part of the production bundle.
+ *
+ * Each block does from the outside what a proposed fix in a screen component would do. They act only
+ * while a direction (A / B / C) is selected; "основной" (no data-direction = the production look) never
+ * sees any of this.
+ *
+ * Closed in the real components on 2026-10-20 — their blocks were deleted here. Design system (phase 1):
+ * 1 type tokens · 2 --scrim · 3 bar/sheet materials · 4 scroll-edge bar · 5 mascot scale · 6 --r-button ·
+ * 7 --switch-on · 11 --r-hero · 13 legal footer links · 16 balanced titles + NBSP · 18 --r-control ·
+ * 19 floating sheet · 20 coat tiles. Screens + motion (phase 2): 12 RSVP without an answer (ui/Segmented) ·
+ * 14 brand mark + Apple "white with outline" (ui/AppMark, features/auth/SocialProvider) · 15 the reward
+ * moment (features/wishes/GuestWishlist) · 17 mascot shadow + contour (packages/mascot BASE_CSS, tokens) ·
+ * 21 hyphens in headings · 22 one heading on "Beitreten" · 23 settings rhythm + "Auf diesem Gerät".
+ * Still previewed: 9 — the app mark per direction (below) and theme-color (DirectionSwitcher.tsx).
+ *
+ * Rules here are unlayered, so they win over Tailwind's layers.
+ */
+
+/* ---- Blocker 9 — the app icon per direction (ui/AppMark.tsx <img src=/icons/icon.svg>: feed header, start
+   screen) → --app-mark (an image). Only C sets one (mock-up). The theme-color part lives in DirectionSwitcher. */
+html[data-direction] img[src="/icons/icon.svg"] {
+  content: var(--app-mark, url("/icons/icon.svg"));
+}

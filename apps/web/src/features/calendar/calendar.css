@@ -1,0 +1,468 @@
+/*
+ * src/features/calendar/calendar.css — Start's "Monat" view (wave 2; the calendar tab of wave 1), imported by
+ * MonthView.tsx (its lazy chunk). Frosted panels (no blur: they sit over the ambient scene); only transform /
+ * opacity / colour move, with the spring tokens (0 ms under reduced motion / off). The person tones of the chips
+ * and the filter (.person-tone, --person-*) come from styles/tiles.css; the occasion tints (the agenda's date
+ * tiles) from tints.css.
+ */
+@import '../../styles/tints.css';
+
+/* ---- the people filter: "Alle · Du · Anna · …" (PeopleFilter.tsx) -------------------------------------- */
+
+/* the row runs to the screen edges and scrolls sideways when it is long (no scrollbar); 4 px above and
+   below keep the 44 px hit areas inside the scroller */
+.cal-people {
+  display: flex;
+  gap: var(--sp-2);
+  margin: -4px calc(-1 * var(--sp-4)) 0;
+  padding: 4px var(--sp-4);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  scroll-padding-inline: var(--sp-4);
+}
+.cal-people::-webkit-scrollbar {
+  display: none;
+}
+.cal-pill {
+  position: relative;
+  display: inline-flex;
+  height: 36px;
+  flex: none;
+  align-items: center;
+  gap: 7px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  background-color: var(--solid-panel, var(--panel-bg));
+  box-shadow:
+    var(--panel-edge),
+    0 1px 2px color-mix(in srgb, var(--shade) 5%, transparent),
+    0 6px 14px -10px color-mix(in srgb, var(--shade) 32%, transparent);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-s) var(--ease-out),
+    color var(--dur-s) var(--ease-out),
+    box-shadow var(--dur-s) var(--ease-out);
+}
+/* 44 px to hit, 36 px to see */
+.cal-pill::after {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+.cal-pill:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.cal-pill-all {
+  padding: 0 var(--sp-4);
+}
+.cal-pill-person {
+  padding: 0 var(--sp-4) 0 5px;
+}
+/* "Alle" chosen: solid paper with an ink ring — clearly "on", but quiet (it is the default) */
+.cal-pill-all[aria-pressed='true'] {
+  color: var(--text);
+  background-color: var(--surface);
+  box-shadow:
+    inset 0 0 0 1.5px var(--text),
+    0 4px 10px -6px color-mix(in srgb, var(--shade) 32%, transparent);
+}
+/* a person chosen: the pill wears their colour (.person-tone) with a ring of their ink */
+.cal-pill-person[aria-pressed='true'] {
+  background-color: var(--person-bg, var(--person-1));
+  color: var(--person-ink, var(--person-1-fg));
+  box-shadow:
+    inset 0 0 0 1.5px currentColor,
+    0 4px 10px -6px color-mix(in srgb, var(--shade) 32%, transparent);
+}
+/* the avatar pops a little when its person is chosen */
+.cal-pill-avatar {
+  transition: transform var(--dur-bouncy) var(--ease-bouncy);
+}
+.cal-pill-person[aria-pressed='true'] .cal-pill-avatar {
+  transform: scale(1.08);
+}
+
+/* ---- the month card ------------------------------------------------------------------------------------ */
+
+.cal-card {
+  padding: var(--sp-3) var(--sp-1) var(--sp-2);
+  border-radius: 28px;
+  background-color: var(--solid-panel, var(--panel-bg));
+  background-image: var(--solid-panel-sheen, var(--panel-sheen));
+  box-shadow: var(--panel-edge), var(--panel-shadow);
+}
+.cal-head {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-1) 0 var(--sp-4);
+}
+.cal-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+.cal-nav {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text);
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.cal-nav:active {
+  background-color: var(--fill-2);
+}
+
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin-top: var(--sp-2);
+  padding: 0 1px var(--sp-1);
+  text-align: center;
+  font-size: var(--fs-caption-1);
+  line-height: var(--lh-caption-1);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-2);
+}
+.cal-weekdays [data-weekend] {
+  color: var(--accent-text);
+}
+
+/* three months side by side with a seam between them, the middle one shown; the finger drags the strip
+   (motion x; MonthView MONTH_GAP = the column gap) */
+.cal-viewport {
+  overflow: hidden;
+  container: cal-month / inline-size;
+}
+.cal-strip {
+  display: flex;
+  width: calc(300% + 32px);
+  margin-left: calc(-100% - 16px);
+  column-gap: 16px;
+  cursor: grab;
+}
+.cal-strip:active {
+  cursor: grabbing;
+}
+.cal-month {
+  position: relative;
+  display: flex;
+  width: calc((100% - 32px) / 3);
+  flex-shrink: 0;
+  flex-direction: column;
+  row-gap: 2px;
+}
+/* Saturday and Sunday: one soft band of warm paper behind the two columns (left edge = 5 cells + 5 gaps) */
+.cal-month::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc((100% - 6px) * 5 / 7 + 5px);
+  right: 0;
+  border-radius: 14px;
+  background-color: color-mix(in oklab, var(--accent-100) 30%, transparent);
+  pointer-events: none;
+}
+.cal-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  column-gap: 1px;
+}
+
+/* ---- a day: its number, then up to two chips (who = colour, what = glyph + a word) or "+N" ------------- */
+
+.cal-day {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 66px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  padding: 3px 1px 4px;
+  border-radius: 12px;
+  color: var(--text);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.cal-day:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.cal-num {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  align-self: center;
+  place-items: center;
+  border-radius: 50%;
+  font-size: var(--fs-subhead);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  transition:
+    background-color var(--dur-s) var(--ease-out),
+    color var(--dur-s) var(--ease-out),
+    transform var(--dur-snappy) var(--ease-snappy);
+}
+.cal-day:active .cal-num {
+  transform: scale(0.9);
+}
+.cal-day[data-outside] {
+  color: var(--text-3);
+}
+.cal-day[data-outside] .cal-chips {
+  opacity: 0.45;
+}
+.cal-day[data-today] .cal-num {
+  color: var(--accent-text);
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1.5px var(--accent-400);
+}
+.cal-day[aria-pressed='true'] .cal-num {
+  color: var(--text-inverse);
+  background-color: var(--text);
+  font-weight: 700;
+  box-shadow: 0 4px 10px -4px color-mix(in srgb, var(--shade) 45%, transparent);
+}
+.cal-day[data-today][aria-pressed='true'] .cal-num {
+  color: var(--text-on-accent);
+  background-color: var(--accent-400);
+  box-shadow: 0 4px 10px -4px rgba(152, 74, 20, 0.5);
+}
+
+.cal-chips {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+/* a chip: the person's pastel with their ink (≥ 5:1, contrast-check PERSONS), the kind's glyph and a word */
+.cal-chip {
+  display: flex;
+  height: 15px;
+  min-width: 0;
+  align-items: center;
+  gap: 2px;
+  padding: 0 3px 0 2px;
+  border-radius: 5px;
+  font-size: 10px;
+  line-height: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--hl) 60%, transparent);
+  transition: opacity var(--dur-s) var(--ease-out);
+}
+.cal-chip-glyph {
+  flex: none;
+}
+.cal-chip-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* narrow phones (cells under 44 px): an ellipsis would leave one or two letters — the word fades out instead */
+@container cal-month (max-width: 310px) {
+  .cal-chip-text {
+    flex: 1 1 0;
+    text-overflow: clip;
+    mask-image: linear-gradient(to right, black calc(100% - 7px), transparent);
+  }
+}
+/* the legend effect: someone else is under the pointer in the filter row */
+.cal-chip[data-dim] {
+  opacity: 0.28;
+}
+/* "+2": more than fits — neutral, with a dot in each hidden person's colour; the day's list tells them all */
+.cal-more {
+  display: flex;
+  height: 15px;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 3px;
+  border-radius: 5px;
+  font-size: 10px;
+  line-height: 15px;
+  font-weight: 700;
+  color: var(--text-2);
+  background-color: var(--fill);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.cal-more .cal-more-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background-color: var(--person-mark);
+}
+.cal-more .cal-more-dot:last-of-type {
+  margin-right: 1px;
+}
+/* a filter change: the chips that stay pop in once (MonthView remounts the shown month) */
+.cal-viewport[data-filter-pulse] .cal-month:not([inert]) .cal-chip,
+.cal-viewport[data-filter-pulse] .cal-month:not([inert]) .cal-more {
+  animation: cal-chip-in var(--dur-bouncy) var(--ease-bouncy) both;
+}
+@keyframes cal-chip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+:root[data-motion='reduce'] .cal-viewport[data-filter-pulse] .cal-month:not([inert]) .cal-chip,
+:root[data-motion='reduce'] .cal-viewport[data-filter-pulse] .cal-month:not([inert]) .cal-more {
+  animation-name: cal-chip-fade;
+  animation-duration: var(--dur-m);
+}
+@keyframes cal-chip-fade {
+  from {
+    opacity: 0;
+  }
+}
+/* K10: the created occasion's chip waits for the bunny (or the 1.5 s fallback), then pops in */
+.cal-chip[data-landing-chip] {
+  opacity: 0;
+  transform: scale(0.2);
+  transition:
+    opacity var(--dur-m) var(--ease-out),
+    transform var(--dur-bouncy) var(--ease-bouncy);
+}
+.cal-chip[data-landing-chip][data-landed] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- the frosted agenda list under the grid ------------------------------------------------------------ */
+
+.cal-agenda {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+  border-radius: 24px;
+  background-color: var(--solid-panel, var(--panel-bg));
+  background-image: var(--solid-panel-sheen, var(--panel-sheen));
+  box-shadow: var(--panel-edge), var(--panel-shadow);
+}
+.cal-agenda-item {
+  position: relative;
+}
+.cal-agenda-item + .cal-agenda-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(var(--sp-3) + 56px + var(--sp-3));
+  height: 1px;
+  background-color: var(--separator);
+}
+.cal-row {
+  display: flex;
+  min-height: 84px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  color: var(--text);
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.cal-row:active {
+  background-color: var(--fill);
+}
+.cal-row:focus-visible {
+  outline: none;
+  box-shadow: inset var(--ring);
+}
+
+.cal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-4);
+  border-radius: 24px;
+  text-align: center;
+  background-color: var(--solid-panel, var(--panel-bg));
+  background-image: var(--solid-panel-sheen, var(--panel-sheen));
+  box-shadow: var(--panel-edge), var(--panel-shadow);
+}
+.cal-empty-action {
+  position: relative;
+  display: inline-flex;
+  height: 40px;
+  align-items: center;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-full);
+  font-size: var(--fs-subhead);
+  font-weight: 600;
+  color: var(--accent-text);
+  background-color: color-mix(in oklab, var(--accent-100) 72%, transparent);
+}
+/* 44 px to hit, 40 px to see */
+.cal-empty-action::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+}
+
+/* K10: after the bunny filed a new occasion — "Freunde einladen →", a glass pill right under its row (in
+   the flow: it never covers the row it belongs to). A small floating control: real blur (.glass-float,
+   solid under reduced transparency); the accent text keeps AA on it (contrast-check: accent on a capsule). */
+.cal-invite {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  justify-content: center;
+  margin-top: var(--sp-3);
+  /* scrolled into view right after it appears: clear of the floating tab bar */
+  scroll-margin-bottom: calc(var(--nav-bar-space, 90px) + var(--sp-2));
+}
+.cal-invite-pill {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-5) 0 var(--sp-6);
+  border-radius: var(--r-full);
+  font-size: var(--fs-callout);
+  line-height: var(--lh-callout);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--accent-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.cal-invite-pill:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+}
+
+/* ---- "Heute" in Start's top bar (feed/FeedFrame TodayPill) ------------------------------------------------- */
+
+/* The pill is a glass button of its own that springs in and out; the top bar wraps its right slot in a glass
+   capsule too (ui/TopBar). Two stacked glass layers drew a doubled edge, and the outer one did not move with
+   the pill — so the capsule stays clear while it holds the pill (unlayered: wins over the kit's layer). */
+.glass-float:has(> [data-today-pill]) {
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}

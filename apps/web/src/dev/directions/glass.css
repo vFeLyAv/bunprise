@@ -1,0 +1,56 @@
+/*
+ * DEV ONLY — direction B "Glas & Tiefe" (glass) as an OVERRIDE of the default look.
+ *
+ * Since 2026-10-20 the default (src/styles/tokens.css) IS B's shapes and glass with A's colours (ADR
+ * docs/decisions/2026-10-20-design-direction-glass.md). This file shows B's own colours as they were in
+ * the comparison: crisp white cards on a calm backdrop (cool "air" at the top, warm "earth" at the
+ * bottom), cooler neutrals, B's glass tints (bar 64 %, ×1.5; sheet 80 %, ×1.6; a light plum scrim) and
+ * today's orange gift tiles. Shapes, radii and the floating sheet are the default's.
+ *
+ * Token overrides only; light theme. Contrast: node docs/design/contrast-check.mjs
+ */
+html[data-direction="glass"] {
+  /* accent: the same orange; the text shade a touch deeper so "Zurück" keeps AA on B's lighter bar */
+  --accent-600: #9A4512;
+
+  /* neutrals: white cards; fills and hairlines in the warm brown of the shadows */
+  --bg: light-dark(#FAF5F2, #0B0B0E);
+  --surface: light-dark(#FFFFFF, #1C1C1E);
+  --surface-2: light-dark(#FBF8F5, #2C2C2E);
+  --fill: light-dark(rgba(70,45,20,.06), rgba(255,255,255,.07));
+  --fill-2: light-dark(rgba(70,45,20,.10), rgba(255,255,255,.11));
+  --fill-3: light-dark(rgba(70,45,20,.15), rgba(255,255,255,.16));
+  --separator: light-dark(rgba(70,45,20,.12), rgba(84,84,88,.6));
+  --text: light-dark(#1C191E, #F5F5F7);
+  --text-2: light-dark(#59535E, #A1A1A6);
+  --text-3: light-dark(#7E7783, #6E6E73);
+  --text-inverse: light-dark(#F8F5F7, #1D1D1F);
+  --ok-text: light-dark(#157A49, #5FCF8A); --ok-fill: #20A162; --ok-bg: light-dark(#DDF4E7, #12301E);
+  --danger-text: light-dark(#B01F2A, #F2726A); --danger-fill: #B01F2A; --danger-bg: light-dark(#FDE7E7, #3A1512);
+
+  /* B's glass tints */
+  --bar-bg: light-dark(rgba(255,250,249,.64), rgba(22,22,24,.66));
+  --bar-backdrop: blur(24px) saturate(1.5);
+  --sheet-bg: light-dark(rgba(255,250,248,.80), rgba(22,22,24,.66));
+  --sheet-backdrop: blur(24px) saturate(1.6);
+  --scrim: rgba(40,22,34,.16);
+
+  /* gift tiles and avatars as in the comparison: orange tiles, neutral avatars */
+  --tile-1: var(--accent-100); --tile-1-fg: var(--accent-text);
+  --tile-2: var(--accent-100); --tile-2-fg: var(--accent-text);
+  --tile-3: var(--accent-100); --tile-3-fg: var(--accent-text);
+  --tile-4: var(--accent-100); --tile-4-fg: var(--accent-text);
+
+  /* backdrop built from the screen: cool light air at the top (behind the mascot and the large title),
+     warm earth at the bottom (under the orange actions); symmetric, low contrast */
+  --page-backdrop:
+    radial-gradient(110% 45% at 50% 0%, rgba(226,222,255,.32) 0%, rgba(226,222,255,0) 70%),
+    radial-gradient(130% 55% at 50% 100%, rgba(255,205,168,.5) 0%, rgba(255,205,168,0) 72%),
+    linear-gradient(180deg, #FAF6F5 0%, #FAF3EE 100%);
+
+  /* browser / status bar colour = the "air" at the top */
+  --theme-color: #F2EEF8;
+  /* B had no mascot contour (the default has one since the cream paper, blocker 17) */
+  --mascot-shadow: rgba(70,40,15,.12);
+  --mascot-outline: none;
+}

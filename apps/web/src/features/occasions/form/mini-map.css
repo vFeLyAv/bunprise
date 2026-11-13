@@ -1,0 +1,126 @@
+/*
+ * mini-map.css — the small map next to a chosen place (form/MiniMap.tsx), shipped with the MiniMap's own lazy chunk.
+ * Shaped like a list's cover tile on "Listen" (features/lists/covers.tsx: 44 px, radius 32 %); the tiles are our
+ * Worker's OpenStreetMap tiles as blob: URLs, drawn at half size. Tokens of the kit only; transitions animate opacity.
+ */
+.of-minimap {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 14px;
+  background-color: var(--fill-2);
+  box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--shade) 35%, transparent);
+}
+/* the rim over the picture (an inset shadow would lie under the tiles) */
+.of-minimap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--shade) 14%, transparent), inset 0 1px 0 color-mix(in srgb, var(--hl) 55%, transparent);
+  pointer-events: none;
+}
+.of-minimap-skeleton {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+.of-minimap-tiles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity var(--dur-s) var(--ease-out);
+}
+.of-minimap[data-ready] .of-minimap-tiles {
+  opacity: 1;
+}
+.of-minimap-tile {
+  position: absolute;
+  display: block;
+  width: 128px;
+  max-width: none;
+  height: 128px;
+  user-select: none;
+  pointer-events: none;
+}
+/* dark themes (all of them set color-scheme dark): the bright paper map dimmed a little, so it does not glare */
+.of-minimap-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: light-dark(transparent, rgb(14 9 5 / 0.3));
+  pointer-events: none;
+}
+.of-minimap-pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 14px;
+  height: 18px;
+  /* the tip of the pin is the place */
+  transform: translate(-50%, -100%);
+  opacity: 0;
+  filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.35));
+  transition: opacity var(--dur-s) var(--ease-out);
+}
+.of-minimap[data-ready] .of-minimap-pin {
+  opacity: 1;
+}
+.of-minimap-pin path {
+  fill: var(--accent-500);
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+.of-minimap-pin circle {
+  fill: #fff;
+}
+
+/*
+ * The occasion screen's strip (20261027190000, OccasionHero): as wide as the place block, a fixed height
+ * (miniMapTiles.ts MINI_MAP_STRIP_HEIGHT), the card's softer radius, a bigger pin and the licence credit in the
+ * corner (like every web map). Static: nothing to pan or zoom — the map buttons under it open a real map.
+ */
+.of-minimap[data-variant='strip'] {
+  width: 100%;
+  height: 112px;
+  border-radius: 18px;
+}
+.of-minimap[data-variant='strip'] .of-minimap-pin {
+  width: 22px;
+  height: 28px;
+}
+.of-minimap-credit {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 1px 7px 2px 8px;
+  border-top-left-radius: 10px;
+  font-size: 10px;
+  line-height: 14px;
+  color: var(--text-2);
+  background-color: color-mix(in srgb, var(--bg) 78%, transparent);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* calm motion: the map is simply there */
+:root[data-motion="reduce"] .of-minimap-tiles,
+:root[data-motion="reduce"] .of-minimap-pin,
+:root[data-motion="off"] .of-minimap-tiles,
+:root[data-motion="off"] .of-minimap-pin {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .of-minimap-tiles,
+  :root:not([data-motion="full"]) .of-minimap-pin {
+    transition: none;
+  }
+}

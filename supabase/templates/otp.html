@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="de" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>Dein Bunprise-Code</title>
+  <!-- Bunprise sign-in code e-mail (Supabase: "Magic link" + "Confirm sign up" templates; only {{ .Token }} is used,
+       never a link). Felix 25.10: designed like big companies' code mails — mascot, the code large and easy to copy.
+       E-mail rules: tables + inline styles (Outlook, Gmail), no scripts, no web fonts, no tracking; the one picture
+       is a static file of the app (apps/web/public/email/pompon-peek.png, rendered by apps/web/scripts/brand.mjs). -->
+  <style>
+    .code { -webkit-user-select: all; user-select: all; }
+    @media (max-width: 520px) {
+      .card { border-radius: 22px !important; }
+      .pad { padding-left: 24px !important; padding-right: 24px !important; }
+      .code { font-size: 34px !important; letter-spacing: 6px !important; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .page { background: #0B0B0E !important; }
+      .card { background: #1C1C1E !important; border-color: #2C2C2E !important; }
+      .text { color: #F5F5F7 !important; }
+      .muted { color: #A1A1A6 !important; }
+      .codebox { background: #2C2C2E !important; border-color: #984A14 !important; }
+      .code { color: #F3B676 !important; }
+      .rule { border-color: #2C2C2E !important; }
+      .link { color: #F3B676 !important; }
+    }
+  </style>
+</head>
+<body class="page" style="margin:0;padding:0;background:#F2EBDD;-webkit-text-size-adjust:100%;">
+  <!-- preview line in the inbox: the code is readable without opening the mail -->
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">Dein Code: {{ .Token }} · gültig 10 Minuten · Your code: {{ .Token }}&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="page" style="background:#F2EBDD;">
+    <tr>
+      <td align="center" style="padding:32px 12px 40px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;">
+          <!-- Pompon peeks over the card, like on the sign-in screen of the app -->
+          <tr>
+            <td align="center" style="padding:0;line-height:0;font-size:0;">
+              <img src="https://bunprise.de/email/pompon-peek.png" width="220" height="180" alt="Pompon, der Bunprise-Hase"
+                style="display:block;width:220px;height:auto;max-width:220px;border:0;outline:none;text-decoration:none;margin:0 auto -18px;color:#62554A;font:14px Arial,sans-serif;line-height:normal;">
+            </td>
+          </tr>
+          <tr>
+            <td class="card" style="background:#FFFDF8;border:1px solid #EADFCF;border-radius:28px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="pad" align="center" style="padding:40px 40px 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                    <p class="muted" style="margin:0 0 6px;font-size:13px;line-height:18px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#984A14;">Bunprise</p>
+                    <h1 class="text" style="margin:0 0 10px;font-size:26px;line-height:32px;font-weight:700;color:#2A231C;">Dein Anmeldecode</h1>
+                    <p class="muted" style="margin:0 0 24px;font-size:16px;line-height:24px;color:#62554A;">Gib diesen Code in Bunprise ein, und schon bist du drin.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="pad" align="center" style="padding:0 40px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                      <tr>
+                        <td class="codebox" align="center" style="background:#FEF4E7;border:1px solid #F8D0A2;border-radius:18px;padding:18px 28px;">
+                          <span class="code" style="font-family:'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;font-size:40px;line-height:48px;font-weight:700;letter-spacing:10px;color:#783910;">{{ .Token }}</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="pad" align="center" style="padding:14px 40px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                    <p class="muted" style="margin:0;font-size:14px;line-height:20px;color:#62554A;">Gültig 10 Minuten · nur einmal verwendbar</p>
+                    <p class="muted" style="margin:6px 0 0;font-size:13px;line-height:19px;color:#85786A;">Tipp: Auf dem Handy bieten Mail und Gmail oft direkt „Code kopieren“ an.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="pad" style="padding:0 40px;"><div class="rule" style="border-top:1px solid #EADFCF;height:0;line-height:0;font-size:0;">&nbsp;</div></td>
+                </tr>
+                <tr>
+                  <td class="pad" style="padding:22px 40px 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                    <p class="text" style="margin:0 0 4px;font-size:15px;line-height:22px;font-weight:600;color:#2A231C;">Das warst nicht du?</p>
+                    <p class="muted" style="margin:0;font-size:14px;line-height:21px;color:#62554A;">Dann ignoriere diese E-Mail einfach – ohne den Code kommt niemand in dein Konto. Teile den Code mit niemandem, auch nicht mit uns.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="pad" style="padding:18px 40px 34px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;" lang="en">
+                    <p class="text" style="margin:0 0 4px;font-size:15px;line-height:22px;font-weight:600;color:#2A231C;">Your sign-in code</p>
+                    <p class="muted" style="margin:0;font-size:14px;line-height:21px;color:#62554A;">Enter the code above in Bunprise. It is valid for 10 minutes and works once. Didn't ask for it? Just ignore this email and never share the code.</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- footer -->
+          <tr>
+            <td align="center" style="padding:24px 24px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+              <p class="muted" style="margin:0 0 8px;font-size:14px;line-height:20px;font-weight:600;color:#62554A;">Träumen. Wünschen. Freude schenken.</p>
+              <p class="muted" style="margin:0;font-size:12px;line-height:18px;color:#85786A;">
+                <a class="link" href="https://bunprise.de/legal/impressum" style="color:#984A14;text-decoration:underline;">Impressum</a>
+                &nbsp;·&nbsp;
+                <a class="link" href="https://bunprise.de/legal/datenschutz" style="color:#984A14;text-decoration:underline;">Datenschutz</a>
+                &nbsp;·&nbsp;
+                <a class="link" href="mailto:hello@bunprise.de" style="color:#984A14;text-decoration:underline;">hello@bunprise.de</a>
+              </p>
+              <p class="muted" style="margin:8px 0 0;font-size:12px;line-height:18px;color:#85786A;">Du bekommst diese E-Mail, weil jemand mit dieser Adresse einen Bunprise-Code angefordert hat.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

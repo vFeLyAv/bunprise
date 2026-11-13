@@ -1,0 +1,70 @@
+/*
+ * DEV ONLY — direction A "Warme Papeterie" (paper) as an OVERRIDE of the default look.
+ *
+ * Since 2026-10-20 the default (src/styles/tokens.css) IS A's colours with B's shapes and visible glass
+ * (ADR docs/decisions/2026-10-20-design-direction-glass.md). This file shows A as it was in the
+ * comparison: flat card stock — 10 px buttons, 8 px controls, small radii, hairline edges instead of
+ * shadows — no glass anywhere (solid paper bar with its ruled line always on, solid sheet edge to edge,
+ * solid FAB and toast), the editorial serif large title, orange gift tiles, the mascot contour.
+ * Colours are the default's: nothing to repeat here.
+ *
+ * Token overrides only; light theme. Contrast: node docs/design/contrast-check.mjs
+ */
+html[data-direction="paper"] {
+  /* shape: cut card stock (one rectangular language for the whole app) */
+  --r-xs: 6px; --r-sm: 8px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+  --r-button: 10px;
+  --r-control: 8px;
+  --r-sheet: var(--r-xl) var(--r-xl) 0 0; /* edge to edge, rounded at the top only */
+  --sheet-inset: 0px;
+  --r-toast: var(--r-md);
+
+  /* depth: flat. Level 1 = a hairline edge + a 1 px cut below (no blur); level 2 (FAB, toast) lifts;
+     level 3 (sheet) a short warm drop */
+  --shadow-1: 0 0 0 .5px rgba(116,84,44,.16), 0 1px 0 rgba(116,84,44,.10);
+  --shadow-2: 0 0 0 1px rgba(116,84,44,.06), 0 6px 14px -6px rgba(116,84,44,.28);
+  --shadow-3: 0 -1px 0 rgba(116,84,44,.10), 0 -10px 28px -12px rgba(116,84,44,.22);
+
+  /* materials: none. The bar is solid paper (a shade lighter than the top of the page) with its ruled
+     line always on; the sheet, the FAB and the toast are solid */
+  --bar-bg: #F9F4EB;
+  --bar-backdrop: none;
+  --bar-edge: inset 0 -1px 0 var(--separator);
+  --bar-rest-opacity: 1;
+  --sheet-bg: var(--surface);
+  --sheet-backdrop: none;
+  --sheet-edge: inset 0 1px 0 rgba(255,253,248,.75);
+  --sheet-shadow: var(--shadow-3);
+  --scrim: rgba(42,30,18,.28);
+  --float-accent-bg: var(--accent-400);
+  --float-backdrop: none;
+  --float-sheen: none;
+  --float-edge: 0 0 transparent;
+  --toast-bg: var(--text);
+  --toast-backdrop: none;
+  --toast-edge: 0 0 transparent;
+
+  /* gift tiles and avatars as in the comparison: orange tiles, neutral avatars */
+  --tile-1: var(--accent-100); --tile-1-fg: var(--accent-text);
+  --tile-2: var(--accent-100); --tile-2-fg: var(--accent-text);
+  --tile-3: var(--accent-100); --tile-3-fg: var(--accent-text);
+  --tile-4: var(--accent-100); --tile-4-fg: var(--accent-text);
+
+  /* type: an editorial serif for the large title only — New York on Apple, Georgia on Windows,
+     Noto Serif on Android (three faces). 30 px instead of 34: a serif is ~12 % wider. Section titles
+     stay sans and get quieter (600, no tracking) */
+  --font-display: ui-serif, "New York", Georgia, serif;
+  --fw-display: 600;
+  --tracking-display: -0.01em;
+  --fs-display: 1.875rem; --lh-display: 2.25rem;
+  --fw-title: 600;
+  --tracking-title: 0;
+
+  /* mascots: on cream paper the cream bunny needs an edge — a darker floor shadow and a warm 1.5 px
+     contour (blocker 17: packages/mascot reads the tokens; the default has the same values now) */
+  --mascot-shadow: rgba(70,40,15,.20);
+  --mascot-outline: rgba(224,171,116,.5);
+
+  /* browser / status bar colour = the solid bar */
+  --theme-color: #F9F4EB;
+}

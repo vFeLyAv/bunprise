@@ -1,0 +1,1202 @@
+/*
+ * features/lists/lists.css — the "Wunschlisten" tab and a list's screens (wave 2b, follows-design §2.2–§2.7):
+ * "warm glass on paper" like the rest of the app — frosted panels (.glass-panel: no blur, they may lie under
+ * scrolling content), floating glass only on the bar, the stuck switch and sheets. Imported by the lists
+ * modules, so it ships with their chunks only (never with the first visit / the invite landing).
+ *
+ * Colours: the Paper palette (tokens.css, tiles.css --tile-1…4, tints.css --tint-1…4). The eight banner
+ * presets keep their own soft paper hues below (light enough that the ink on and next to them stays far above
+ * AA); the design system may move them into src/styles/ (wave report). Patterns are inline SVG (data URIs) —
+ * nothing is loaded from anywhere. Reduced transparency: every banner is one solid colour.
+ * Motion: transform / opacity only, the app's three springs (--ease-* / --dur-* tokens).
+ */
+@import '../../styles/tints.css';
+
+:root {
+  /* ---- banner presets: 5 gradients + 3 patterns (base, solid fallback) ----
+     night (dark theme, 25.10): every stop the same hue, deep and a little dusty — a banner by lamp light */
+  --lb-sunrise: linear-gradient(128deg, light-dark(#FFD9B6, #4C351F) 0%, light-dark(#FBC7A6, #4C311F) 42%, light-dark(#F8D9C4, #4C311F) 72%, light-dark(#FBE7CF, #4C381F) 100%);
+  --lb-sunrise-solid: light-dark(#FAD3B8, #4C311F);
+  --lb-meadow: linear-gradient(128deg, light-dark(#D6E8C6, #354229) 0%, light-dark(#CFE4C8, #31402B) 38%, light-dark(#E6EBC6, #404427) 70%, light-dark(#F4E9C6, #494022) 100%);
+  --lb-meadow-solid: light-dark(#DCE8C8, #394229);
+  --lb-sky: linear-gradient(128deg, light-dark(#D3E1F6, #223249) 0%, light-dark(#DAE2F5, #252F46) 40%, light-dark(#E8E2F2, #332A41) 72%, light-dark(#F5E5EC, #432834) 100%);
+  --lb-sky-solid: light-dark(#DCE3F4, #262F45);
+  --lb-berry: linear-gradient(128deg, light-dark(#F5CCD6, #49222B) 0%, light-dark(#EFC7DD, #462537) 40%, light-dark(#F3D1D6, #472429) 70%, light-dark(#F9DFCC, #4C321F) 100%);
+  --lb-berry-solid: light-dark(#F2CDD8, #47242F);
+  --lb-dusk: linear-gradient(128deg, light-dark(#DED5F4, #2E2447) 0%, light-dark(#E9D2EC, #3F2A42) 36%, light-dark(#F4CFD6, #48232A) 66%, light-dark(#FADDB9, #4C381F) 100%);
+  --lb-dusk-solid: light-dark(#E8D6EE, #3C2942);
+  --lb-bunnies: light-dark(#FBEEDA, #45351C);
+  --lb-bunnies-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='64' viewBox='0 0 72 64'%3E%3Cg fill='%23E2A06E' fill-opacity='.34'%3E%3Cg transform='translate(18 18)'%3E%3Cellipse cx='-7.5' cy='2' rx='3.4' ry='7.6' transform='rotate(18 -7.5 2)'/%3E%3Cellipse cx='7.5' cy='2' rx='3.4' ry='7.6' transform='rotate(-18 7.5 2)'/%3E%3Ccircle r='6.6'/%3E%3C/g%3E%3Cg transform='translate(54 46) rotate(-10)'%3E%3Cellipse cx='-6.2' cy='1.6' rx='2.8' ry='6.3' transform='rotate(18 -6.2 1.6)'/%3E%3Cellipse cx='6.2' cy='1.6' rx='2.8' ry='6.3' transform='rotate(-18 6.2 1.6)'/%3E%3Ccircle r='5.4'/%3E%3C/g%3E%3C/g%3E%3Cg fill='%23F2B8B0' fill-opacity='.5'%3E%3Ccircle cx='50' cy='14' r='2'/%3E%3Ccircle cx='14' cy='50' r='1.6'/%3E%3C/g%3E%3C/svg%3E");
+  --lb-carrots: light-dark(#EEF2DE, #373C25);
+  --lb-carrots-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='70' viewBox='0 0 70 70'%3E%3Cg transform='translate(20 20) rotate(-32)'%3E%3Cpath d='M-3.4 0h6.8L0 17z' fill='%23EE9443' fill-opacity='.5'/%3E%3Cpath d='M0 0c-1.4-2.6-3.4-4.4-5-5.2M0 0c0-2.8.4-5.2 1.2-7M0 0c1.6-2.2 3.6-3.6 5.4-4.2' stroke='%2372A869' stroke-opacity='.62' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(52 48) rotate(24)'%3E%3Cpath d='M-2.8 0h5.6L0 14z' fill='%23EE9443' fill-opacity='.42'/%3E%3Cpath d='M0 0c-1.2-2.2-2.8-3.6-4.2-4.4M0 0c0-2.4.4-4.4 1-6M0 0c1.4-1.8 3-3 4.6-3.6' stroke='%2372A869' stroke-opacity='.55' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3Ccircle cx='52' cy='16' r='1.8' fill='%23E2A42E' fill-opacity='.35'/%3E%3C/svg%3E");
+  --lb-confetti: light-dark(#FCEDE5, #452A1C);
+  --lb-confetti-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='76' viewBox='0 0 76 76'%3E%3Ccircle cx='10' cy='12' r='2.6' fill='%23EE9443' fill-opacity='.5'/%3E%3Crect x='38' y='7' width='8' height='3.4' rx='1.7' transform='rotate(28 42 8.7)' fill='%238F7FD3' fill-opacity='.42'/%3E%3Cpath d='M18 44q3-4.5 6 0t6 0' stroke='%23E0707E' stroke-opacity='.48' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='60' cy='36' r='2.2' fill='%235B9BD5' fill-opacity='.42'/%3E%3Crect x='6' y='60' width='7' height='3.2' rx='1.6' transform='rotate(-32 9.5 61.6)' fill='%23E2A42E' fill-opacity='.55'/%3E%3Ccircle cx='66' cy='66' r='1.8' fill='%235FA374' fill-opacity='.45'/%3E%3Cpath d='M46 58l2.2 2.2M48.2 58L46 60.2' stroke='%23EE9443' stroke-opacity='.5' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  /* the avatar's ring over the banner (the same light ring as the Profil tab's gliding avatar) */
+  --lt-avatar-ring: 0 0 0 3px color-mix(in srgb, var(--hl) 86%, transparent), 0 12px 28px -10px color-mix(in srgb, var(--shade) 42%, transparent);
+}
+
+/* ---- banner surface ------------------------------------------------------------------------------------- */
+.lb-banner {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.lb-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--lb-sunrise-solid);
+  background-image: var(--lb-sunrise);
+}
+.lb-art[data-banner='meadow'] { background-color: var(--lb-meadow-solid); background-image: var(--lb-meadow); }
+.lb-art[data-banner='sky'] { background-color: var(--lb-sky-solid); background-image: var(--lb-sky); }
+.lb-art[data-banner='berry'] { background-color: var(--lb-berry-solid); background-image: var(--lb-berry); }
+.lb-art[data-banner='dusk'] { background-color: var(--lb-dusk-solid); background-image: var(--lb-dusk); }
+.lb-art[data-banner='bunnies'] {
+  background-color: var(--lb-bunnies);
+  background-image: var(--lb-bunnies-art), linear-gradient(180deg, color-mix(in srgb, var(--hl) 35%, transparent), rgba(255, 255, 255, 0));
+  background-size: 72px 64px, 100% 100%;
+}
+.lb-art[data-banner='carrots'] {
+  background-color: var(--lb-carrots);
+  background-image: var(--lb-carrots-art), linear-gradient(180deg, color-mix(in srgb, var(--hl) 35%, transparent), rgba(255, 255, 255, 0));
+  background-size: 70px 70px, 100% 100%;
+}
+.lb-art[data-banner='confetti'] {
+  background-color: var(--lb-confetti);
+  background-image: var(--lb-confetti-art), linear-gradient(180deg, color-mix(in srgb, var(--hl) 35%, transparent), rgba(255, 255, 255, 0));
+  background-size: 76px 76px, 100% 100%;
+}
+/* a soft light from the top left on every banner: it reads as paper, not as a flat block */
+.lb-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(90% 120% at 12% 0%, color-mix(in srgb, var(--hl) 42%, transparent) 0%, rgba(255, 255, 255, 0) 60%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 55%, transparent), inset 0 1px 0 color-mix(in srgb, var(--hl) 85%, transparent);
+  border-radius: inherit;
+}
+/* reduced transparency (OS or the app's setting): one solid colour, no gradient, no pattern */
+@media (prefers-reduced-transparency: reduce) {
+  .lb-art { background-image: none !important; }
+  .lb-banner::after { background: none; }
+}
+:root[data-transparency='reduce'] .lb-art { background-image: none !important; }
+:root[data-transparency='reduce'] .lb-banner::after { background: none; }
+
+/* ---- the tab's bar -------------------------------------------------------------------------------------- */
+.lt-stats { position: relative; }
+/* Pompon, the Lists buddy (ListsBuddy.tsx, Felix 25.10; the bunny since the evening): the stage he lives in (his layer is absolutely placed in
+   it) and the colours of his little effects per theme (the package reads these custom properties). His home row
+   between the name and the tiles stays reserved while he is on (.lt-stats[data-buddy-room] below). */
+.lt-buddy-stage {
+  position: relative;
+  --buddy-bang: var(--accent-text);
+  --buddy-halo: var(--bg);
+  --buddy-z: light-dark(#C9845D, #D9A27A);
+  --buddy-puff: light-dark(#FFFFFF, #3A302A);
+  --buddy-puff-rim: light-dark(rgba(140, 105, 80, .45), rgba(255, 214, 170, .3));
+  --buddy-dust: light-dark(rgba(170, 135, 100, .55), rgba(210, 180, 150, .35));
+}
+/* the "Meine · Freunde" switch is his ceiling (data-buddy-ceiling, Felix 25.10: it covered the bunny): he never stands
+   right under it. At rest he is drawn in front of it (a hop past it never vanishes behind it); stuck under the bar it
+   covers him like every other content scrolling under the bar. The switch stays tappable: his layer catches the
+   finger only on his body. */
+.lt-buddy-stage .bd-layer { z-index: calc(var(--z-sticky) - 1); }
+.lt-buddy-stage:not(:has(.lt-segment[data-stuck])) .bd-layer { z-index: calc(var(--z-sticky) + 1); }
+.lt-bar-title {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  color: var(--text);
+}
+/* the small avatar lands left of the title; the title itself stays centred */
+.lt-bar-slot {
+  position: absolute;
+  right: calc(100% + var(--sp-2));
+  top: 50%;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  margin-top: -13px;
+  place-items: center;
+  opacity: clamp(0, calc((var(--collapse, 0) - 0.72) * 3.6), 1);
+}
+.lt-float {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 88px;
+  height: 88px;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+.lt-avatar {
+  box-shadow: var(--lt-avatar-ring);
+}
+
+/* ---- the header: banner, avatar, name, counters ----------------------------------------------------------- */
+.lt-hero {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--sp-2);
+}
+.lt-banner {
+  height: 132px;
+  border-radius: var(--r-card);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--shade) 5%, transparent), 0 14px 30px -18px color-mix(in srgb, var(--shade) 34%, transparent);
+}
+.lt-banner-edit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.lt-id {
+  /* positioned: drawn above the (positioned) banner it overlaps */
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 52px;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  margin-top: -44px;
+  padding-left: var(--sp-4);
+}
+.lt-avatar-slot {
+  display: grid;
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  place-items: center;
+}
+.lt-name {
+  min-width: 0;
+  padding-bottom: 6px;
+  overflow-wrap: anywhere;
+  font-family: var(--font-display);
+  font-size: var(--fs-title-2);
+  line-height: var(--lh-title-2);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-wrap: balance;
+}
+.lt-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin-top: var(--sp-5);
+}
+.lt-stats[data-buddy-room] { margin-top: 68px; }
+.lt-stat {
+  display: flex;
+  min-height: 76px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 22px;
+  text-align: left;
+  color: var(--text);
+}
+.lt-stat:focus-visible {
+  box-shadow: var(--ring), var(--panel-shadow);
+}
+.lt-stat-value {
+  font-family: var(--font-display);
+  font-size: var(--fs-title-1);
+  line-height: var(--lh-title-1);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.lt-stat-label {
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  font-weight: 600;
+  color: var(--text-2);
+}
+.lt-people {
+  display: flex;
+  min-height: var(--hit);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+.lt-people-link {
+  display: inline-flex;
+  min-height: var(--hit);
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+  margin-left: calc(var(--sp-2) * -1);
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-full);
+  font-size: var(--fs-subhead);
+  font-weight: 600;
+  color: var(--text-2);
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.lt-people-link:active { background-color: var(--fill); }
+.lt-requests {
+  position: relative;
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--sp-3) 0 10px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-footnote);
+  font-weight: 700;
+  color: var(--accent-text);
+  background-color: color-mix(in oklab, var(--accent-100) 80%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 60%, transparent), inset 0 1px 0 color-mix(in srgb, var(--hl) 90%, transparent);
+}
+.lt-requests::before {
+  content: '';
+  position: absolute;
+  inset: -5px 0;
+}
+.lt-requests-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-500);
+}
+
+/* ---- the sticky switch: on the page at rest; stuck under the bar it gets the bar's glass, edge to edge,
+       so the two read as one bar (iOS: a navigation bar with its segmented control) ------------------------- */
+.lt-segment {
+  position: sticky;
+  top: calc(var(--topbar-h) + var(--sa-top));
+  /* a counter tile scrolls the switch right under the bar, not behind it */
+  scroll-margin-top: calc(var(--topbar-h) + var(--sa-top));
+  z-index: var(--z-sticky);
+  margin-top: var(--sp-4);
+  padding: 6px 0 8px;
+}
+.lt-segment::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(-1 * max(var(--gutter), var(--sa-left)));
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--solid, var(--bar-bg));
+  -webkit-backdrop-filter: var(--solid-off, var(--bar-backdrop));
+  backdrop-filter: var(--solid-off, var(--bar-backdrop));
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--hl) 70%, transparent), 0 0.5px 0 var(--separator);
+  opacity: 0;
+  transition: opacity var(--dur-s) var(--ease-out);
+}
+.lt-segment[data-stuck]::before { opacity: 1; }
+/* the bar's own lower edge would draw a second line right above the switch's strip */
+.lt-bar[data-collapsed]::before { box-shadow: none; }
+
+/* ---- "Meine": the grid and its cards ---------------------------------------------------------------------- */
+.lc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lc-grid > li { display: flex; min-width: 0; }
+.lc-card {
+  --card-tint: var(--tint-1);
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 168px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--sp-3) var(--sp-3) var(--sp-3);
+  border-radius: 24px;
+  overflow: hidden;
+  color: var(--text);
+  text-align: left;
+  background-image:
+    linear-gradient(162deg, var(--card-tint) 0%, rgba(255, 255, 255, 0) 58%),
+    var(--solid-panel-sheen, var(--panel-sheen));
+  -webkit-tap-highlight-color: transparent;
+}
+.lc-card[data-tone='2'] { --card-tint: var(--tint-2); }
+.lc-card[data-tone='3'] { --card-tint: var(--tint-3); }
+.lc-card[data-tone='4'] { --card-tint: var(--tint-4); }
+.lc-card[data-past] { opacity: 0.86; }
+.lc-card:focus-visible { box-shadow: var(--ring), var(--panel-shadow); outline: none; }
+.lc-concealed { opacity: 0; }
+.lc-cover { display: flex; margin-bottom: var(--sp-3); }
+.lc-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+  font-size: var(--fs-headline);
+  line-height: var(--lh-headline);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.lc-count {
+  margin-top: 2px;
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  color: var(--text-2);
+}
+.lc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: var(--sp-3);
+}
+.lc-chip {
+  display: inline-flex;
+  height: 24px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-caption-1);
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-2);
+  background-color: var(--fill);
+}
+.lc-chip[data-visibility='followers'] { color: var(--ok-text); background-color: color-mix(in oklab, var(--ok-bg) 80%, transparent); }
+.lc-chip-date { color: var(--text); background-color: color-mix(in srgb, var(--hl) 55%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 70%, transparent); }
+.lc-chip-date[data-soon] { color: var(--accent-text); background-color: color-mix(in oklab, var(--accent-100) 85%, transparent); }
+/* the cover tile (tone + symbol): the kit's tile inks */
+.lc-tile {
+  background-color: var(--tile-1);
+  color: var(--tile-1-fg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 60%, transparent), 0 6px 14px -8px color-mix(in srgb, var(--shade) 35%, transparent);
+}
+.lc-tile[data-tone='2'] { background-color: var(--tile-2); color: var(--tile-2-fg); }
+.lc-tile[data-tone='3'] { background-color: var(--tile-3); color: var(--tile-3-fg); }
+.lc-tile[data-tone='4'] { background-color: var(--tile-4); color: var(--tile-4-fg); }
+/* a card that just landed: a warm light that comes and goes (opacity only) */
+.lc-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px var(--accent-300);
+  background: radial-gradient(80% 80% at 30% 20%, light-dark(rgba(255, 214, 170, 0.45), rgba(255, 170, 104, 0.16)), transparent 70%);
+  animation: lc-glow 1.4s var(--ease-out) both;
+}
+@keyframes lc-glow {
+  0% { opacity: 0; }
+  18% { opacity: 1; }
+  100% { opacity: 0; }
+}
+/* motion "Aus": nothing animates — no glow at all */
+:root[data-motion='off'] .lc-glow { animation: none; opacity: 0; }
+/* "+ Neue Liste" — the dashed first tile */
+.lc-new {
+  display: flex;
+  width: 100%;
+  min-height: 168px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  border: 2px dashed color-mix(in oklab, var(--accent-400) 55%, transparent);
+  border-radius: 24px;
+  color: var(--accent-text);
+  background-color: color-mix(in oklab, var(--accent-50) 55%, transparent);
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.lc-new:active { background-color: color-mix(in oklab, var(--accent-100) 70%, transparent); }
+.lc-new:focus-visible { box-shadow: var(--ring); outline: none; }
+.lc-new-plus {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-on-accent);
+  background-color: var(--accent-300);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--hl) 60%, transparent), 0 8px 16px -10px rgba(152, 74, 20, 0.6);
+}
+.lc-new-label { font-size: var(--fs-subhead); font-weight: 700; }
+.lc-past-toggle {
+  display: inline-flex;
+  min-height: var(--hit);
+  align-items: center;
+  gap: var(--sp-2);
+  align-self: flex-start;
+  padding: 0 var(--sp-2);
+  margin-left: calc(var(--sp-2) * -1);
+  border-radius: var(--r-full);
+  font-size: var(--fs-headline);
+  font-weight: 700;
+  color: var(--text-2);
+}
+.lc-past-toggle:active { background-color: var(--fill); }
+/* the empty "Meine": the card Pompon holds — with a faint empty list card inside */
+.lc-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-8) var(--sp-5) var(--sp-5);
+  border-radius: var(--r-card);
+  text-align: center;
+  background-image:
+    radial-gradient(90% 60% at 50% 0%, var(--tint-1) 0%, rgba(255, 255, 255, 0) 70%),
+    var(--solid-panel-sheen, var(--panel-sheen));
+}
+.lc-empty-card {
+  display: flex;
+  width: 112px;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: var(--sp-1);
+  padding: 14px 14px 18px;
+  border: 2px dashed color-mix(in oklab, var(--accent-400) 45%, transparent);
+  border-radius: 18px;
+  background-color: color-mix(in srgb, var(--hl) 50%, transparent);
+}
+.lc-empty-line {
+  display: block;
+  height: 8px;
+  width: 100%;
+  border-radius: var(--r-full);
+  background-color: color-mix(in oklab, var(--accent-200) 70%, transparent);
+}
+.lc-empty-line-short { width: 58%; }
+.lc-templates {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+/* ---- "Freunde" -------------------------------------------------------------------------------------------- */
+/* a horizontal rail, edge to edge; the generous inner padding (taken back by the negative margins) gives the
+   cards' soft shadows room — a scroll container clips everything outside its padding box */
+.lf-rail {
+  display: flex;
+  gap: var(--sp-3);
+  margin: -10px calc(-1 * max(var(--gutter), var(--sa-left))) -22px calc(-1 * max(var(--gutter), var(--sa-left)));
+  padding: 10px max(var(--gutter), var(--sa-left)) 34px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(var(--gutter), var(--sa-left));
+  scrollbar-width: none;
+  list-style: none;
+}
+.lf-rail::-webkit-scrollbar { display: none; }
+.lf-rail-item {
+  display: flex;
+  width: 216px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+.lf-rail-item-small { width: 168px; }
+.lf-rail .lc-card { min-height: 0; padding-bottom: var(--sp-4); }
+.lf-soon-top {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+}
+.lf-person {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.lf-person-text {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+.lf-person-line {
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.lf-person-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-headline);
+  line-height: var(--lh-headline);
+  font-weight: 700;
+  color: var(--text);
+}
+/* avatar and name open the profile (FriendsSection PersonBlock, Felix 25.10) */
+.lf-person-avatar { flex: none; display: block; border-radius: var(--r-full); -webkit-tap-highlight-color: transparent; }
+.lf-person-link { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; color: inherit; border-radius: var(--r-xs); -webkit-tap-highlight-color: transparent; }
+.lf-person-link:focus-visible { outline: none; box-shadow: var(--ring); }
+.lf-new-dot {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--accent-500);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent-100) 80%, transparent);
+}
+.lf-direction {
+  position: relative;
+  display: inline-flex;
+  height: 22px;
+  align-items: center;
+  padding: 0 8px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-caption-1);
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--text-2);
+  background-color: var(--fill);
+}
+/* the tap target of "Folgt dir nicht" is 44 px tall even though the chip is small */
+button.lf-direction::before { content: ''; position: absolute; inset: -11px -6px; }
+.lf-direction-mutual { color: var(--accent-text); background-color: color-mix(in oklab, var(--accent-100) 80%, transparent); }
+.lf-why {
+  margin-top: -4px;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: 14px;
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  color: var(--text-2);
+  background-color: var(--fill);
+}
+.lf-none {
+  padding-left: calc(44px + var(--sp-3));
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  color: var(--text-2);
+}
+.lf-new-count { font-weight: 700; color: var(--accent-text); }
+.lf-suggestions { margin: 0; padding: var(--sp-1) 0; list-style: none; border-radius: 22px; }
+.lf-suggestion {
+  display: flex;
+  min-height: 64px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+}
+.lf-suggestion-text { min-width: 0; flex: 1 1 0; }
+.lf-suggestion-action { display: flex; flex-shrink: 0; }
+.lf-suggestion + .lf-suggestion { box-shadow: inset 0 1px 0 var(--separator); }
+.lf-asked {
+  display: inline-flex;
+  height: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  font-size: var(--fs-subhead);
+  font-weight: 600;
+  color: var(--text-2);
+  background-color: var(--fill);
+}
+.lf-suggest-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: 22px;
+}
+.lf-plans-toggle {
+  display: flex;
+  min-height: 64px;
+  width: 100%;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 22px;
+}
+.lf-plans-toggle:focus-visible { box-shadow: var(--ring), var(--panel-shadow); outline: none; }
+.lf-plans { display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-4); border-radius: 22px; }
+.lf-plans-list { margin: 0; padding: var(--sp-1) 0; list-style: none; border-radius: 22px; }
+.lf-plan {
+  display: flex;
+  min-height: 60px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+  color: var(--text);
+}
+.lf-plans-list > li + li { box-shadow: inset 0 1px 0 var(--separator); }
+.lf-plan-mark {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-3);
+  background-color: var(--fill);
+}
+.lf-plan-mark[data-active] { color: var(--accent-text); background-color: var(--accent-100); }
+.lf-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-5) var(--sp-6);
+  border-radius: var(--r-card);
+  text-align: center;
+  background-image:
+    radial-gradient(90% 60% at 50% 0%, var(--tint-3) 0%, rgba(255, 255, 255, 0) 70%),
+    var(--solid-panel-sheen, var(--panel-sheen));
+}
+.lf-how { display: flex; width: 100%; flex-direction: column; gap: var(--sp-2); text-align: left; }
+.lf-how-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  counter-reset: how;
+  list-style: none;
+}
+.lf-how-list > li {
+  position: relative;
+  padding-left: 34px;
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  color: var(--text);
+  counter-increment: how;
+}
+.lf-how-list > li::before {
+  content: counter(how);
+  position: absolute;
+  left: 0;
+  top: -1px;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  font-size: var(--fs-caption-1);
+  font-weight: 700;
+  color: var(--accent-text);
+  background-color: var(--accent-100);
+}
+
+/* ---- the sheets ------------------------------------------------------------------------------------------- */
+.lcs-label {
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.lcs-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.lcs-look { display: flex; flex-direction: column; gap: var(--sp-4); padding: var(--sp-4); border-radius: 24px; }
+.lcs-tones { display: flex; gap: var(--sp-3); }
+.lcs-tone {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--tile-1-fg);
+  background-color: var(--tile-1);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 70%, transparent), 0 4px 10px -6px color-mix(in srgb, var(--shade) 40%, transparent);
+}
+.lcs-tone[data-tone='2'] { color: var(--tile-2-fg); background-color: var(--tile-2); }
+.lcs-tone[data-tone='3'] { color: var(--tile-3-fg); background-color: var(--tile-3); }
+.lcs-tone[data-tone='4'] { color: var(--tile-4-fg); background-color: var(--tile-4); }
+.lcs-tone[aria-checked='true'] { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent-text); }
+.lcs-tone:focus-visible { outline: none; box-shadow: var(--ring); }
+.lcs-icons { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--sp-2); }
+.lcs-icon {
+  display: grid;
+  aspect-ratio: 1;
+  min-height: 44px;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--text-2);
+  background-color: var(--fill);
+  transition: background-color var(--dur-xs) var(--ease-out), color var(--dur-xs) var(--ease-out);
+}
+.lcs-icon-on { color: var(--tile-1-fg); background-color: var(--tile-1); box-shadow: inset 0 0 0 1.5px currentColor; }
+.lcs-icon-on[data-tone='2'] { color: var(--tile-2-fg); background-color: var(--tile-2); }
+.lcs-icon-on[data-tone='3'] { color: var(--tile-3-fg); background-color: var(--tile-3); }
+.lcs-icon-on[data-tone='4'] { color: var(--tile-4-fg); background-color: var(--tile-4); }
+.lcs-icon:focus-visible { outline: none; box-shadow: var(--ring); }
+.lcs-date { padding: var(--sp-1) 0; border-radius: 24px; overflow: hidden; }
+.lcs-who { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); }
+.lcs-who-option {
+  display: flex;
+  min-height: 104px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+  border-radius: 22px;
+  text-align: left;
+  color: var(--text);
+}
+.lcs-who-on { box-shadow: inset 0 0 0 2px var(--accent-text), var(--panel-shadow); background-color: color-mix(in oklab, var(--accent-50) 70%, transparent); }
+.lcs-who-option:focus-visible { box-shadow: var(--ring), var(--panel-shadow); outline: none; }
+.lcs-who-head { display: flex; width: 100%; align-items: center; justify-content: space-between; margin-bottom: var(--sp-2); }
+.lcs-who-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--accent-text);
+  background-color: var(--accent-100);
+}
+.lcs-who-icon svg { width: 18px; height: 18px; }
+.lcs-who-radio {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--text-3);
+}
+.lcs-who-on .lcs-who-radio, .ls-choice-on .lcs-who-radio { box-shadow: inset 0 0 0 2px var(--accent-text); }
+.lcs-who-dot { width: 12px; height: 12px; border-radius: 50%; background-color: var(--accent-text); }
+.lcs-who-title { font-size: var(--fs-headline); line-height: var(--lh-headline); font-weight: 700; }
+.lcs-who-hint { font-size: var(--fs-footnote); line-height: var(--lh-footnote); color: var(--text-2); }
+/* the banner sheet */
+.lb-preview { position: relative; padding-bottom: 6px; }
+.lb-preview-banner { height: 96px; border-radius: 22px; }
+.lb-preview-id { position: relative; z-index: 1; display: flex; align-items: flex-end; gap: var(--sp-3); margin-top: -28px; padding-left: var(--sp-3); }
+.lb-preview-avatar { box-shadow: var(--lt-avatar-ring); }
+.lb-preview-name { padding-bottom: 2px; color: var(--text); }
+.lb-choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); }
+.lb-choice { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 6px; border-radius: 16px; }
+.lb-choice:focus-visible { outline: none; box-shadow: var(--ring); }
+.lb-swatch {
+  width: 100%;
+  aspect-ratio: 1.55;
+  border-radius: 16px;
+  transition: transform var(--dur-snappy) var(--ease-snappy);
+}
+.lb-choice[data-pressed] .lb-swatch { transform: scale(0.94); }
+.lb-choice[aria-checked='true'] .lb-swatch { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent-text); }
+.lb-swatch-check {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-on-accent);
+  background-color: var(--accent-300);
+  box-shadow: 0 2px 6px -2px color-mix(in srgb, var(--shade) 50%, transparent);
+}
+.lb-choice-label {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  text-align: center;
+  line-height: 1.25;
+  font-size: var(--fs-caption-1);
+  font-weight: 600;
+  color: var(--text-2);
+}
+.lb-choice[aria-checked='true'] .lb-choice-label { color: var(--text); }
+
+/* ---- a list's screen ---------------------------------------------------------------------------------------- */
+.ls-title-block { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+.ls-title-block > h1 { margin-top: var(--sp-1); }
+.ls-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  color: var(--text-2);
+}
+.ls-private {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4);
+  border-radius: 22px;
+  background-image:
+    linear-gradient(100deg, color-mix(in oklab, var(--accent-100) 70%, transparent) 0%, rgba(255, 255, 255, 0) 70%),
+    var(--solid-panel-sheen, var(--panel-sheen));
+}
+.ls-private > button { grid-column: 2; justify-self: start; white-space: normal; min-height: 44px; }
+.ls-private-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--accent-text);
+  background-color: var(--accent-100);
+}
+.ls-private-icon svg { width: 17px; height: 17px; }
+.ls-warning {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 18px;
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  color: var(--text);
+  background-color: color-mix(in oklab, var(--danger-bg) 80%, transparent);
+}
+.ls-choice {
+  display: flex;
+  min-height: 72px;
+  width: 100%;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 22px;
+  color: var(--text);
+}
+.ls-choice-on { box-shadow: inset 0 0 0 2px var(--accent-text), var(--panel-shadow); }
+.ls-choice:focus-visible { box-shadow: var(--ring), var(--panel-shadow); outline: none; }
+.ls-owner { position: relative; }
+.ls-owner-banner { height: 84px; border-radius: 24px; }
+.ls-owner-id { position: relative; z-index: 1; display: flex; align-items: flex-end; gap: var(--sp-3); margin-top: -30px; padding-left: var(--sp-4); }
+.ls-owner-name { padding-bottom: 4px; color: var(--text); }
+
+/* the calm "Bald verfügbar" card (flag off) */
+.lt-soon {
+  background-image:
+    radial-gradient(90% 60% at 50% 0%, var(--tint-1) 0%, rgba(255, 255, 255, 0) 70%),
+    var(--solid-panel-sheen, var(--panel-sheen));
+}
+
+/* narrow phones (320 px): one more breath for the counters and the grid */
+@media (max-width: 359px) {
+  .lt-stat { min-height: 68px; padding: var(--sp-2) var(--sp-3); }
+  .lt-stat-value { font-size: var(--fs-title-2); line-height: var(--lh-title-2); }
+  .lc-card, .lc-new { min-height: 156px; border-radius: 22px; }
+  .lcs-icons { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lb-choices { gap: var(--sp-2); }
+  /* "Aus deinen Anlässen": name + occasion get the row, [Folgen anfragen] goes under them */
+  .lf-suggestion { flex-wrap: wrap; row-gap: var(--sp-2); padding-top: var(--sp-3); padding-bottom: var(--sp-3); }
+  .lf-suggestion-text { flex-basis: calc(100% - 40px - var(--sp-3)); }
+  .lf-suggestion-action { margin-left: calc(40px + var(--sp-3)); }
+}
+
+/* ---- wave 2 (Felix 22.10): cover photos, the wish picture, the card's ⋯, the counters, the list's hero ------ */
+/* the card and its ⋯ live side by side in one slot (the ⋯ is its own button, never inside the card's link) */
+.lc-slot {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+}
+.lc-body {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.lc-by {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  color: var(--text-2);
+}
+.lf-stack-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+
+/* the ⋯ on the card's top right: a 44 px target with a small round glass dot inside */
+.lc-more {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 2;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+.lc-more::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: inherit;
+  background-color: color-mix(in oklab, var(--surface) 80%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 60%, transparent), 0 2px 8px -4px color-mix(in srgb, var(--shade) 35%, transparent);
+}
+.lc-more > svg { position: relative; }
+.lc-more:focus-visible { outline: none; }
+.lc-more:focus-visible::before { box-shadow: var(--ring); }
+/* the cover's file picker stays in the page, invisible */
+.lc-file {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* a card WITH a cover: the photo fills the card, a scrim at the bottom keeps the white title readable */
+.lc-card[data-photo] { min-height: 176px; color: #fff; background-image: none; }
+.lf-rail .lc-card[data-photo] { min-height: 176px; }
+.lc-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background-color: var(--card-tint);
+}
+.lc-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(32, 20, 10, 0) 22%, rgba(32, 20, 10, 0.32) 52%, rgba(32, 20, 10, 0.72) 100%);
+}
+.lcv-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--dur-l) var(--ease-out);
+}
+.lcv-img[data-loaded] { opacity: 1; }
+.lc-card[data-photo] > :not(.lc-photo):not(.lc-glow):not(.lc-photo-busy) { position: relative; z-index: 1; }
+/* owner card: title + picture + chips at the bottom; friend card: its date chip on top, the rest at the bottom */
+.lc-card[data-photo] > .lc-body { margin-top: auto; }
+.lc-card[data-photo] > .lc-body + .lc-meta { margin-top: 0; padding-top: var(--sp-2); }
+.lc-card[data-photo] > .lc-photo + .lc-meta { margin-top: 0; padding-top: 0; }
+.lc-card[data-photo] .lc-title { color: #fff; text-shadow: 0 1px 8px rgba(32, 20, 10, 0.45); }
+.lc-card[data-photo] .lc-by,
+.lc-card[data-photo] .lf-new-count { color: rgba(255, 255, 255, 0.94); text-shadow: 0 1px 6px rgba(32, 20, 10, 0.5); }
+.lc-card[data-photo] .lc-chip {
+  color: var(--text);
+  background-color: color-mix(in oklab, var(--surface) 86%, transparent);
+  box-shadow: none;
+}
+.lc-card[data-photo] .lc-chip-date[data-soon] { color: var(--accent-text); }
+/* my cover change on its way: a soft veil with the spinner */
+.lc-photo-busy {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  background-color: color-mix(in oklab, var(--surface) 45%, transparent);
+}
+
+/* ---- the wish picture: up to three overlapping round thumbnails + "+4" (the number is said as text) ---------- */
+.lc-stack { display: inline-flex; min-height: 28px; align-items: center; }
+.lc-stack-dots { display: inline-flex; align-items: center; }
+.lc-stack-photo {
+  position: relative;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  overflow: hidden;
+  border-radius: var(--r-full);
+  background-color: var(--wish-photo-bg, #fff);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+.lc-stack-photo + .lc-stack-photo,
+.lc-stack-photo + .lc-stack-more { margin-left: -8px; }
+.lc-stack-photo > span { width: 100%; height: 100%; }
+/* round: more air, so a square product's corners stay inside the circle */
+.lc-stack-photo .wish-thumb-img { border-radius: inherit; box-shadow: none; padding: 15%; }
+.lc-stack-dot {
+  position: relative;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: var(--r-full);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 800;
+}
+/* the shop's icon inside the round dot (ShopTile.tsx ShopIcon, white backing) */
+.lc-stack-dot .shop-icon { --shop-icon-pad: 4px; }
+/* not known yet: a little quieter (no spinner; nothing jumps when the real ones come) */
+.lc-stack-dot[data-placeholder] { opacity: 0.7; }
+.lc-stack-more {
+  position: relative;
+  display: inline-grid;
+  min-width: 28px;
+  height: 28px;
+  flex: none;
+  place-items: center;
+  padding: 0 7px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-caption-1);
+  line-height: 1;
+  font-weight: 700;
+  /* solid (the fill over the card colour): it overlaps the last photo, which must not show through the number
+     (Felix 30.10: "сливается с фоном кружка") */
+  color: var(--text);
+  background: linear-gradient(var(--fill-2), var(--fill-2)), var(--surface);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+/* an empty list: a dashed empty slot with a tiny gift outline */
+.lc-stack-empty {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1.5px dashed color-mix(in oklab, var(--text-3) 70%, transparent);
+  border-radius: var(--r-full);
+  color: var(--text-3);
+}
+/* on a cover photo: white rings, the bubble a light glass */
+.lc-stack[data-on-photo] .lc-stack-photo,
+.lc-stack[data-on-photo] .lc-stack-more { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.95); }
+/* the bubble is light in EVERY theme here, so its ink is a fixed dark one (var(--text) is light in the dark themes) */
+.lc-stack[data-on-photo] .lc-stack-more { color: #2A231C; background: rgba(255, 255, 255, 0.92); }
+.lc-stack[data-on-photo] .lc-stack-empty { border-color: rgba(255, 255, 255, 0.85); color: #fff; }
+
+/* ---- the two counters: icon + big number + word -------------------------------------------------------------- */
+/* icon + number on one line, the word under them over the whole width (fits "Mit dir geteilt" at 390 px) */
+.lt-stat {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  align-content: center;
+  column-gap: var(--sp-2);
+  row-gap: 2px;
+}
+.lt-stat-text { display: contents; }
+.lt-stat-value { grid-column: 2; }
+.lt-stat-label { grid-column: 1 / -1; }
+.lt-stat-icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--accent-text);
+  background-color: color-mix(in oklab, var(--accent-100) 85%, transparent);
+}
+.lt-stat[data-kind='shared'] .lt-stat-icon { color: var(--ok-text); background-color: color-mix(in oklab, var(--ok-bg) 85%, transparent); }
+.lt-stat[data-zero] .lt-stat-icon { color: var(--text-2); background-color: var(--fill); }
+.lt-stat-icon svg { width: 20px; height: 20px; }
+.lt-stat-label { overflow-wrap: anywhere; }
+
+/* ---- a list's screen with a cover: the photo full-bleed from the top, dissolving into the paper -------------- */
+.ls-cover {
+  --ls-cover-fade: 88px;
+  --ls-cover-overlap: 64px;
+  position: relative;
+  z-index: 0;
+  flex: none;
+  margin-top: calc(-1 * (var(--topbar-h) + var(--sa-top)));
+  margin-left: calc(-1 * max(var(--gutter), var(--sa-left)));
+  margin-right: calc(-1 * max(var(--gutter), var(--sa-right)));
+  margin-bottom: calc(-1 * var(--ls-cover-overlap));
+  aspect-ratio: 4 / 3;
+  max-height: 400px;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - var(--ls-cover-fade)), transparent 100%);
+  mask-image: linear-gradient(to bottom, black calc(100% - var(--ls-cover-fade)), transparent 100%);
+}
+/* the tint the photo arrives on: the list's colour with a soft light from the top left */
+.ls-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--ls-cover-tint, var(--tint-1));
+  background-image: radial-gradient(90% 70% at 22% 18%, color-mix(in srgb, var(--hl) 42%, transparent) 0%, rgba(255, 255, 255, 0) 62%);
+}
+.ls-cover[data-tint='1'] { --ls-cover-tint: color-mix(in srgb, var(--tint-1-solid) 60%, transparent); }
+.ls-cover[data-tint='2'] { --ls-cover-tint: color-mix(in srgb, var(--tint-2-solid) 60%, transparent); }
+.ls-cover[data-tint='3'] { --ls-cover-tint: color-mix(in srgb, var(--tint-3-solid) 60%, transparent); }
+.ls-cover[data-tint='4'] { --ls-cover-tint: color-mix(in srgb, var(--tint-4-solid) 60%, transparent); }
+/* the content starts on the photo's dissolving edge */
+.ls-covered { position: relative; z-index: 1; }
+/* reduced transparency: a straight edge, nothing over the photo */
+@media (prefers-reduced-transparency: reduce) {
+  .ls-cover { margin-bottom: var(--sp-2); -webkit-mask-image: none; mask-image: none; }
+}
+:root[data-transparency='reduce'] .ls-cover { margin-bottom: var(--sp-2); -webkit-mask-image: none; mask-image: none; }
+/* who the list is from: a small chip next to the wish picture (a list with a cover has no banner header) */
+.ls-owner-chip {
+  display: inline-flex;
+  height: 32px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px 0 4px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-footnote);
+  line-height: 1;
+  font-weight: 600;
+  color: var(--text);
+  background-color: color-mix(in oklab, var(--surface) 80%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 60%, transparent);
+}
+.ls-owner-avatar { flex: none; }
+/* "Titelbild wird gespeichert …" under the header */
+.ls-cover-busy {
+  display: inline-flex;
+  height: 36px;
+  align-self: flex-start;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0 14px 0 10px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-footnote);
+  font-weight: 600;
+  color: var(--text-2);
+}
+.ls-cover-busy .spinner { width: 14px; height: 14px; }
+/* the move picker when there is no other list */
+.ls-move-empty {
+  margin: 0;
+  padding: var(--sp-4);
+  border-radius: 20px;
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  color: var(--text-2);
+}
+
+@media (max-width: 359px) {
+  .lt-stat-icon { width: 30px; height: 30px; }
+  .lt-stat-icon svg { width: 17px; height: 17px; }
+  .lc-card[data-photo] { min-height: 160px; }
+}

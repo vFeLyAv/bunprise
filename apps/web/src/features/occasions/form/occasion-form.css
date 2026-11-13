@@ -1,0 +1,1001 @@
+/*
+ * occasion-form.css — the occasion form of wave 1 ("warm glass on paper"): the big title, the rows of the
+ * frosted groups, the inline calendar, the time wheel and the place sheet. The materials themselves are
+ * the kit's (.glass-panel groups, the ambient scene in --page-backdrop, ui/AmbientTint, ui/IconTile).
+ * A satellite stylesheet (docs/contract-ui.md §1): imported by form/parts.tsx, so Vite ships it with the
+ * occasion form's lazy chunk only — never with the shell or the invite landing. Plain classes + tokens,
+ * no Tailwind directives. Its own values live in the :root block below (prefix --of-), like scene.css.
+ *
+ * Rules kept: no backdrop-filter here (the groups lie on the scrolling page); transitions animate colour /
+ * opacity / transform only; reduced transparency makes the panels solid (kit); hit targets ≥ 44 px; focus
+ * is always visible (inset rings where an outer ring would be clipped by a group).
+ */
+:root {
+  /* pressed / hovered rows and the pills: a warm brown film by day, a warm light film at night */
+  --of-row-press: light-dark(rgba(116, 84, 44, 0.08), rgba(255, 230, 205, 0.09));
+  --of-row-hover: light-dark(rgba(116, 84, 44, 0.04), rgba(255, 230, 205, 0.05));
+  --of-pill-bg: light-dark(rgba(116, 84, 44, 0.08), rgba(255, 230, 205, 0.08));
+  /* the delete row's tile (the kit's IconTile has no red) — white glyph ≥ 3:1 */
+  --of-tile-danger: #c8432f;
+  /* the switch "on": the kit's one switch colour (tokens.css --switch-on + its 3:1 rim --switch-on-rim) — every
+     switch of the app looks the same (integration, wave 1) */
+  --of-switch-on: var(--switch-on);
+  /* the selected day */
+  --of-day-selected: var(--accent-400);
+  --of-day-selected-glow: 0 6px 14px -6px rgba(214, 112, 34, 0.75);
+  /* kinds of place suggestions: the --icon-* hues of the kit's tiles (tokens.css) */
+  --of-kind-cafe: #a86a35;
+  --of-kind-restaurant: var(--icon-apricot);
+  --of-kind-bar: var(--icon-lilac);
+  --of-kind-park: var(--icon-sage);
+  --of-kind-venue: var(--icon-honey);
+  --of-kind-address: var(--icon-sky);
+  --of-kind-city: #5b87ab;
+  --of-kind-other: var(--icon-rose);
+  --of-kind-free: var(--icon-apricot);
+  --of-kind-recent: var(--icon-ink);
+}
+
+/* ---- page, title ----------------------------------------------------------------------------------- */
+.of-page {
+  padding-top: var(--sp-2);
+}
+.of-eyebrow {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--accent-text);
+}
+.of-form {
+  display: flex;
+  flex-direction: column;
+}
+.of-title-block {
+  margin: var(--sp-1) 0 var(--sp-4);
+}
+.of-title {
+  position: relative;
+  padding-bottom: var(--sp-2);
+}
+/* the borderless title's focus: a warm underline grows from the left (keyboard and touch alike) */
+.of-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent-400);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-smooth) var(--ease-smooth);
+}
+.of-title:focus-within::after {
+  transform: scaleX(1);
+}
+.of-title-input {
+  display: block;
+  width: 100%;
+  min-height: var(--lh-display);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  resize: none;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  font-weight: var(--fw-display);
+  letter-spacing: var(--tracking-display);
+  color: var(--text);
+  caret-color: var(--accent-500);
+  field-sizing: content;
+  outline: none;
+}
+.of-title-input:focus-visible {
+  box-shadow: none;
+}
+/* the question in the empty title: the same size, a lighter weight (large text: 3:1 is kept with --text-3) */
+.of-title-input::placeholder {
+  font-weight: 600;
+}
+.of-title:has(.of-title-input[data-invalid="true"])::after {
+  transform: scaleX(1);
+  background: var(--danger-text);
+}
+
+/* ---- groups and rows -------------------------------------------------------------------------------- */
+/* the material is the kit's .glass-panel (app.css); this only places and clips the group */
+.of-group {
+  position: relative;
+  margin-top: var(--sp-3);
+  overflow: hidden;
+}
+.of-item {
+  position: relative;
+}
+/* inset separator between the rows of a group (after the icon column) */
+.of-item + .of-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 56px;
+  right: 0;
+  height: 1px;
+  background: var(--separator);
+  z-index: 1;
+}
+.of-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: 54px;
+  padding: 10px 14px 10px 13px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+label.of-row {
+  cursor: pointer;
+}
+.of-row-press {
+  cursor: pointer;
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.of-row-press:active {
+  background-color: var(--of-row-press);
+}
+@media (hover: hover) {
+  .of-row-press:hover {
+    background-color: var(--of-row-hover);
+  }
+}
+/* inside a clipped group the double outer ring would be cut off: an inset ring instead — rounded like the
+   group, so a row that gets the focus back (e.g. after choosing a place) reads as a soft lens, not a box */
+.of-row-press:focus-visible {
+  outline: none;
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 2px var(--accent-text);
+}
+.of-row-static {
+  min-height: 48px;
+  padding-bottom: 2px;
+}
+.of-row-text {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+}
+.of-row-label {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text);
+}
+.of-row-caption {
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  color: var(--text-2);
+}
+.of-row-sub {
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  color: var(--text-2);
+}
+.of-row-cta .of-row-label {
+  color: var(--accent-text);
+  font-weight: 600;
+}
+.of-row-chevron {
+  flex: none;
+  color: var(--text-3);
+}
+.of-row-split {
+  display: flex;
+  align-items: center;
+}
+.of-row-split > .of-row {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.of-row-split .of-row-label {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.of-row-split .of-row-clear {
+  margin-right: 6px;
+  color: var(--text-2);
+}
+.of-row-danger .of-row-label {
+  color: var(--danger-text);
+}
+
+/* the delete row's tile, drawn like the kit's IconTile */
+.of-tile-danger {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: #fff;
+  background-color: var(--of-tile-danger);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--hl) 28%, transparent), rgba(255, 255, 255, 0) 60%);
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 1px 2px color-mix(in srgb, var(--shade) 14%, transparent);
+}
+.of-tile-danger svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* the date row's icon: a little calendar leaf (month band + day) */
+.of-leaf {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--shade) 20%, transparent), 0 1px 2px color-mix(in srgb, var(--shade) 16%, transparent);
+}
+.of-leaf-month {
+  height: 10px;
+  background: var(--icon-apricot);
+  color: #fff;
+  font-size: 7.5px;
+  line-height: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.of-leaf-day > span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.of-leaf-day {
+  position: relative;
+  display: grid;
+  flex: 1 1 auto;
+  place-items: center;
+  overflow: hidden;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* the value on the right of a row */
+.of-pill {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: 34px;
+  max-width: 62%;
+  padding: 0 12px;
+  border-radius: var(--r-full);
+  background: var(--of-pill-bg);
+  color: var(--text);
+  font-size: var(--fs-subhead);
+  line-height: 1;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transition: background-color var(--dur-s) var(--ease-out), color var(--dur-s) var(--ease-out);
+}
+.of-pill[data-placeholder] {
+  color: var(--accent-text);
+}
+.of-pill[data-active] {
+  background: var(--accent-100);
+  color: var(--accent-text);
+}
+.of-pill[data-invalid] {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+/* hints and errors under a group */
+.of-message {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin: 6px 6px 0;
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  color: var(--text-2);
+}
+.of-message[data-error] {
+  color: var(--danger-text);
+  font-weight: 500;
+}
+.of-message-icon {
+  display: inline-flex;
+  flex: none;
+  margin-top: 1px;
+}
+.of-title-block .of-message {
+  margin-top: 4px;
+}
+/* the counter sits at the right; an error reads from the left like every other message */
+.of-title-block .of-message:not([data-error]) {
+  justify-content: flex-end;
+}
+.of-counter {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.of-counter[data-over] {
+  color: var(--danger-text);
+}
+
+/* the switch in the accent colour */
+.of-switch {
+  position: relative;
+  flex: none;
+  width: 51px;
+  height: 31px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-full);
+  background-color: var(--fill-3);
+  cursor: pointer;
+  transition: background-color var(--dur-s) var(--ease-out);
+}
+.of-switch[data-on] {
+  background-color: var(--of-switch-on);
+  box-shadow: inset 0 0 0 1.5px var(--switch-on-rim);
+}
+.of-switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  border-radius: var(--r-full);
+  background: #fff;
+  box-shadow: 0 2px 5px color-mix(in srgb, var(--shade) 24%, transparent), 0 0 0 0.5px color-mix(in srgb, var(--shade) 8%, transparent);
+}
+.of-switch:focus-visible {
+  box-shadow: var(--ring);
+}
+
+/* the description */
+.of-notes-input {
+  display: block;
+  width: 100%;
+  min-height: calc(2 * var(--lh-body) + 4px);
+  margin: 0;
+  padding: 0 16px 14px 56px;
+  border: 0;
+  resize: none;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  field-sizing: content;
+  max-height: calc(8 * var(--lh-body) + 14px);
+  outline: none;
+}
+.of-notes-input:focus-visible {
+  box-shadow: none;
+}
+/* the ring lies exactly on the group's edge: .of-notes fills the whole group (flow-root keeps the footer's
+   bottom margin inside it — before, that margin escaped and the group stood 10 px below the ring) */
+.of-notes {
+  display: flow-root;
+  border-radius: inherit;
+}
+.of-notes:focus-within {
+  box-shadow: inset 0 0 0 2px var(--accent-text);
+}
+.of-notes-footer {
+  display: flex;
+  margin: -8px 16px 10px 56px;
+  font-size: var(--fs-footnote);
+  color: var(--text-2);
+}
+
+/* the save button and the delete row */
+.of-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+}
+.of-offline {
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  color: var(--text-2);
+}
+.of-actions .of-group {
+  margin-top: var(--sp-4);
+}
+
+/* ---- the calendar ------------------------------------------------------------------------------------ */
+.of-panel {
+  padding: 2px 10px 12px;
+}
+.of-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  padding: 4px 4px 10px;
+}
+.of-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 0 0 8px;
+}
+.of-cal-title {
+  font-size: var(--fs-headline);
+  line-height: var(--lh-headline);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.of-cal-nav {
+  display: flex;
+  margin-right: -4px;
+}
+.of-cal-nav button {
+  color: var(--accent-text);
+}
+.of-cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding: 4px 0;
+  font-size: var(--fs-caption-2);
+  line-height: var(--lh-caption-2);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  /* column headers carry meaning: --text-2 keeps 4.5:1 at this size (--text-3 is for placeholders only) */
+  color: var(--text-2);
+}
+/* six rows of 44 px: one height for every month; the months slide over each other inside it, so a
+   page turn never changes the group's size */
+.of-cal-viewport {
+  position: relative;
+  height: 264px;
+  overflow: hidden;
+}
+.of-cal-month {
+  position: absolute;
+  inset: 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.of-cal-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.of-cal-day {
+  position: relative;
+  height: 44px;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  outline: none;
+}
+.of-cal-day:focus-visible {
+  box-shadow: none;
+}
+.of-cal-num {
+  position: relative;
+  z-index: 1;
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-full);
+  color: var(--text);
+  font-size: var(--fs-body);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-s) var(--ease-out), background-color var(--dur-xs) var(--ease-out), transform var(--dur-snappy) var(--ease-snappy);
+}
+.of-cal-selected {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border-radius: var(--r-full);
+  background: var(--of-day-selected);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--hl) 22%, transparent), rgba(255, 255, 255, 0) 60%);
+  box-shadow: var(--of-day-selected-glow), inset 0 1px 0 color-mix(in srgb, var(--hl) 35%, transparent);
+}
+.of-cal-day[data-selected] .of-cal-num {
+  color: var(--text-on-accent);
+  font-weight: 700;
+}
+.of-cal-day[data-today]:not([data-selected]) .of-cal-num {
+  color: var(--accent-text);
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1.5px var(--accent-300);
+}
+.of-cal-day[data-outside] .of-cal-num {
+  color: var(--text-3);
+  opacity: 0.5;
+}
+.of-cal-day[data-disabled] {
+  cursor: default;
+}
+.of-cal-day[data-disabled] .of-cal-num {
+  color: var(--text-3);
+  opacity: 0.45;
+}
+@media (hover: hover) {
+  .of-cal-day:not([data-selected]):not([data-disabled]):hover .of-cal-num {
+    background-color: var(--fill-2);
+  }
+}
+.of-cal-day:not([data-disabled]):active .of-cal-num {
+  transform: scale(0.88);
+}
+.of-cal-day:focus-visible .of-cal-num {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent-text);
+}
+
+/* ---- the time wheel ---------------------------------------------------------------------------------- */
+.of-panel-wheel {
+  padding: 2px 10px 12px;
+}
+.of-wheel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 220px;
+}
+/* the frosted selection band behind the centre row */
+.of-wheel-band {
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  right: 6px;
+  height: 44px;
+  margin-top: -22px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--hl) 74%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--hl) 95%, transparent),
+    inset 0 0 0 0.5px color-mix(in srgb, var(--shade) 14%, transparent),
+    0 6px 16px -8px color-mix(in srgb, var(--shade) 28%, transparent);
+  pointer-events: none;
+}
+.of-wheel-col {
+  position: relative;
+  z-index: 1;
+  width: 78px;
+  height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  outline: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 32%, #000 68%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 32%, #000 68%, transparent 100%);
+}
+.of-wheel-col::-webkit-scrollbar {
+  display: none;
+}
+.of-wheel-col:focus-visible {
+  box-shadow: none;
+}
+.of-wheel-pad {
+  height: 88px;
+}
+.of-wheel-item {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  scroll-snap-align: center;
+  color: var(--text-2);
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: color var(--dur-s) var(--ease-out);
+}
+.of-wheel-item[data-selected] {
+  color: var(--text);
+  font-weight: 700;
+}
+/* keyboard focus: the value in the band turns accent and gets an underline (the mask hides outer rings) */
+.of-wheel-col:focus-visible .of-wheel-item[data-selected] {
+  color: var(--accent-text);
+  text-decoration: underline 2px;
+  text-underline-offset: 6px;
+}
+.of-wheel-period {
+  width: 66px;
+}
+.of-wheel-period .of-wheel-item {
+  font-size: var(--fs-body);
+}
+.of-wheel-colon {
+  position: relative;
+  z-index: 1;
+  margin-top: -3px;
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 700;
+}
+/* the cylinder: items tilt away above and below the band (scroll-driven, where supported) */
+@supports (animation-timeline: view()) {
+  .of-wheel-item {
+    animation: of-wheel-tilt linear both;
+    animation-timeline: view(block);
+  }
+}
+@keyframes of-wheel-tilt {
+  0% { transform: perspective(240px) rotateX(-52deg) scale(0.86); }
+  50% { transform: none; }
+  100% { transform: perspective(240px) rotateX(52deg) scale(0.86); }
+}
+/* "Ohne Ende" under the end time's wheel: a quiet text button, 44 px tall */
+.of-wheel-foot {
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+.of-wheel-clear {
+  min-height: 44px;
+  padding: 0 var(--sp-4);
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent-text);
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.of-wheel-clear:active {
+  background-color: var(--of-row-press);
+}
+@media (hover: hover) {
+  .of-wheel-clear:hover {
+    background-color: var(--of-row-hover);
+  }
+}
+.of-wheel-clear:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--accent-text);
+}
+
+/* ---- the place sheet --------------------------------------------------------------------------------- */
+.of-place {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: 2px 0 var(--sp-4);
+}
+.of-search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  height: 50px;
+  padding: 0 4px 0 14px;
+  border-radius: var(--r-full);
+  background: var(--of-pill-bg);
+  transition: background-color var(--dur-s) var(--ease-out);
+}
+.of-search:focus-within {
+  background: color-mix(in srgb, var(--hl) 86%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--accent-text), 0 6px 16px -8px color-mix(in srgb, var(--shade) 30%, transparent);
+}
+.of-search-icon {
+  flex: none;
+  color: var(--text-2);
+}
+.of-search-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-body);
+  outline: none;
+}
+.of-search-input:focus-visible {
+  box-shadow: none;
+}
+.of-search .of-search-clear {
+  color: var(--text-2);
+}
+.of-place-hint {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin: 2px 8px 4px;
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  color: var(--text-2);
+}
+.of-place-hint svg {
+  flex: none;
+  margin-top: 1px;
+}
+.of-options {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.of-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--sp-2);
+  transition: opacity var(--dur-s) var(--ease-out);
+}
+.of-option-group[data-stale] {
+  opacity: 0.55;
+}
+.of-option-group-label {
+  padding: 2px 10px 4px;
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  font-weight: 600;
+  color: var(--text-2);
+}
+.of-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 58px;
+  padding: 8px 10px;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: background-color var(--dur-xs) var(--ease-out), transform var(--dur-snappy) var(--ease-snappy);
+}
+.of-option:active {
+  background-color: var(--of-row-press);
+  transform: scale(0.985);
+}
+@media (hover: hover) {
+  .of-option:hover {
+    background-color: var(--of-row-hover);
+  }
+}
+.of-option[data-active] {
+  background-color: var(--of-row-press);
+  box-shadow: inset 0 0 0 1.5px var(--accent-text);
+}
+.of-option[aria-disabled="true"] {
+  cursor: default;
+}
+.of-option-tile {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  color: #fff;
+  background-color: var(--of-kind, var(--of-kind-other));
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--hl) 24%, transparent) 0%, rgba(255, 255, 255, 0) 62%);
+  box-shadow: inset 0 0.5px 0 color-mix(in srgb, var(--hl) 50%, transparent), 0 1px 2px color-mix(in srgb, var(--shade) 16%, transparent);
+}
+.of-option-tile svg {
+  stroke-width: 2.2;
+}
+.of-option[data-kind="cafe"] { --of-kind: var(--of-kind-cafe); }
+.of-option[data-kind="restaurant"] { --of-kind: var(--of-kind-restaurant); }
+.of-option[data-kind="bar"] { --of-kind: var(--of-kind-bar); }
+.of-option[data-kind="park"] { --of-kind: var(--of-kind-park); }
+.of-option[data-kind="venue"] { --of-kind: var(--of-kind-venue); }
+.of-option[data-kind="address"] { --of-kind: var(--of-kind-address); }
+.of-option[data-kind="city"] { --of-kind: var(--of-kind-city); }
+.of-option[data-kind="free"] { --of-kind: var(--of-kind-free); }
+.of-option[data-kind="recent"] { --of-kind: var(--of-kind-recent); }
+.of-option-text {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+.of-option-name {
+  color: var(--text);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.of-option-line {
+  color: var(--text-2);
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  overflow-wrap: anywhere;
+}
+.of-option[data-error] .of-option-line {
+  color: var(--danger-text);
+}
+.of-option-skeleton {
+  cursor: default;
+}
+.of-option-skeleton:active {
+  background-color: transparent;
+  transform: none;
+}
+.of-place-note {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: flex-start;
+  margin: var(--sp-2) 0 0;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: var(--fill);
+  color: var(--text-2);
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+}
+.of-place-note svg {
+  flex: none;
+  margin-top: 1px;
+}
+.of-credit {
+  margin: 0 10px;
+  font-size: var(--fs-caption-1);
+  line-height: var(--lh-caption-1);
+  color: var(--text-2);
+}
+.of-credit a {
+  display: inline-block;
+  /* 16 px of text + 2 × 14 px: a 44 px tap target */
+  padding: 14px 0;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.of-place-intro {
+  margin: var(--sp-4) var(--sp-4) 0;
+  color: var(--text-2);
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  text-align: center;
+}
+
+/* ---- the edit screen while the occasion loads -------------------------------------------------------- */
+.of-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+
+/* ---- the date row: the occasion's calendar page ------------------------------------------------------ */
+/* the "when" group is washed from the left with the occasion's own tint (like its feed card) */
+.of-group-when {
+  background-image:
+    linear-gradient(100deg, var(--of-tint, rgba(255, 255, 255, 0)) 0%, rgba(255, 255, 255, 0) 48%),
+    var(--solid-panel-sheen, var(--panel-sheen));
+}
+.of-group-when[data-tone="1"] { --of-tint: var(--tint-1); }
+.of-group-when[data-tone="2"] { --of-tint: var(--tint-2); }
+.of-group-when[data-tone="3"] { --of-tint: var(--tint-3); }
+.of-group-when[data-tone="4"] { --of-tint: var(--tint-4); }
+.of-row-date {
+  gap: 14px;
+  min-height: 90px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+.of-row-date .of-row-label {
+  font-size: var(--fs-headline);
+  line-height: var(--lh-headline);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.of-row-date .of-row-sub {
+  margin-top: 1px;
+  color: var(--accent-text);
+  font-weight: 600;
+}
+.of-row-date:has(.of-badge-empty) .of-row-label {
+  color: var(--accent-text);
+}
+.of-row-date[data-invalid="true"] .of-row-label {
+  color: var(--danger-text);
+}
+.of-row-expand {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--text-3);
+}
+/* the page flips in from its top edge (perspective on the holder, rotateX on the page) */
+.of-flip {
+  position: relative;
+  flex: none;
+  width: 56px;
+  height: 64px;
+  perspective: 420px;
+}
+.of-flip-page {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform-origin: 50% 0%;
+  backface-visibility: hidden;
+}
+.of-badge-empty {
+  border-radius: 16px;
+  border: 1.5px dashed rgba(152, 74, 20, 0.42);
+  background: color-mix(in srgb, var(--hl) 50%, transparent);
+  color: var(--accent-text);
+}
+.of-badge-empty[data-invalid] {
+  border-color: var(--danger-text);
+  color: var(--danger-text);
+}
+
+/* ---- the bunny over the date group ----------------------------------------------------------------- */
+/* the stage host (features/mascot-ui/BunnyMoment, 'pop-up'): its bottom edge 14 px below the group's top
+   edge (BUNNY_EDGE_PX), above the group in the stacking order; it never takes a tap */
+.of-when {
+  position: relative;
+}
+.of-when > .of-group {
+  z-index: 1;
+}
+.of-when-bunny {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--sp-3) + 14px - 132px);
+  z-index: 2;
+  height: 132px;
+  pointer-events: none;
+}
+
+/* "Was gibt's?" — Wünsche · Mitbringen · Beides (SectionsField.tsx, behind the potluck flag) */
+.of-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* the rows' insets (.of-row) */
+  padding: 14px 14px 14px 13px;
+}
+.of-sections-label {
+  margin: 0;
+}
+.of-sections-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

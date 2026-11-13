@@ -1,0 +1,15 @@
+/*
+ * src/styles/tints.css — the occasion colours as light (wave 1): --tint-1…4 = a deeper version of each tile hue
+ * (styles/tiles.css), picked by the same stable hash of the occasion id (ui/tile.ts tileTone) — the ambient
+ * glow of an occasion screen (ui/AmbientTint), the wash of its hero card and of its feed card. Imported by
+ * the components that use them, so it ships with the feed and occasion chunks only. Light enough that
+ * --text-2 keeps 4.5:1 on every point (docs/design/contrast-check.mjs: TINT, PANEL_TINT).
+ * --tint-1…4-solid: the same hues, opaque — the little card the bunny carries onto the calendar (K10,
+ * features/calendar/landing.ts → mascot-ui/carry.ts). Decorative only: no text ever sits on them.
+ */
+:root {
+  /* night: the same hues as a dim glow on the dark paper */
+  --tint-1: light-dark(rgba(255,170,104,.34), rgba(255,150,84,.17)); --tint-2: light-dark(rgba(240,150,164,.3), rgba(236,124,142,.14));
+  --tint-3: light-dark(rgba(146,166,230,.27), rgba(130,150,226,.14)); --tint-4: light-dark(rgba(246,200,92,.36), rgba(236,186,80,.14));
+  --tint-1-solid: #F9A86C; --tint-2-solid: #EE9AA8; --tint-3-solid: #9AACE6; --tint-4-solid: #F3C55E;
+}

@@ -1,0 +1,12 @@
+# 25.10.2026: APPLIED by Felix in the dashboard (Authentication → Emails → Templates: "Magic link" and
+# "Confirm sign up", same subject), after custom SMTP (Brevo). Not pushed with the CLI. Earlier note:
+# Prepared, NOT applied: the free default mail provider rejected custom templates.
+# Configure custom SMTP first. Review with pinned CLI 2.121.0 before pushing.
+# Resolve content_path from the repository root (or an equivalent isolated workdir).
+[auth.email.template.confirmation]
+subject = "Dein Anmeldecode / Your sign-in code - Bunprise"
+content_path = "./supabase/templates/otp.html"
+
+[auth.email.template.magic_link]
+subject = "Dein Anmeldecode / Your sign-in code - Bunprise"
+content_path = "./supabase/templates/otp.html"

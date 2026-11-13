@@ -1,0 +1,279 @@
+/*
+ * src/styles/app.css — Tailwind 4 + design tokens.
+ *
+ * Values live ONLY in tokens.css (design-system-motion.md §1). This file:
+ *   1. maps the tokens into Tailwind's theme (so `bg-bg`, `text-accent-text`,
+ *      `rounded-lg`, `rounded-button`, `text-body` … all resolve to var(--…) at runtime);
+ *   2. sets the base styles (page background + backdrop, text, focus ring, touch behaviour);
+ *   3. defines the few shared utilities the component kit needs (glass materials, scene, tiles,
+ *      safe-area paddings, hit targets, type scale, elevation, skeleton, mascot box).
+ *
+ * Rules: no hex colours here, animate only transform/opacity/colour, keep it small.
+ */
+@import "tailwindcss";
+@import "./tokens.css";
+/* Tailwind scans every file under the app for class names; documentation must not generate CSS. */
+@source not "../../**/*.md";
+
+/* ---------------------------------------------------------------------------
+ * 1. Tokens → Tailwind theme.
+ * `inline` makes utilities reference the token variable directly, so switching
+ * data-theme / data-motion at runtime needs no rebuild. Tailwind's default
+ * palette and radii are dropped on purpose: only tokens exist.
+ * Font (--font-sans), easing (--ease-*) and shadow (--shadow-*) tokens already
+ * use Tailwind's own variable names, so they are NOT re-mapped here (that would
+ * be circular); use `font-sans`, `ease-(--ease-snappy)`, `duration-(--dur-snappy)`
+ * and the `elev-*` utilities below instead.
+ * ------------------------------------------------------------------------- */
+@theme inline {
+  --color-*: initial;
+  --color-white: white;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fill: var(--fill);
+  --color-fill-2: var(--fill-2);
+  --color-fill-3: var(--fill-3);
+  --color-separator: var(--separator);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-text-on-accent: var(--text-on-accent);
+  --color-text-inverse: var(--text-inverse);
+  --color-accent: var(--accent-400);
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-accent-text: var(--accent-text);
+  --color-ok: var(--ok-text);
+  --color-ok-fill: var(--ok-fill);
+  --color-ok-bg: var(--ok-bg);
+  --color-danger: var(--danger-text);
+  --color-danger-fill: var(--danger-fill);
+  --color-danger-bg: var(--danger-bg);
+  --color-switch-on: var(--switch-on);
+  --color-scrim: var(--scrim);
+
+  --radius-*: initial;
+  --radius-xs: var(--r-xs);
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+  /* component shapes (blockers 6, 11, 18, 19): a theme changes the token, not the components */
+  --radius-button: var(--r-button);
+  --radius-control: var(--r-control);
+  --radius-control-inner: var(--r-control-inner);
+  --radius-hero: var(--r-hero);
+  --radius-card: var(--r-card);
+  --radius-sheet: var(--r-sheet);
+  --radius-toast: var(--r-toast);
+
+  /* type scale → `text-body`, `text-title-1` … (size + line-height; weight/tracking via the t-* utilities) */
+  --text-*: initial;
+  --text-display: var(--fs-display);
+  --text-display--line-height: var(--lh-display);
+  --text-title-1: var(--fs-title-1);
+  --text-title-1--line-height: var(--lh-title-1);
+  --text-title-2: var(--fs-title-2);
+  --text-title-2--line-height: var(--lh-title-2);
+  --text-title-3: var(--fs-title-3);
+  --text-title-3--line-height: var(--lh-title-3);
+  --text-headline: var(--fs-headline);
+  --text-headline--line-height: var(--lh-headline);
+  --text-body: var(--fs-body);
+  --text-body--line-height: var(--lh-body);
+  --text-callout: var(--fs-callout);
+  --text-callout--line-height: var(--lh-callout);
+  --text-subhead: var(--fs-subhead);
+  --text-subhead--line-height: var(--lh-subhead);
+  --text-footnote: var(--fs-footnote);
+  --text-footnote--line-height: var(--lh-footnote);
+  --text-caption-1: var(--fs-caption-1);
+  --text-caption-1--line-height: var(--lh-caption-1);
+  --text-caption-2: var(--fs-caption-2);
+  --text-caption-2--line-height: var(--lh-caption-2);
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. Base
+ * ------------------------------------------------------------------------- */
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    min-height: 100dvh;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* The page backdrop (--page-backdrop: paper with a faint warm fall-off) as ONE fixed static layer
+     behind the app: painted once, composited while scrolling. A fixed pseudo-element, not
+     background-attachment: fixed (iOS Safari ignores that and stretches the gradient over the whole
+     document). The dev phone frame paints it on its simulated screen instead (src/dev/phone-frame.css). */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--page-backdrop);
+  }
+  /* Focus is always visible: the double ring works on any surface (§1.4, §6). */
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+  }
+  button, [role="button"], a, input, select, textarea, label {
+    touch-action: manipulation;
+  }
+  /* Our controls draw their own pressed state, so the mobile tap flash is off (§6). */
+  button, [role="button"], a {
+    -webkit-tap-highlight-color: transparent;
+  }
+  input, select, textarea, button {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+  ::placeholder {
+    color: var(--text-3);
+    opacity: 1;
+  }
+  /* Prices and dates line up (§1.6). */
+  [data-tabular], .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+  /* The layout is 390 px first; the page column is centred on wide screens. */
+  :root {
+    --page-w: 480px;
+  }
+  /* App column: the screen content stacks vertically and the legal footer sits at
+     the bottom even on short screens (#root outside the dev frame, .pf-app inside it). */
+  #root, .pf-app {
+    display: flex;
+    flex-direction: column;
+  }
+  #root {
+    min-height: 100dvh;
+  }
+  /* The legal footer shows together with a screen (every screen renders its <main> through ui/Page).
+     While a navigation suspends, React hides the previous screen with an inline
+     `display: none !important` until the next one — or its lazy pending skeleton — has loaded. The
+     footer was then the only visible element: it jumped to the top of the blank page and back, a layout
+     shift of 0.14 on "feed after sign-in" (perf audit 2026-10-20, docs/perf-report-2026-10-20.md).
+     Hidden in that moment, it reappears in place. */
+  #root:not(:has(> main:not([style*="display: none"]))) > footer,
+  .pf-app:not(:has(> main:not([style*="display: none"]))) > footer {
+    visibility: hidden;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Shared utilities and small components
+ * ------------------------------------------------------------------------- */
+@layer components {
+  /* ---- Glass materials (tokens.css §4; ADR 2026-10-20-design-direction-glass) ----------------------
+     One class per material: a translucent tint + backdrop blur/saturate + a light inner edge + shadow.
+     ONLY on the top bar, sheets, small floating controls and toasts — never a blur layer under a long
+     list. Solid under reduced transparency / without backdrop-filter: each class reads the switches of
+     tokens.css first (--solid, --solid-accent, --solid-ink, --solid-off), which only those cases set. */
+
+  /* The FROSTED panels (.glass-panel for cards / groups, .glass-field for inputs) live in src/styles/kit.css:
+     they ship with the kit chunk (every screen that uses the kit), not with the invite landing /i. */
+
+  /* The FLOATING glass materials (.glass-bar + .bar-title, .glass-sheet, .glass-float + .glass-accent,
+     .glass-toast) live in src/styles/glass.css: the kit modules that use them import it (and the barrel
+     ui/index.ts), so they ship with the kit chunk — never with the invite landing /i, which shows none. */
+
+  /* Satellite stylesheets, imported by their component so they ship only with the chunks that need them
+     (not in the CSS of every first visit — invite landing budget): src/styles/scene.css (ui/Scene, the
+     start screen), src/styles/tiles.css (ui/tile.ts: gift tiles and avatars), src/styles/mascot.css
+     (features/mascot-ui/Mascot.tsx: the mascot box), src/styles/glass.css (the floating glass of the kit),
+     src/styles/tints.css (the occasion tints), src/styles/tint.css · feed.css · occasion.css · otp.css (their
+     screens / components). */
+
+  /* .skeleton and .spinner (the kit's loading pieces) live in src/styles/kit.css, with the kit chunk. */
+}
+
+/* Screen changes (router defaultViewTransition): the opened feed card and the occasion hero share
+   a view-transition-name and glide with the smooth spring; the rest of the page crossfades (§2.5).
+   Under reduced motion the tokens set --dur-smooth to 0 ms: only the short crossfade remains. */
+::view-transition-group(*) {
+  animation-duration: var(--dur-smooth);
+  animation-timing-function: var(--ease-smooth);
+}
+/* the old screen fades out a little faster than the new one fades in: less of two screens on top of
+   each other in the middle of the change */
+::view-transition-old(root) {
+  animation-duration: var(--dur-s);
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-new(root) {
+  animation-duration: var(--dur-m);
+  animation-timing-function: var(--ease-out);
+}
+
+/* Safe areas (tokens --sa-*; the dev PhoneFrame overrides them to simulate a notch). */
+@utility pt-safe { padding-top: var(--sa-top); }
+@utility pb-safe { padding-bottom: var(--sa-bottom); }
+@utility px-safe {
+  padding-left: max(var(--gutter), var(--sa-left));
+  padding-right: max(var(--gutter), var(--sa-right));
+}
+
+/* Hit targets ≥ 44 px (§6): `hit` sizes the box, `hit-expand` grows the tap
+   area of a visually smaller element with a pseudo-element. */
+@utility hit {
+  min-width: var(--hit);
+  min-height: var(--hit);
+}
+@utility hit-expand {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, var(--hit));
+    height: max(100%, var(--hit));
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Elevation levels (§1.4). Never animate these; crossfade two layers instead. */
+@utility elev-1 { box-shadow: var(--shadow-1); }
+@utility elev-2 { box-shadow: var(--shadow-2); }
+@utility elev-3 { box-shadow: var(--shadow-3); }
+
+/* Type scale with weight and tracking (§1.6). Face, weight and tracking of the large titles are tokens
+   (blocker 1). Large titles break into lines of similar length (text-wrap: balance, blocker 16) — every
+   spaced dash in a title string needs a no-break space before it (U+00A0), or a line starts with "–". */
+@utility t-display { font-family: var(--font-display); font-size: var(--fs-display); line-height: var(--lh-display); font-weight: var(--fw-display); letter-spacing: var(--tracking-display); text-wrap: balance; }
+@utility t-title-1 { font-family: var(--font-display); font-size: var(--fs-title-1); line-height: var(--lh-title-1); font-weight: var(--fw-display); letter-spacing: var(--tracking-display); text-wrap: balance; }
+@utility t-title-2 { font-size: var(--fs-title-2); line-height: var(--lh-title-2); font-weight: var(--fw-title); letter-spacing: var(--tracking-title); text-wrap: balance; }
+@utility t-title-3 { font-size: var(--fs-title-3); line-height: var(--lh-title-3); font-weight: 600; letter-spacing: -0.01em; }
+@utility t-headline { font-size: var(--fs-headline); line-height: var(--lh-headline); font-weight: 600; }
+@utility t-body { font-size: var(--fs-body); line-height: var(--lh-body); font-weight: 400; }
+@utility t-callout { font-size: var(--fs-callout); line-height: var(--lh-callout); font-weight: 400; }
+@utility t-subhead { font-size: var(--fs-subhead); line-height: var(--lh-subhead); font-weight: 400; }
+@utility t-footnote { font-size: var(--fs-footnote); line-height: var(--lh-footnote); font-weight: 400; }
+@utility t-caption-1 { font-size: var(--fs-caption-1); line-height: var(--lh-caption-1); font-weight: 400; }
+@utility t-caption-2 { font-size: var(--fs-caption-2); line-height: var(--lh-caption-2); font-weight: 500; letter-spacing: 0.01em; }
+
+/* Colour/opacity transitions for pressed/hover states (§2.2): not springs, just --dur-xs. */
+@utility tr-colors {
+  transition-property: background-color, color, border-color, opacity;
+  transition-duration: var(--dur-xs);
+  transition-timing-function: var(--ease-out);
+}

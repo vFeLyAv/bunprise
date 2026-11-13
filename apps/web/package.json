@@ -1,0 +1,65 @@
+{
+  "name": "@bunprise/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Bunprise PWA: Vite 8 + React 19 SPA with TanStack Router/Query, Tailwind 4, motion, i18next, vite-plugin-pwa.",
+  "scripts": {
+    "dev": "vite",
+    "dev:demo": "vite --mode demo",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "routes": "tsr generate",
+    "size": "node scripts/size.mjs && node scripts/check-sw.mjs && node scripts/check-app-icons.mjs",
+    "check:sw": "node scripts/check-sw.mjs",
+    "icons": "node scripts/icons.mjs",
+    "icons:variants": "node scripts/app-icons.mjs",
+    "og": "node scripts/og.mjs",
+    "brand": "node scripts/brand.mjs",
+    "brand:variants": "node scripts/brand-variants.mjs"
+  },
+  "dependencies": {
+    "@bunprise/mascot": "*",
+    "@supabase/supabase-js": "2.118.0",
+    "@tanstack/query-sync-storage-persister": "5.104.5",
+    "@tanstack/react-query": "5.104.5",
+    "@tanstack/react-query-persist-client": "5.104.5",
+    "@tanstack/react-router": "1.170.45",
+    "i18next": "26.5.3",
+    "motion": "14.4.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-i18next": "17.1.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@resvg/resvg-js": "2.6.2",
+    "@tailwindcss/vite": "4.3.3",
+    "@tanstack/router-cli": "1.167.45",
+    "@tanstack/router-plugin": "1.168.47",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "jsdom": "30.1.3",
+    "msw": "2.15.0",
+    "oxlint": "1.89.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vite": "8.3.4",
+    "vite-plugin-pwa": "2.0.0",
+    "vitest": "5.0.5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}

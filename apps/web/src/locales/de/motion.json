@@ -1,0 +1,32 @@
+{
+  "motion": {
+    "title": "Bewegung",
+    "animations": "Animationen",
+    "level_label": "Animationen",
+    "level_full": "Voll",
+    "level_reduced": "Weniger",
+    "level_off": "Aus",
+    "hint_full": "Federnde Übergänge und Kaninchen, die mitspielen.",
+    "hint_reduced": "Ruhiger: nichts fliegt herum, Übergänge blenden nur sanft.",
+    "hint_off": "Keine Animationen. Antippen zeigt trotzdem sofort eine Reaktion.",
+    "system_reduced": "Dein Gerät wünscht weniger Bewegung – darum bleibt es hier mindestens ruhiger.",
+    "battery_active": "Der Akku ist fast leer – gerade wird gespart.",
+    "bunnies": "Kaninchen zeigen",
+    "bunnies_hint": "{{bunny}}, seine Freunde und {{hamster}}, der Hamster",
+    "bunnies_off_hint": "Bei „Aus“ ruhen auch die Kaninchen.",
+    "night": "Nachts schlafen",
+    "night_hint": "Von 23 bis 7 Uhr schlafen {{bunny}} und {{hamster}}. Antippen weckt sie.",
+    "battery": "Bei wenig Akku sparen",
+    "battery_hint": "Unter 20 % ohne Ladekabel: automatisch weniger Animationen",
+    "battery_unsupported": "Dieser Browser verrät den Akkustand nicht (zum Beispiel Safari auf dem iPhone) – hier kann nicht automatisch gespart werden.",
+    "device_only": "Gilt nur auf diesem Gerät.",
+    "feedback": "Vibration & Ton",
+    "feedback_hint": "Kurze Rückmeldungen bei Berührungen und Bestätigungen.",
+    "feedback_no_vibration": "Im iPhone-Browser gibt es keine Vibration. Kurze Töne bestätigen deine Aktionen.",
+    "shake": "Schütteln",
+    "shake_hint": "Schüttel dein Handy – {{bunny}} wird kurz schwindelig. Dafür braucht das iPhone deine Erlaubnis für Bewegungsdaten.",
+    "shake_allow": "Erlauben",
+    "shake_allowed": "Erlaubt",
+    "shake_denied": "Nicht erlaubt – du kannst es später noch einmal versuchen."
+  }
+}

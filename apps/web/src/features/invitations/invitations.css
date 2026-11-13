@@ -1,0 +1,68 @@
+/*
+ * features/invitations/invitations.css — "Freunde einladen" (docs/spec/in-app-invites-design.md §7): the invitation
+ * card on Start (several = a little stack of frosted cards), the answer sheet, the friend picker and the occasion
+ * screen's entries. Frosted panels (.glass-panel, no blur: they lie under scrolling content); floating glass only on
+ * sheets (the kit's Sheet). Colours: tokens only. Motion: transform / opacity with the kit's springs (in the TSX).
+ */
+
+/* ---- the card on Start --------------------------------------------------------------------------------------- */
+.inv-inbox { display: flex; flex-direction: column; margin-bottom: var(--sp-6); }
+.inv-stack { position: relative; isolation: isolate; }
+/* the cards behind the first one: two thin frosted edges peeking out below (2 and 3+ invitations) */
+.inv-stack[data-count="2"]::after,
+.inv-stack[data-count="3"]::after,
+.inv-stack[data-count="3"]::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: var(--sp-3);
+  right: var(--sp-3);
+  bottom: -7px;
+  height: 24px;
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+  background-color: var(--solid-panel, var(--panel-bg));
+  box-shadow: var(--panel-edge), var(--panel-shadow);
+  opacity: 0.85;
+}
+.inv-stack[data-count="3"]::before { left: var(--sp-6); right: var(--sp-6); bottom: -13px; opacity: 0.6; }
+.inv-stack[data-count="2"], .inv-stack[data-count="3"] { margin-bottom: 14px; }
+
+.inv-card { padding: var(--sp-4); min-height: 44px; }
+.inv-card-row { display: flex; align-items: center; gap: var(--sp-3); }
+.inv-card-face { position: relative; flex-shrink: 0; display: inline-flex; }
+.inv-card-envelope {
+  position: absolute;
+  right: -4px;
+  bottom: -3px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--accent-400);
+  color: var(--text-on-accent);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+.inv-card-chevron { flex-shrink: 0; font-size: var(--fs-title-3); color: var(--text-3); }
+.inv-clamp { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.inv-card-skeleton { margin-bottom: var(--sp-6); }
+
+/* ---- the answer sheet ---------------------------------------------------------------------------------------- */
+.inv-occasion { padding: var(--sp-4); border-radius: var(--r-lg); overflow-wrap: anywhere; }
+.inv-report {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 var(--sp-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.inv-report:focus-visible { outline: none; box-shadow: var(--ring); border-radius: var(--r-sm); }
+
+/* ---- the picker ---------------------------------------------------------------------------------------------- */
+.inv-picker { display: flex; flex-direction: column; gap: var(--sp-4); padding-bottom: var(--sp-2); }
+.inv-note { padding: var(--sp-3) var(--sp-4); border-radius: var(--r-lg); font-size: var(--fs-subhead); line-height: var(--lh-subhead); color: var(--text-2); }
+.inv-row-done { display: inline-flex; align-items: center; gap: 4px; }
+
+/* the occasion screen's "+ Freunde einladen" row: features/occasions/InviteSection.tsx (styles/occasion.css .invite-row) */
+.inv-list { border-radius: var(--r-lg); overflow: hidden; }

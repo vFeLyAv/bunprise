@@ -1,0 +1,229 @@
+/*
+ * features/people/people.css — the person card, "Follower & Anfragen", the follow-link sheet, the block and
+ * accept sheets and the gate /f (wave 2b, follows-design §2.8–§2.11). "Warm glass on paper" like the lists tab:
+ * frosted panels (.glass-panel, no blur — they lie under scrolling content), floating glass only on bars and
+ * sheets. The banners come from features/lists/lists.css (.lb-banner / .lb-art, imported by the screens).
+ * Colours: tokens only (tokens.css, kit.css) — no hex here. Motion: transform / opacity, the three springs.
+ */
+
+/* ---- the person's header: banner, avatar, name, relation ------------------------------------------------- */
+.pp-hero { position: relative; display: flex; flex-direction: column; }
+.pp-banner { height: 112px; border-radius: 24px; }
+.pp-id {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  margin-top: -40px;
+  padding: 0 var(--sp-4);
+}
+.pp-avatar { box-shadow: var(--lt-avatar-ring); }
+.pp-name {
+  min-width: 0;
+  margin-top: var(--sp-3);
+  font-size: var(--fs-title-1);
+  line-height: var(--lh-title-1);
+  font-weight: var(--fw-title);
+  letter-spacing: var(--tracking-title);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.pp-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-2); }
+.pp-shared { margin-top: var(--sp-2); font-size: var(--fs-subhead); line-height: var(--lh-subhead); color: var(--text-2); }
+
+/* the relation label: "Folgt dir" / "Folgt dir nicht" / "Ihr folgt euch" / "Das bist du" */
+.pp-chip {
+  display: inline-flex;
+  height: 24px;
+  align-items: center;
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-full);
+  font-size: var(--fs-caption-1);
+  line-height: 1;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--text-2);
+  background-color: var(--fill);
+}
+.pp-chip[data-tone='mutual'], .pp-chip[data-tone='follows'] {
+  color: var(--accent-text);
+  background-color: color-mix(in oklab, var(--accent-100) 80%, transparent);
+}
+
+/* ---- panels and rows -------------------------------------------------------------------------------------- */
+.pp-section { display: flex; flex-direction: column; gap: var(--sp-2); }
+.pp-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); padding: 0 var(--sp-1); }
+.pp-section-title {
+  font-size: var(--fs-title-3);
+  line-height: var(--lh-title-3);
+  font-weight: 700;
+  color: var(--text);
+}
+.pp-section-count { font-size: var(--fs-subhead); font-weight: 600; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.pp-panel { margin: 0; padding: var(--sp-1) 0; list-style: none; border-radius: 22px; }
+.pp-panel > li + li { box-shadow: inset 0 1px 0 var(--separator); }
+.pp-empty { padding: var(--sp-4); font-size: var(--fs-subhead); line-height: var(--lh-subhead); color: var(--text-2); border-radius: 22px; }
+
+.pp-row { display: flex; min-height: 64px; align-items: center; gap: var(--sp-3); padding: var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-4); }
+.pp-row-main {
+  display: flex;
+  min-width: 0;
+  min-height: 48px;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--sp-3);
+  border-radius: 14px;
+  color: var(--text);
+  text-decoration: none;
+}
+a.pp-row-main:active { background-color: var(--fill); }
+a.pp-row-main:focus-visible { outline: none; box-shadow: var(--ring); }
+.pp-row-text { display: flex; min-width: 0; flex: 1 1 auto; flex-direction: column; align-items: flex-start; gap: 2px; }
+.pp-row-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-headline);
+  line-height: var(--lh-headline);
+  font-weight: 700;
+}
+.pp-row-sub { max-width: 100%; font-size: var(--fs-footnote); line-height: var(--lh-footnote); color: var(--text-2); }
+.pp-row-trail { display: flex; flex-shrink: 0; align-items: center; gap: var(--sp-1); }
+
+/* a request: name + time + context, then its actions under it (they never squeeze the name at 320 px) */
+.pp-request { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4); }
+.pp-row-line { display: flex; width: 100%; min-width: 0; align-items: baseline; justify-content: space-between; gap: var(--sp-2); }
+.pp-request-note { margin: 0 0 0 calc(44px + var(--sp-3)); }
+.pp-request-actions { display: flex; align-items: center; gap: var(--sp-2); padding-left: calc(44px + var(--sp-3)); }
+.pp-request-actions > .pp-spacer { flex: 1 1 auto; }
+.pp-time { flex-shrink: 0; font-size: var(--fs-footnote); line-height: var(--lh-footnote); color: var(--text-3); white-space: nowrap; }
+
+/* the context line of a request without a shared occasion and without a follow of mine (P7): highlighted */
+.pp-unknown {
+  display: block;
+  margin-top: 2px;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: 10px;
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  font-weight: 600;
+  color: var(--danger-text);
+  background-color: color-mix(in oklab, var(--danger-bg) 85%, transparent);
+}
+.pp-unknown-block { padding: var(--sp-3) var(--sp-4); border-radius: 18px; font-size: var(--fs-subhead); line-height: var(--lh-subhead); }
+
+/* the incoming request on a person's card */
+.pp-incoming { display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-4); border-radius: 22px; }
+.pp-incoming-title { font-size: var(--fs-headline); line-height: var(--lh-headline); font-weight: 700; color: var(--text); }
+.pp-buttons { display: flex; gap: var(--sp-2); }
+.pp-buttons > * { flex: 1 1 0; min-width: 0; }
+
+/* ---- the person's follower lists (cards) ---------------------------------------------------------------------- */
+.pp-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+.pp-lists > li { display: flex; min-width: 0; }
+/* the card itself is the lists tab's .lc-card (features/lists/lists.css); a little lower here */
+.pp-list-card.lc-card { min-height: 128px; text-decoration: none; }
+.pp-list-new { font-weight: 700; color: var(--accent-text); }
+
+/* ---- sheets ------------------------------------------------------------------------------------------------------- */
+.pp-sheet { display: flex; flex-direction: column; gap: var(--sp-4); padding-bottom: var(--sp-2); }
+.pp-points { display: flex; flex-direction: column; gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+.pp-points > li {
+  position: relative;
+  padding-left: calc(var(--sp-4) + 6px);
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  color: var(--text);
+}
+.pp-points > li::before {
+  content: '';
+  position: absolute;
+  top: calc((var(--lh-subhead) - 7px) / 2);
+  left: 2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent-400);
+}
+.pp-note { padding: var(--sp-3) var(--sp-4); border-radius: 18px; font-size: var(--fs-subhead); line-height: var(--lh-subhead); color: var(--text); }
+.pp-switch-card { padding: var(--sp-3) var(--sp-4); border-radius: 18px; }
+.pp-warning {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 18px;
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  color: var(--text);
+  background-color: color-mix(in oklab, var(--accent-100) 70%, transparent);
+}
+.pp-valid { font-size: var(--fs-footnote); line-height: var(--lh-footnote); color: var(--text-2); }
+.pp-mascot { display: flex; justify-content: center; }
+
+/* "Mein Code" (add-friends-design §2.1): the QR always dark on white (also in the dark theme — cameras need the
+   contrast), the code large and spaced for reading aloud; the field of "Code eingeben" in the same letters */
+.pp-code { display: flex; flex-direction: column; align-items: center; gap: var(--sp-3); }
+.pp-qr-frame {
+  display: grid;
+  place-items: center;
+  min-height: 224px;
+  padding: var(--sp-2);
+  border-radius: 22px;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--text) 10%, transparent);
+}
+.pp-qr { display: block; width: 208px; height: 208px; }
+.pp-code-text {
+  margin: 0;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.pp-code-input { font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+/* Profil's merged "Mein Code & Link" (Felix 27.10): two buttons side by side (they wrap when a language needs the
+   room), the link as a quieter section under a hairline */
+.pp-pair { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.pp-pair > * { flex: 1 1 9.5rem; min-width: 0; }
+.pp-link-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--separator);
+}
+
+/* ---- the gate /f and the link card on /people ----------------------------------------------------------------- */
+.pp-gate-card { display: flex; flex-direction: column; gap: var(--sp-5); padding: var(--sp-5); border-radius: var(--r-card); }
+.pp-facts { display: flex; flex-direction: column; gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+.pp-fact { display: flex; align-items: flex-start; gap: var(--sp-3); font-size: var(--fs-subhead); line-height: var(--lh-subhead); color: var(--text); }
+.pp-fact > svg { flex-shrink: 0; margin-top: 1px; color: var(--accent-text); }
+.pp-link-card { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4); border-radius: 22px; }
+.pp-link-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--accent-text);
+  background-color: var(--accent-100);
+}
+.pp-foot { padding: 0 var(--sp-4); text-align: center; font-size: var(--fs-footnote); line-height: var(--lh-footnote); color: var(--text-2); text-wrap: balance; }
+
+@media (max-width: 359px) {
+  .pp-banner { height: 96px; }
+  .pp-row { padding-left: var(--sp-3); }
+  .pp-request { padding-left: var(--sp-3); }
+  .pp-request-note { margin-left: 0; }
+  .pp-request-actions { padding-left: 0; }
+  /* a row with a button ("Auch folgen", "Zurückziehen", "Aufheben") puts it under the name like a request
+     does, so the name and its chip keep the full width and never run under the button */
+  .pp-row[data-stack] { flex-wrap: wrap; row-gap: var(--sp-1); padding-top: var(--sp-3); padding-bottom: var(--sp-3); }
+  .pp-row[data-stack] > .pp-row-main { flex-basis: 100%; }
+  .pp-row[data-stack] > .pp-row-trail { flex-basis: 100%; justify-content: space-between; }
+  .pp-lists { gap: var(--sp-2); }
+  .pp-list-card.lc-card { min-height: 116px; border-radius: 20px; }
+}

@@ -1,0 +1,1050 @@
+{
+  "version": 1,
+  "note": "ENTWURF / DRAFT 26.10.2026 — not wired into the Worker. Board games for the \"Brettspiele\" shelf of Ideen, picked by hand (docs/research/2026-10-26-board-games.md). Same shape as workers/edge/src/giftIdeas/catalog.de.json plus shelf / game / blurb / how_to_play (the Worker ignores unknown fields; how_to_play needs a schema change before it can go live). Prices seen on the shop pages on checked_at; no partner links. image_source = the photo named by the page of the cheapest offer (found with the rules of scripts/catalog-photos.mjs, closed pilot only); shown only through the Worker route /api/gift-ideas/img. Ranks continue after the live catalogue (1–131).",
+  "items": [
+    {
+      "id": "cat:hig-carcassonne",
+      "interests": [
+        "games"
+      ],
+      "art": "boardgame",
+      "rank": 132,
+      "title": {
+        "de": "Legespiel „Carcassonne“",
+        "en": "Tile-laying game Carcassonne"
+      },
+      "offers": [
+        {
+          "shop": "MediaMarkt",
+          "url": "https://www.mediamarkt.de/de/product/_hans-im-gluck-carcassonne-v30-gesellschaftsspiel-mehrfarbig-2781907.html",
+          "price_cents": 2199,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Carcassonne & Co",
+          "url": "https://cundco.de/carcassonne-grundspiel-deutsch/",
+          "price_cents": 2699,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://assets.mmsrg.com/isr/166325/c1/-/ASSET_MMS_90376651/fee_786_587_png",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Hans im Glück",
+        "players_min": 2,
+        "players_max": 5,
+        "minutes_min": 35,
+        "minutes_max": 35,
+        "age_min": 7,
+        "award": "Spiel des Jahres 2001"
+      },
+      "blurb": {
+        "de": "Plättchen für Plättchen wächst eine Landschaft mit Burgen, Straßen und Wiesen – der Klassiker, den jeder sofort versteht.",
+        "en": "Tile by tile a landscape of castles, roads and fields grows – the classic everyone gets at once."
+      },
+      "how_to_play": {
+        "de": "Wer dran ist, zieht ein Landschaftsplättchen und legt es passend an: Straßen, Städte und Wiesen laufen weiter. Danach darf man einen Gefolgsmann auf ein freies Gebiet setzen. Fertige Straßen, Städte und Klöster punkten sofort. Liegt das letzte Plättchen, gewinnt die höchste Punktzahl."
+      },
+      "review": "Neue Ausgabe 3.0 (HIGD0112); bei Händlern liegen noch alte Auflagen."
+    },
+    {
+      "id": "cat:dow-zug-um-zug",
+      "interests": [
+        "games",
+        "travel"
+      ],
+      "art": "boardgame",
+      "rank": 133,
+      "title": {
+        "de": "Brettspiel „Zug um Zug“",
+        "en": "Board game Ticket to Ride (German edition)"
+      },
+      "offers": [
+        {
+          "shop": "Brettspielversand",
+          "url": "https://www.brettspielversand.de/Zug-um-Zug",
+          "price_cents": 4599,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Days of Wonder",
+        "players_min": 2,
+        "players_max": 5,
+        "minutes_min": 30,
+        "minutes_max": 60,
+        "age_min": 8,
+        "award": "Spiel des Jahres 2004"
+      },
+      "blurb": {
+        "de": "Karten sammeln, Bahnstrecken bauen, anderen den Weg abschneiden: eine Zugreise quer durch Nordamerika, schnell erklärt.",
+        "en": "Collect cards, claim railway routes, cut off your rivals: a train trip across North America, quickly explained."
+      },
+      "how_to_play": {
+        "de": "Pro Zug machst du genau eins: zwei Wagenkarten nehmen, mit gleichfarbigen Karten eine Strecke bauen oder neue Zielkarten ziehen. Strecken und erfüllte Ziele bringen Punkte, offene Ziele kosten welche. Hat jemand nur noch 0–2 Waggons, gibt es eine letzte Runde."
+      },
+      "review": "PRÜFEN: nur ein geprüfter Shop; ob die Seite die Neuauflage (Refresh, DOWD0047) ist, ist unklar. Üblich 35–46 €."
+    },
+    {
+      "id": "cat:cge-codenames",
+      "interests": [
+        "games"
+      ],
+      "art": "cards",
+      "rank": 134,
+      "title": {
+        "de": "Partyspiel „Codenames“",
+        "en": "Party game Codenames"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/heidelberger-spieleverlag-codenames-spiel-des-jahres-2016-2043606/",
+          "price_cents": 1519,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "HeidelBÄR Games",
+          "url": "https://shop.heidelbaer.de/products/codenames/342974000000072721",
+          "price_cents": 1995,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2F_default_upload_bucket%2FCN_2nd-Edition_GER_3D-Box_left.png&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Czech Games Edition",
+        "players_min": 4,
+        "players_max": 8,
+        "minutes_min": 15,
+        "minutes_max": 15,
+        "age_min": 10,
+        "award": "Spiel des Jahres 2016"
+      },
+      "blurb": {
+        "de": "Zwei Teams, ein Wort als Hinweis: Wer zuerst alle eigenen Agenten findet, gewinnt. Perfekt für Abende mit vielen Leuten.",
+        "en": "Two teams, one word as a clue: whoever finds all their agents first wins. Perfect for evenings with lots of people."
+      },
+      "how_to_play": {
+        "de": "Zwei Teams, je ein Geheimdienstchef. Er nennt ein Wort und eine Zahl, sein Team tippt passende Begriffe auf dem Tisch an. Ein falsches Wort beendet den Zug; wer den Attentäter erwischt, verliert sofort. Wer zuerst alle eigenen Agenten findet, gewinnt."
+      },
+      "review": "PRÜFEN: Alter ab 10 (Verlag, Jury) oder ab 14 (Müller); Spieler 4–8+ (Verlag) oder 2–8 (Müller). Müller = ältere Auflage; HeidelBÄR gerade nicht vorrätig."
+    },
+    {
+      "id": "cat:libellud-dixit",
+      "interests": [
+        "games",
+        "creative"
+      ],
+      "art": "cards",
+      "rank": 135,
+      "title": {
+        "de": "Erzählspiel „Dixit“",
+        "en": "Storytelling game Dixit"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/libellud-dixit-742916/",
+          "price_cents": 2239,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "MediaMarkt",
+          "url": "https://www.mediamarkt.de/de/product/_libellud-dixit-neues-design-2746497.html",
+          "price_cents": 2999,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F3760032260076%2F78342452-PV-0.jpg&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Libellud",
+        "players_min": 3,
+        "players_max": 8,
+        "minutes_min": 30,
+        "minutes_max": 30,
+        "age_min": 8,
+        "award": "Spiel des Jahres 2010"
+      },
+      "blurb": {
+        "de": "Traumhafte Bildkarten und eine vage Andeutung – wer errät, welches Bild gemeint ist? Fantasie statt Regelwälzen.",
+        "en": "Dreamlike picture cards and a vague hint – who guesses which picture was meant? Imagination instead of rules."
+      },
+      "how_to_play": {
+        "de": "Reihum sagt eine Person zu einer ihrer Bildkarten ein Wort, einen Satz oder ein Geräusch. Die anderen legen verdeckt eine passende Karte dazu, dann wird geraten, welche die echte ist. Errät es niemand oder jeder, geht die Erzählerin leer aus. Ab 30 Punkten ist Schluss."
+      },
+      "review": "Müller: Aktionspreis, Ausgabe (neues Design 3–8 oder alt 3–6) nicht angegeben."
+    },
+    {
+      "id": "cat:nextmove-azul",
+      "interests": [
+        "games",
+        "home"
+      ],
+      "art": "boardgame",
+      "rank": 136,
+      "title": {
+        "de": "Legespiel „Azul“",
+        "en": "Tile game Azul"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/asmodee-azul-next-move-games-2385554/",
+          "price_cents": 3199,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F4015566602687%2F6273360509-PV-0.jpg&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Next Move Games",
+        "players_min": 2,
+        "players_max": 4,
+        "minutes_min": 30,
+        "minutes_max": 45,
+        "age_min": 8,
+        "award": "Spiel des Jahres 2018"
+      },
+      "blurb": {
+        "de": "Bunte Fliesen ziehen und zu einem Mosaik legen. Schnell gelernt, schön anzusehen und überraschend gemein.",
+        "en": "Draft colourful tiles and lay them into a mosaic. Quick to learn, lovely to look at and surprisingly mean."
+      },
+      "how_to_play": {
+        "de": "Du nimmst alle Fliesen einer Farbe aus einer Manufaktur oder der Tischmitte und legst sie in eine Musterreihe; was nicht passt, gibt Minuspunkte. Volle Reihen kommen am Rundenende an deine Wand und punkten. Hat jemand eine waagrechte Reihe voll, endet das Spiel."
+      },
+      "review": "Nur ein geprüfter Shop (Thalia ≈ 30 € laut geizhals, Seite gesperrt)."
+    },
+    {
+      "id": "cat:feuerland-fluegelschlag",
+      "interests": [
+        "games",
+        "outdoor"
+      ],
+      "art": "boardgame",
+      "rank": 137,
+      "title": {
+        "de": "Brettspiel „Flügelschlag“",
+        "en": "Board game Wingspan (German edition)"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/feuerland-spiele-fluegelschlag-2537225/",
+          "price_cents": 3199,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "MediaMarkt",
+          "url": "https://www.mediamarkt.de/de/product/_pegasus-spiele-fl%C3%BCgelschlag-2621757.html",
+          "price_cents": 3399,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F706949635586%2F6682092374-PV-0.png&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Feuerland Spiele",
+        "players_min": 1,
+        "players_max": 5,
+        "minutes_min": 40,
+        "minutes_max": 70,
+        "age_min": 10,
+        "award": "Kennerspiel des Jahres 2019"
+      },
+      "blurb": {
+        "de": "Vögel anlocken, Eier legen, Lebensräume füllen – ein ruhiges Strategiespiel mit wunderschönen Karten, auch allein spielbar.",
+        "en": "Attract birds, lay eggs, fill habitats – a calm strategy game with beautiful cards, playable solo too."
+      },
+      "how_to_play": {
+        "de": "In jedem Zug setzt du einen Aktionswürfel ein: Vogel ausspielen, Futter nehmen, Eier legen oder Karten ziehen. Danach helfen die Vögel in dieser Reihe mit ihren Fähigkeiten – so wächst eine kleine Vogel-Maschine. Nach vier Runden zählen Vögel, Eier, Futter und Rundenziele."
+      }
+    },
+    {
+      "id": "cat:pegasus-kingdomino",
+      "interests": [
+        "games"
+      ],
+      "art": "boardgame",
+      "rank": 138,
+      "title": {
+        "de": "Legespiel „Kingdomino“",
+        "en": "Tile game Kingdomino"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/pegasus-kingdomino-2178652/",
+          "price_cents": 1519,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Pegasus Spiele",
+          "url": "https://pegasus.de/Kingdomino-Neuausgabe/57116G",
+          "price_cents": 1999,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F4250231714450%2F5821307814-PV-0.jpg&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Pegasus Spiele",
+        "players_min": 2,
+        "players_max": 4,
+        "minutes_min": 15,
+        "minutes_max": 30,
+        "age_min": 8,
+        "award": "Spiel des Jahres 2017"
+      },
+      "blurb": {
+        "de": "Dominosteine anlegen und ein kleines Königreich bauen – in fünf Minuten erklärt, in einer Viertelstunde gespielt.",
+        "en": "Place dominoes and build a little kingdom – explained in five minutes, played in a quarter of an hour."
+      },
+      "how_to_play": {
+        "de": "Jede Runde wählst du mit deinem König einen Dominostein und legst ihn an dein Reich an – mindestens eine Landschaft muss passen, alles bleibt in 5×5 Feldern. Wer einen starken Stein nimmt, wählt danach später. Am Ende zählt jedes Gebiet: Felder mal Kronen."
+      },
+      "review": "Pegasus = Neuausgabe 2026 (57116G); Müller = vorige Ausgabe (57104G), gleiche Regeln."
+    },
+    {
+      "id": "cat:repos-7-wonders-duel",
+      "interests": [
+        "games"
+      ],
+      "art": "cards",
+      "rank": 139,
+      "title": {
+        "de": "Spiel für zwei: „7 Wonders Duel“",
+        "en": "Two-player game 7 Wonders Duel"
+      },
+      "offers": [
+        {
+          "shop": "Hugendubel",
+          "url": "https://www.hugendubel.de/de/spielware/antoine_bauza_bruno_cathala-7_wonders_duel-25108133-produkt-details.html",
+          "price_cents": 3123,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://media2.hugendubel.de/shop/coverscans/251/25108133_BRA387935_xl.jpg",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Repos Production",
+        "players_min": 2,
+        "players_max": 2,
+        "minutes_min": 30,
+        "minutes_max": 30,
+        "age_min": 10,
+        "award": null
+      },
+      "blurb": {
+        "de": "Ein Zivilisationsduell nur für zwei: Karten nehmen, Weltwunder bauen, den anderen militärisch oder mit Wissenschaft schlagen.",
+        "en": "A duel of civilisations just for two: take cards, build wonders, beat the other with armies or science."
+      },
+      "how_to_play": {
+        "de": "Ihr nehmt abwechselnd eine offene Karte aus der Auslage und baut sie, tauscht sie gegen Münzen oder baut damit ein Weltwunder. Wer militärisch die gegnerische Hauptstadt erreicht oder sechs Wissenschaftssymbole hat, gewinnt sofort – sonst nach drei Zeitaltern die meisten Punkte."
+      },
+      "review": "PRÜFEN: nur ein geprüfter Shop, Versand ca. 2 Wochen; üblich 23–28 €. Auf die deutsche Ausgabe achten."
+    },
+    {
+      "id": "cat:schmidt-quacksalber",
+      "interests": [
+        "games"
+      ],
+      "art": "boardgame",
+      "rank": 140,
+      "title": {
+        "de": "Brettspiel „Die Quacksalber von Quedlinburg“",
+        "en": "Board game The Quacks of Quedlinburg"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/schmidt-spiele-die-quacksalber-von-quedlinburg-2396207/",
+          "price_cents": 2639,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Schmidt Spiele",
+          "url": "https://www.schmidtspiele-shop.de/die-quacksalber-von-quedlinburg",
+          "price_cents": 3999,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F4001504493417%2F6292770810-PV-0.JPG&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Schmidt Spiele",
+        "players_min": 2,
+        "players_max": 4,
+        "minutes_min": 45,
+        "minutes_max": 45,
+        "age_min": 10,
+        "award": "Kennerspiel des Jahres 2018"
+      },
+      "blurb": {
+        "de": "Zutaten blind aus dem Beutel ziehen und den Kessel füllen – bis er knallt. Zocken mit Lachgarantie.",
+        "en": "Draw ingredients blindly from a bag and fill your cauldron – until it explodes. Push-your-luck with guaranteed laughs."
+      },
+      "how_to_play": {
+        "de": "Alle ziehen gleichzeitig Zutaten aus dem eigenen Beutel in ihren Kessel und hören auf, wann sie wollen. Zu viele Knallerbsen, und der Kessel explodiert. Danach gibt es Punkte und neue Zutaten für den Beutel. Nach neun Runden gewinnt, wer die meisten Punkte hat."
+      }
+    },
+    {
+      "id": "cat:kosmos-cascadia",
+      "interests": [
+        "games",
+        "outdoor"
+      ],
+      "art": "boardgame",
+      "rank": 141,
+      "title": {
+        "de": "Legespiel „Cascadia – Im Herzen der Natur“",
+        "en": "Tile game Cascadia"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/kosmos-cascadia-im-herzen-der-natur-2812158/",
+          "price_cents": 1999,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "MediaMarkt",
+          "url": "https://www.mediamarkt.de/de/product/_kosmos-cascadia-gesellschaftsspiel-mehrfarbig-2795779.html",
+          "price_cents": 2699,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F4002051682590%2F4002051682590.jpg&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Kosmos",
+        "players_min": 1,
+        "players_max": 4,
+        "minutes_min": 30,
+        "minutes_max": 60,
+        "age_min": 10,
+        "award": "Spiel des Jahres 2022"
+      },
+      "blurb": {
+        "de": "Landschaften und Tiere so legen, dass Fuchs, Bär und Lachs gute Nachbarn finden. Entspannt und trotzdem knifflig.",
+        "en": "Place landscapes and animals so that fox, bear and salmon get good neighbours. Relaxed, yet tricky."
+      },
+      "how_to_play": {
+        "de": "Du nimmst eins von vier offenen Paaren aus Landschaftsplättchen und Tier, legst das Plättchen an deine Landschaft und setzt das Tier auf ein passendes Feld. Nach 20 Zügen zählen die Tiermuster der Wertungskarten und deine größten zusammenhängenden Lebensräume."
+      },
+      "review": "Müller: Aktionspreis (UVP 36,99 €)."
+    },
+    {
+      "id": "cat:pegasus-dorfromantik",
+      "interests": [
+        "games"
+      ],
+      "art": "boardgame",
+      "rank": 142,
+      "title": {
+        "de": "Kooperatives Legespiel „Dorfromantik – Das Brettspiel“",
+        "en": "Cooperative tile game Dorfromantik: The Board Game"
+      },
+      "offers": [
+        {
+          "shop": "MediaMarkt",
+          "url": "https://www.mediamarkt.de/de/product/_pegasus-spiele-dorfromantik-familienspiel-mehrfarbig-2839498.html",
+          "price_cents": 2999,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Pegasus Spiele",
+          "url": "https://pegasus.de/Dorfromantik-Das-Brettspiel-Spiel-des-Jahres-2023/51240G",
+          "price_cents": 3999,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://assets.mmsrg.com/isr/166325/c1/-/ASSET_MMS_108207863/fee_786_587_png",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Pegasus Spiele",
+        "players_min": 1,
+        "players_max": 6,
+        "minutes_min": 30,
+        "minutes_max": 60,
+        "age_min": 8,
+        "award": "Spiel des Jahres 2023"
+      },
+      "blurb": {
+        "de": "Gemeinsam eine Landschaft aus Sechsecken legen und Aufträge erfüllen – gemütlich, kooperativ, mit Kampagne.",
+        "en": "Lay a landscape of hexagons together and fulfil tasks – cosy, cooperative, with a campaign."
+      },
+      "how_to_play": {
+        "de": "Alle spielen zusammen: Reihum wird ein Sechseck-Plättchen aufgedeckt und gemeinsam angelegt. Aufträge verlangen etwa genau sechs Felder Wald – erfüllt bringen sie Punkte. Sind die Plättchen aufgebraucht, zählt das Team; in der Kampagne schaltet ihr so Neues frei."
+      }
+    },
+    {
+      "id": "cat:repos-just-one",
+      "interests": [
+        "games"
+      ],
+      "art": "cards",
+      "rank": 143,
+      "title": {
+        "de": "Ratespiel „Just One“",
+        "en": "Guessing game Just One"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/asmodee-just-one-2553549/",
+          "price_cents": 1759,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Alternate",
+          "url": "https://www.alternate.de/Asmodee/Just-One-Partyspiel/html/product/1499157",
+          "price_cents": 1829,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2F_default_upload_bucket%2Fjust-one-refresh-5425016928646-3dboxr_-web.png&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Repos Production",
+        "players_min": 3,
+        "players_max": 7,
+        "minutes_min": 20,
+        "minutes_max": 20,
+        "age_min": 8,
+        "award": "Spiel des Jahres 2019"
+      },
+      "blurb": {
+        "de": "Alle schreiben einen Hinweis, doppelte fliegen raus – ein Ratespiel, bei dem alle zusammen gewinnen.",
+        "en": "Everyone writes a clue, duplicates are out – a guessing game everyone wins together."
+      },
+      "how_to_play": {
+        "de": "Eine Person rät, alle anderen schreiben heimlich einen Ein-Wort-Hinweis zum geheimen Begriff. Doppelte Hinweise werden vorher gestrichen. Dann gibt es genau einen Rateversuch. Nach 13 Karten zählt das Team, wie viele Begriffe es gemeinsam erraten hat."
+      }
+    },
+    {
+      "id": "cat:cocktail-hanabi",
+      "interests": [
+        "games",
+        "travel"
+      ],
+      "art": "cards",
+      "rank": 144,
+      "title": {
+        "de": "Kooperatives Kartenspiel „Hanabi“",
+        "en": "Cooperative card game Hanabi"
+      },
+      "offers": [
+        {
+          "shop": "Alternate",
+          "url": "https://www.alternate.de/Asmodee/Hanabi-Brettspiel/html/product/100221930",
+          "price_cents": 1289,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Hugendubel",
+          "url": "https://www.hugendubel.de/de/spielware/antonia_bauza_antoine_bauza-asmodee_cogd0008_hanabi_spiel_des_jahres_2013_kartenspiel-49216521-produkt-details.html",
+          "price_cents": 1459,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://www.alternate.de/p/600x600/0/3/Asmodee_Hanabi__Brettspiel@@100221930.jpg",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Cocktail Games",
+        "players_min": 2,
+        "players_max": 5,
+        "minutes_min": 30,
+        "minutes_max": 30,
+        "age_min": 8,
+        "award": "Spiel des Jahres 2013"
+      },
+      "blurb": {
+        "de": "Ein Feuerwerk legen, ohne die eigenen Karten zu sehen: kooperatives Kartenspiel im Hosentaschenformat.",
+        "en": "Build a firework without seeing your own cards: a cooperative card game in pocket size."
+      },
+      "how_to_play": {
+        "de": "Alle spielen zusammen und halten ihre Karten verkehrt herum: Man sieht die der anderen, nur die eigenen nicht. Pro Zug gibt man einen Hinweis (Farbe oder Zahl), wirft ab oder spielt eine Karte aus. Ziel sind fünf Feuerwerke von 1 bis 5; drei Fehler beenden das Spiel."
+      },
+      "review": "Heute bei Cocktail Games / Asmodee (die Abacusspiele-Ausgabe von 2013 gibt es kaum noch)."
+    },
+    {
+      "id": "cat:nsv-the-mind",
+      "interests": [
+        "games",
+        "travel"
+      ],
+      "art": "cards",
+      "rank": 145,
+      "title": {
+        "de": "Kartenspiel „The Mind“",
+        "en": "Card game The Mind"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/nuernberger-spielkarten-verlag-the-mind-2379246/",
+          "price_cents": 799,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Pegasus Spiele",
+          "url": "https://pegasus.de/The-Mind-Das-Original/NSV08058",
+          "price_cents": 1239,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F4012426880667%2F2379246_TheMind_Original_Box_Front_01.jpg&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "NSV",
+        "players_min": 2,
+        "players_max": 4,
+        "minutes_min": 15,
+        "minutes_max": 20,
+        "age_min": 8,
+        "award": "Nominiert: Spiel des Jahres 2018"
+      },
+      "blurb": {
+        "de": "Zahlenkarten in die richtige Reihenfolge legen – ohne ein Wort. Klingt unmöglich, fühlt sich an wie Gedankenlesen.",
+        "en": "Play number cards in the right order – without a word. Sounds impossible, feels like mind reading."
+      },
+      "how_to_play": {
+        "de": "Alle legen gemeinsam ihre Zahlenkarten (1–100) auf einen Stapel – aufsteigend, ohne feste Reihenfolge und ohne ein Wort. Wer glaubt, die kleinste Zahl zu haben, legt einfach. Ein Fehler kostet ein Leben. Schafft ihr alle Level, gewinnt ihr zusammen."
+      }
+    },
+    {
+      "id": "cat:spacecowboys-skull",
+      "interests": [
+        "games"
+      ],
+      "art": "cards",
+      "rank": 146,
+      "title": {
+        "de": "Bluffspiel „Skull“",
+        "en": "Bluffing game Skull"
+      },
+      "offers": [
+        {
+          "shop": "Hugendubel",
+          "url": "https://www.hugendubel.de/de/spielware/herv_marly-skull-47770443-produkt-details.html",
+          "price_cents": 2228,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://media2.hugendubel.de/shop/coverscans/477/47770443_097199560_xl.jpg",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Space Cowboys",
+        "players_min": 3,
+        "players_max": 6,
+        "minutes_min": 30,
+        "minutes_max": 30,
+        "age_min": 10,
+        "award": null
+      },
+      "blurb": {
+        "de": "Rosen und ein Totenkopf, sonst nichts: ein Bluffspiel, das in einer Minute erklärt ist und den ganzen Abend trägt.",
+        "en": "Roses and one skull, nothing else: a bluffing game explained in a minute that carries the whole evening."
+      },
+      "how_to_play": {
+        "de": "Jede Person hat drei Blumen und einen Totenkopf. Reihum legt man verdeckt eine Scheibe ab – oder wettet, wie viele Scheiben man aufdecken kann, ohne einen Totenkopf zu treffen. Wer bietet, deckt zuerst die eigenen auf. Zwei geschaffte Wetten gewinnen."
+      },
+      "review": "PRÜFEN: nur ein Shop gefunden (Versand 5–7 Tage); Neuauflage seit 2024, Vertrieb Carletto."
+    },
+    {
+      "id": "cat:amigo-wizard",
+      "interests": [
+        "games"
+      ],
+      "art": "cards",
+      "rank": 147,
+      "title": {
+        "de": "Kartenspiel „Wizard“",
+        "en": "Card game Wizard"
+      },
+      "offers": [
+        {
+          "shop": "Alternate",
+          "url": "https://www.alternate.de/Amigo/Wizard-Kartenspiel/html/product/1353287",
+          "price_cents": 589,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/amigo-spiele-wizard-167855/",
+          "price_cents": 679,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://www.alternate.de/p/600x600/7/8/Amigo_Wizard__Kartenspiel@@1353287.jpg",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Amigo",
+        "players_min": 3,
+        "players_max": 6,
+        "minutes_min": 45,
+        "minutes_max": 45,
+        "age_min": 10,
+        "award": null
+      },
+      "blurb": {
+        "de": "Stiche ansagen und genau so viele machen: das Kartenspiel für Runden, die gern rechnen, pokern und lachen.",
+        "en": "Bid your tricks and take exactly that many: the card game for groups who like counting, bluffing and laughing."
+      },
+      "how_to_play": {
+        "de": "In jeder Runde gibt es eine Karte mehr. Alle sagen vorher an, wie viele Stiche sie machen; Farbe muss bedient werden, Zauberer gewinnen, Narren verlieren immer. Genau getroffen bringt Punkte, daneben kostet welche. Sind alle Karten verteilt, ist Schluss."
+      }
+    },
+    {
+      "id": "cat:zman-challengers",
+      "interests": [
+        "games"
+      ],
+      "art": "cards",
+      "rank": 148,
+      "title": {
+        "de": "Kartenspiel „Challengers!“",
+        "en": "Card game Challengers!"
+      },
+      "offers": [
+        {
+          "shop": "MediaMarkt",
+          "url": "https://www.mediamarkt.de/de/product/_zman-challengers-brettspiel-mehrfarbig-2859979.html",
+          "price_cents": 2758,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://assets.mmsrg.com/isr/166325/c1/-/ASSET_MMS_134560089/fee_786_587_png",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Z-Man Games",
+        "players_min": 1,
+        "players_max": 8,
+        "minutes_min": 45,
+        "minutes_max": 45,
+        "age_min": 8,
+        "award": "Kennerspiel des Jahres 2023"
+      },
+      "blurb": {
+        "de": "Karten sammeln, ein Team aufstellen und in kurzen Duellen antreten – ein lustiges Turnier für bis zu acht.",
+        "en": "Collect cards, build a team and fight short duels – a fun tournament for up to eight."
+      },
+      "how_to_play": {
+        "de": "Sieben Runden lang verbessert jede Person ihr Kartendeck und tritt dann im Duell an: Karten aufdecken, bis eine stark genug ist, die Fahne zu holen – wer sie nicht zurückholt, verliert. Siege bringen Fans. Die zwei mit den meisten Fans spielen das Finale."
+      },
+      "review": "Hugendubel 47,22 € weggelassen (weit über dem üblichen Preis 24–30 €). Alter: Verlag ab 8, Jury ab 10."
+    },
+    {
+      "id": "cat:jumbo-hitster",
+      "interests": [
+        "games",
+        "music"
+      ],
+      "art": "cards",
+      "rank": 149,
+      "title": {
+        "de": "Musik-Partyspiel „Hitster“",
+        "en": "Music party game Hitster"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/jumbo-spiele-hitster-2819758/",
+          "price_cents": 1599,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "MediaMarkt",
+          "url": "https://www.mediamarkt.de/de/product/_jumbo-spiele-hitster-musikkartenspiel-partyspiel-ab-16-jahren-kartenspiel-mehrfarbig-2794484.html",
+          "price_cents": 1799,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F8710126198872%2F7192351170-PV-0.png&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Jumbo",
+        "players_min": 2,
+        "players_max": 10,
+        "minutes_min": 30,
+        "minutes_max": 30,
+        "age_min": 16,
+        "award": null
+      },
+      "blurb": {
+        "de": "Songs anhören und auf dem Zeitstrahl ins richtige Jahr legen: Musikquiz für Partys, gespielt mit Handy und kostenloser App.",
+        "en": "Listen to songs and place them in the right year on a timeline: a party music quiz, played with a phone and a free app."
+      },
+      "how_to_play": {
+        "de": "Ein Handy spielt über die kostenlose Hitster-App den Song der Karte. Wer dran ist, legt die Karte in seinen Zeitstrahl – davor, dahinter oder dazwischen – und dreht sie um: Stimmt das Jahr, bleibt sie liegen. Wer zuerst zehn Karten richtig liegen hat, gewinnt."
+      },
+      "review": "Braucht Smartphone mit Kamera, Internet und die kostenlose Hitster-App; ohne Konto oder mit kostenlosem Konto nur Ausschnitte, ganze Songs mit Bezahl-Abo (Hitster-FAQ, 26.10.2026). Welche Dienste direkt gehen: PRÜFEN."
+    },
+    {
+      "id": "cat:kosmos-exit-verlassene-huette",
+      "interests": [
+        "games"
+      ],
+      "art": "puzzle",
+      "rank": 150,
+      "title": {
+        "de": "Escape-Spiel „EXIT – Die verlassene Hütte“",
+        "en": "Escape game EXIT: The Abandoned Cabin"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/kosmos-exit-das-spiel-die-verlassene-huette-2059718/",
+          "price_cents": 1039,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F4002051692681%2F5523089615-PV-0.JPG&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Kosmos",
+        "players_min": 1,
+        "players_max": 4,
+        "minutes_min": 45,
+        "minutes_max": 90,
+        "age_min": 12,
+        "award": "Kennerspiel des Jahres 2017"
+      },
+      "blurb": {
+        "de": "Ein Escape Room für den Küchentisch: Rätsel lösen, Karten knicken, Material zerschneiden – einmal spielbar, lange erzählt.",
+        "en": "An escape room for the kitchen table: solve riddles, fold cards, cut material – played once, talked about for long."
+      },
+      "how_to_play": {
+        "de": "Alle rätseln gemeinsam mit Buch, Rätselkarten und seltsamen Gegenständen; das Material darf beschrieben, geknickt und zerschnitten werden. Codes prüft man mit der Codescheibe, Hilfekarten helfen weiter. Ist das letzte Rätsel gelöst, seid ihr frei. Nur einmal spielbar."
+      },
+      "review": "Preis ausgezeichnet wurde die Reihe (erste drei Titel, darunter dieser). kosmos.de ≈ 14,99 € (Seite antwortete 429). Nur einmal spielbar."
+    },
+    {
+      "id": "cat:pegasus-everdell",
+      "interests": [
+        "games"
+      ],
+      "art": "boardgame",
+      "rank": 151,
+      "title": {
+        "de": "Brettspiel „Everdell“",
+        "en": "Board game Everdell"
+      },
+      "offers": [
+        {
+          "shop": "Alternate",
+          "url": "https://www.alternate.de/Pegasus/Everdell-Brettspiel/html/product/100158221",
+          "price_cents": 5290,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Pegasus Spiele",
+          "url": "https://pegasus.de/Everdell/57600G",
+          "price_cents": 6999,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://www.alternate.de/p/600x600/1/2/Pegasus_Everdell__Brettspiel@@100158221.jpg",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Pegasus Spiele",
+        "players_min": 1,
+        "players_max": 4,
+        "minutes_min": 40,
+        "minutes_max": 80,
+        "age_min": 10,
+        "award": null
+      },
+      "blurb": {
+        "de": "Waldtiere bauen eine Stadt unter einem großen Baum – opulent ausgestattet, ein Geschenk schon beim Auspacken.",
+        "en": "Forest animals build a city under a great tree – lavishly made, a gift already when you unpack it."
+      },
+      "how_to_play": {
+        "de": "Pro Zug machst du eins: einen Arbeiter einsetzen und Rohstoffe oder Karten holen, eine Kreatur oder ein Gebäude in deine Stadt spielen oder dich auf die nächste Jahreszeit vorbereiten. Nach dem Herbst ist für alle Schluss; die wertvollste Stadt gewinnt."
+      },
+      "review": "Über dem 60-€-Rahmen (UVP 69,99 €) – bewusst als „großes Geschenk“."
+    },
+    {
+      "id": "cat:pegasus-bomb-busters",
+      "interests": [
+        "games"
+      ],
+      "art": "boardgame",
+      "rank": 152,
+      "title": {
+        "de": "Kooperatives Spiel „Bomb Busters“",
+        "en": "Cooperative game Bomb Busters"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/pegasus-bomb-busters-PPN3094239/",
+          "price_cents": 2639,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Pegasus Spiele",
+          "url": "https://pegasus.de/Bomb-Busters-Spiel-des-Jahres-2025/51280G",
+          "price_cents": 3499,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F4250231740473%2F4250231740473_01.png&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Pegasus Spiele",
+        "players_min": 2,
+        "players_max": 5,
+        "minutes_min": 20,
+        "minutes_max": 40,
+        "age_min": 10,
+        "award": "Spiel des Jahres 2025"
+      },
+      "blurb": {
+        "de": "Gemeinsam Bomben entschärfen, indem man Kabel nach Zahlen schneidet – kooperativ, mit vielen Missionen zum Weiterspielen.",
+        "en": "Defuse bombs together by cutting wires by numbers – cooperative, with many missions to come back to."
+      },
+      "how_to_play": {
+        "de": "Alle entschärfen zusammen eine Bombe. Jede Person hat sortierte Kabel mit Zahlen; man zeigt auf ein Kabel einer Mitspielerin und nennt eine Zahl, die man selbst hat. Stimmt sie, sind beide durchtrennt, sonst rückt der Zünder vor – sind alle Kabel geschnitten, ist die Bombe sicher."
+      }
+    },
+    {
+      "id": "cat:gamefactory-dito",
+      "interests": [
+        "games"
+      ],
+      "art": "cards",
+      "rank": 153,
+      "title": {
+        "de": "Partyspiel „Dito!“",
+        "en": "Party game Dito!"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/game-factory-dito-d-PPN3203659/",
+          "price_cents": 1999,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Alternate",
+          "url": "https://www.alternate.de/Gamefactory/Dito-Partyspiel/html/product/100211644",
+          "price_cents": 2199,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2F_default_upload_bucket%2F3203659.png&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Game Factory",
+        "players_min": 3,
+        "players_max": 7,
+        "minutes_min": 30,
+        "minutes_max": 30,
+        "age_min": 10,
+        "award": "Spiel des Jahres 2026"
+      },
+      "blurb": {
+        "de": "Drei Kategorien, je drei Begriffe notieren: Punkte gibt es nur, wenn andere dasselbe schreiben. Ein Partyspiel ums Gleichdenken.",
+        "en": "Three categories, three words each: you only score when others wrote the same. A party game about thinking alike."
+      },
+      "how_to_play": {
+        "de": "Drei Kategorien pro Runde, zu jeder schreibt jede Person heimlich drei Begriffe. Dann wird vorgelesen: Wer dasselbe hat, punktet; ist es genau ein Paar, gibt es einen Extra-Stern. Volle Reihen bringen Boni. Nach drei Runden gewinnt die höchste Punktzahl."
+      },
+      "review": "Seit dem Preis oft ausverkauft – Verfügbarkeit monatlich prüfen."
+    },
+    {
+      "id": "cat:frosted-rebirth",
+      "interests": [
+        "games"
+      ],
+      "art": "boardgame",
+      "rank": 154,
+      "title": {
+        "de": "Legespiel „Rebirth – Aufbruch in eine neue Zeit“",
+        "en": "Tile game Rebirth"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/rebirth-aufbruch-in-eine-neue-zeit-taktisches-legespiel-PPN3218476/",
+          "price_cents": 4396,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Frosted Games",
+          "url": "https://frostedgames.de/shop/rebirth-aufbruch-in-eine-neue-zeit/",
+          "price_cents": 4995,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F739805889212%2F739805889212.png&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Frosted Games",
+        "players_min": 2,
+        "players_max": 4,
+        "minutes_min": 45,
+        "minutes_max": 60,
+        "age_min": 8,
+        "award": "Kennerspiel des Jahres 2026"
+      },
+      "blurb": {
+        "de": "Plättchen legen, Mehrheiten erringen, Schottland nach dem Untergang neu aufbauen – ein Zug ist schnell gemacht, die Tiefe kommt später.",
+        "en": "Place tiles, win majorities, rebuild Scotland after the collapse – a turn is quick, the depth comes later."
+      },
+      "how_to_play": {
+        "de": "Pro Zug legst du dein Plättchen – Nahrung, Energie oder Siedlung – auf ein passendes Feld der Schottland-Karte und punktest sofort: Felder nach Größe der Gruppe, Siedlungen nach Mehrheit. Dann ziehst du nach. Sind alle Plättchen gelegt, folgt die Schlusswertung."
+      },
+      "review": "Beim Verlag gerade ausverkauft (vorbestellbar). Alter: Verlag ab 8, Jury ab 10."
+    },
+    {
+      "id": "cat:schmidt-ganz-schoen-clever",
+      "interests": [
+        "games",
+        "travel"
+      ],
+      "art": "boardgame",
+      "rank": 155,
+      "title": {
+        "de": "Würfelspiel „Ganz schön clever“",
+        "en": "Dice game Ganz schön clever (That’s Pretty Clever)"
+      },
+      "offers": [
+        {
+          "shop": "Müller",
+          "url": "https://www.mueller.de/p/schmidt-spiele-ganz-schoen-clever-2385960/",
+          "price_cents": 1039,
+          "checked_at": "2026-10-26"
+        },
+        {
+          "shop": "Schmidt Spiele",
+          "url": "https://www.schmidtspiele-shop.de/ganz-schoen-clever",
+          "price_cents": 1499,
+          "checked_at": "2026-10-26"
+        }
+      ],
+      "image_source": "https://images.prod.ecom.mueller.de/_next/image/?url=https%3A%2F%2Fstatic.prod.ecom.mueller.de%2Fproducts%2F4001504493400%2F6292770989-PV-0.JPG&w=1200&q=75",
+      "shelf": "brettspiele",
+      "game": {
+        "publisher": "Schmidt Spiele",
+        "players_min": 1,
+        "players_max": 4,
+        "minutes_min": 20,
+        "minutes_max": 30,
+        "age_min": 8,
+        "award": "Nominiert: Kennerspiel des Jahres 2018"
+      },
+      "blurb": {
+        "de": "Würfeln, Felder ankreuzen, Kettenreaktionen auslösen: ein Würfelspiel, das schnell geht und lange fesselt.",
+        "en": "Roll, tick boxes, set off chain reactions: a dice game that is quick to play and hard to put down."
+      },
+      "how_to_play": {
+        "de": "Wer dran ist, würfelt bis zu dreimal mit sechs Würfeln, behält jedes Mal einen und trägt ihn im Bereich seiner Farbe ein; kleinere Würfel gehen aufs Silbertablett für die anderen. Kluge Einträge lösen Kettenreaktionen aus. Nach 4–6 Runden gewinnt die höchste Summe."
+      }
+    }
+  ]
+}

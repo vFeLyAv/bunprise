@@ -1,0 +1,335 @@
+/*
+ * src/features/gifts/topics/topics.css — "Stöbern nach Thema" (Felix 26.10; the approved gallery prototype,
+ * packages/mascot/demo/ideas, docs/design/2026-10-26-ideas-categories.md): the row of topic tiles under the deck,
+ * the topic screen (header art, filters, grid) and a game's sheet (carousel, facts, "So wird gespielt").
+ * Imported by the lazy topic chunks only (never /soon). Colours: tokens + the gift palette (gifts.css --gift-*);
+ * the few new values below are the game drawings' card / die colours. Glass only on bars and sheets — never under
+ * the grid. Animate only transform / opacity; reduced motion → the spring tokens are 0 ms.
+ */
+:root {
+  --gift-card: light-dark(#FFFDF8, #EADFCF);
+  --gift-card-rim: light-dark(rgba(116, 84, 44, .16), rgba(0, 0, 0, .18));
+  --gift-die: light-dark(#FFFDF8, #EFE5D8);
+  --gift-die-rim: light-dark(rgba(116, 84, 44, .24), rgba(0, 0, 0, .2));
+  --gift-shadow-strong: light-dark(rgb(42 35 28 / .2), rgb(0 0 0 / .42));
+  --gift-accent: #DC7B2C;
+}
+
+@layer components {
+  /* the moving parts of the drawings turn around their own centre / stand on their feet */
+  .play-center { transform-box: fill-box; transform-origin: center; }
+  .play-feet { transform-box: fill-box; transform-origin: 50% 100%; }
+  .gift-play, .topic-scene { display: block; width: 100%; height: 100%; }
+
+  /* ---- the row under the deck ------------------------------------------------------------------------------ */
+  .topic-row {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 10px var(--gutter) 6px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .topic-row::-webkit-scrollbar { display: none; }
+  .topic-row > li { flex: none; scroll-snap-align: start; list-style: none; }
+  .topic-tile {
+    position: relative;
+    display: block;
+    width: 118px;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 22px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .topic-tile:focus-visible { outline: none; box-shadow: var(--ring); }
+  .topic-tile-art {
+    height: 92px;
+    border-radius: 22px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    transition: transform var(--dur-snappy) var(--ease-snappy);
+  }
+  .topic-tile:active .topic-tile-art { transform: scale(.96); }
+  .topic-tile-art svg { width: 108px; height: 81px; }
+  .topic-tile b { display: block; margin: 7px 4px 0; font-size: var(--fs-body); line-height: 1.25; font-weight: 600; }
+  .topic-tile small { display: block; margin: 1px 4px 0; font-size: var(--fs-footnote); color: var(--text-2); }
+  .topic-tile .gift-tag { position: absolute; left: 8px; top: 8px; }
+
+  /* ---- the topic screen ------------------------------------------------------------------------------------ */
+  .topic-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--r-hero, 28px);
+    background: linear-gradient(165deg, var(--tile-4) 0%, var(--tile-1) 100%);
+    box-shadow: var(--shadow-1);
+  }
+  .topic-hero[data-tone="2"] { background: linear-gradient(165deg, var(--tile-2) 0%, var(--tile-1) 100%); }
+  .topic-hero[data-tone="3"] { background: linear-gradient(165deg, var(--tile-3) 0%, var(--tile-2) 100%); }
+  .topic-hero[data-tone="1"] { background: linear-gradient(165deg, var(--tile-1) 0%, var(--tile-4) 100%); }
+  .topic-hero-art { margin-top: 6px; aspect-ratio: 358 / 140; }
+  .topic-hero-art[data-plain] { display: grid; place-items: center; aspect-ratio: auto; height: 132px; }
+  .topic-hero-art[data-plain] svg { width: 168px; height: 126px; }
+  .topic-hero-text { padding: 2px 18px 16px; }
+  .topic-hero h1 { margin: 0; font-size: var(--fs-title-1); line-height: 1.2; font-weight: 700; letter-spacing: -.02em; color: var(--text); }
+  .topic-hero p { margin: 2px 0 0; font-size: var(--fs-body); line-height: 1.35; color: var(--text-2); }
+  .topic-hero .topic-meta { margin-top: 6px; font-size: var(--fs-footnote); }
+  .topic-hero .topic-meta b { font-weight: 600; color: var(--tile-4-fg); }
+
+  .topic-filters {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 2px var(--gutter);
+    scrollbar-width: none;
+  }
+  .topic-filters::-webkit-scrollbar { display: none; }
+  .topic-filter {
+    flex: none;
+    min-height: 44px;
+    padding: 0 14px 0 14px;
+    border-radius: var(--r-control);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-body);
+    font-weight: 600;
+    background-color: var(--fill-2);
+    color: var(--text);
+    transition: background-color var(--dur-snappy) var(--ease-snappy), color var(--dur-snappy) var(--ease-snappy), transform var(--dur-snappy) var(--ease-snappy);
+  }
+  .topic-filter:active { transform: scale(.96); }
+  .topic-filter[data-on] { background-color: var(--accent-100); color: var(--accent-text); }
+  .topic-filter:focus-visible { outline: none; box-shadow: var(--ring); }
+  .topic-filter-chev { font-size: 12px; opacity: .6; }
+
+  /* the toolbar: the filter pills and, right of them, the search (Felix 27.10) */
+  .topic-toolbar { display: flex; align-items: center; gap: 8px; }
+  .topic-toolbar .topic-filters { flex: 1; min-width: 0; margin-inline-end: 0; padding-inline-end: 2px; }
+  .topic-search-btn {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background-color: var(--fill-2);
+    color: var(--text);
+    transition: background-color var(--dur-snappy) var(--ease-snappy), color var(--dur-snappy) var(--ease-snappy), transform var(--dur-snappy) var(--ease-snappy);
+  }
+  .topic-search-btn:active { transform: scale(.94); }
+  .topic-search-btn[data-on] { background-color: var(--accent-100); color: var(--accent-text); }
+  .topic-search-btn:focus-visible { outline: none; box-shadow: var(--ring); }
+  .topic-search { display: flex; align-items: center; gap: 8px; animation: topic-search-in var(--dur-smooth) var(--ease-bouncy) both; }
+  @keyframes topic-search-in {
+    from { opacity: 0; transform: translateY(-8px) scale(.98); }
+    to { opacity: 1; transform: none; }
+  }
+  .topic-search-field {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 8px 0 12px;
+    border-radius: var(--r-control);
+    background-color: var(--fill-2);
+  }
+  .topic-search-field:focus-within { box-shadow: var(--ring); }
+  .topic-search-field input { flex: 1; min-width: 0; height: 100%; border: 0; padding: 0; background: transparent; font: inherit; font-size: var(--fs-body); color: var(--text); outline: none; }
+  .topic-search-field input::placeholder { color: var(--text-3); }
+  /* the field shows the focus ring (focus-within), not the input inside it */
+  .topic-search-field input:focus-visible { box-shadow: none; }
+  .topic-search-field input::-webkit-search-cancel-button { display: none; }
+  .topic-search-clear { position: relative; flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background-color: var(--text-3); color: var(--surface); }
+  /* 44 px to hit */
+  .topic-search-clear::after { content: ""; position: absolute; inset: -11px; }
+  .topic-search-clear:focus-visible { outline: none; box-shadow: var(--ring); }
+  .topic-search-cancel { flex: none; min-height: 44px; padding: 0 4px; font-size: var(--fs-body); font-weight: 600; color: var(--accent-text); }
+  .topic-search-cancel:focus-visible { outline: none; box-shadow: var(--ring); border-radius: 8px; }
+
+  .topic-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 10px; }
+  .topic-grid > li[hidden] { display: none; }
+  .topic-card {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 22px;
+    background-color: var(--surface);
+    box-shadow: var(--shadow-1);
+  }
+  .topic-card-open {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .topic-card-open:focus-visible { outline: none; box-shadow: inset 0 0 0 3px var(--accent-text); }
+  .topic-card-art { position: relative; height: 112px; overflow: hidden; }
+  .topic-card-art .gift-picture { position: absolute; inset: 0; }
+  .topic-card-stage { position: absolute; inset: 0; }
+  .topic-award {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    max-width: calc(100% - 16px);
+    box-sizing: border-box;
+    padding: 3px 8px 3px 6px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-caption-2);
+    line-height: 14px;
+    font-weight: 700;
+    background-color: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(60, 35, 15, .16);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .topic-award i { font-style: normal; color: #C9302C; }
+  .topic-card-body { flex: 1; display: flex; flex-direction: column; padding: 10px 12px; }
+  .topic-card h3 {
+    margin: 0;
+    font-size: var(--fs-body);
+    line-height: 1.27;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.54em;
+    overflow-wrap: anywhere;
+  }
+  .topic-facts { display: flex; flex-wrap: wrap; gap: 0 8px; margin-top: 4px; font-size: var(--fs-footnote); color: var(--text-2); }
+  .topic-buy { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; padding-top: 6px; }
+  .topic-buy b { font-size: var(--fs-body); font-weight: 600; color: var(--accent-text); font-variant-numeric: tabular-nums; }
+  .topic-add {
+    position: relative;
+    z-index: 2;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    margin: -4px -4px -4px 0;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background-color: var(--accent-100);
+    color: var(--accent-text);
+    transition: background-color var(--dur-snappy) var(--ease-snappy), transform var(--dur-snappy) var(--ease-snappy);
+  }
+  /* 44 px to hit, 36 px to see */
+  .topic-add::after { content: ""; position: absolute; inset: -4px; }
+  .topic-add:active { transform: scale(.9); }
+  .topic-add[data-done] { background-color: var(--ok-bg); color: var(--ok-text); }
+  .topic-add:focus-visible { outline: none; box-shadow: var(--ring); }
+  .topic-foot { margin: 6px 4px 0; font-size: var(--fs-caption-1); line-height: 1.4; color: var(--text-2); text-align: center; }
+
+  /* ---- a game's sheet --------------------------------------------------------------------------------------- */
+  .topic-carousel {
+    position: relative;
+    height: 172px;
+    overflow: hidden;
+    border-radius: 24px;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .topic-carousel:focus-visible { outline: none; box-shadow: var(--ring); }
+  .topic-carousel-track { display: flex; height: 100%; transition: transform var(--dur-smooth) var(--ease-smooth); }
+  .topic-carousel[data-dragging] .topic-carousel-track { transition: none; }
+  .topic-slide { position: relative; flex: 0 0 100%; height: 100%; }
+  .topic-slide[data-kind="photo"] { background: var(--gift-photo-plate); box-shadow: inset 0 0 0 1px var(--gift-photo-rim); }
+  .topic-slide[data-kind="photo"] img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6%;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+  .topic-slide .gift-picture { position: absolute; inset: 0; }
+  .topic-credit {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--gift-credit-bg);
+    color: var(--gift-credit-ink);
+    font-size: var(--fs-caption-2);
+    line-height: 1.4;
+  }
+  .topic-carousel-btn {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    margin-top: -22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--text);
+    background-color: var(--solid, color-mix(in srgb, var(--surface) 82%, transparent));
+    box-shadow: inset 0 0 0 1px var(--separator), 0 2px 8px rgba(40, 25, 10, .2);
+    transition: opacity var(--dur-snappy) var(--ease-snappy);
+  }
+  .topic-carousel-btn[data-side="prev"] { left: 8px; }
+  .topic-carousel-btn[data-side="next"] { right: 8px; }
+  .topic-carousel-btn[data-off] { opacity: 0; pointer-events: none; }
+  .topic-carousel-btn:focus-visible { outline: none; box-shadow: var(--ring); }
+  /* the arrows sat on the game's scene (30.10: "›" hid the right side of the Monopoly ring). A finger swipes and has
+     the dots below; with a mouse they come only while the pointer is over the pictures (or a key focus is inside) */
+  @media (hover: none), (pointer: coarse) {
+    .topic-carousel-btn { display: none; }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .topic-carousel:not(:hover):not(:focus-within) .topic-carousel-btn { opacity: 0; }
+  }
+  .topic-dots { display: flex; justify-content: center; margin: -6px 0 -12px; }
+  .topic-dots button { width: 30px; height: 36px; display: grid; place-items: center; }
+  .topic-dots i {
+    width: 7px;
+    height: 7px;
+    border-radius: 4px;
+    background-color: var(--text-3);
+    opacity: .45;
+    transition: transform var(--dur-snappy) var(--ease-snappy), opacity var(--dur-snappy) var(--ease-snappy);
+  }
+  .topic-dots button[aria-selected="true"] i { opacity: 1; background-color: var(--accent-text); transform: scaleX(2.2); }
+  .topic-dots button:focus-visible { outline: none; box-shadow: var(--ring); border-radius: 12px; }
+
+  .topic-factrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .topic-factrow[data-cols="2"] { grid-template-columns: repeat(2, 1fr); }
+  .topic-factrow > span {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 8px 10px;
+    border-radius: 16px;
+    background-color: var(--fill);
+    font-size: var(--fs-caption-1);
+    color: var(--text-2);
+  }
+  .topic-factrow b { font-size: var(--fs-headline); font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+  .topic-howto { padding: 10px 12px 11px; border-radius: 18px; background-color: var(--accent-50); }
+  .topic-howto h3 { margin: 0 0 3px; font-size: var(--fs-footnote); line-height: 1.4; font-weight: 700; color: var(--accent-text); }
+  .topic-howto p { margin: 0; font-size: var(--fs-body); line-height: 1.4; color: var(--text); }
+  .topic-howto small { display: block; margin-top: 4px; font-size: var(--fs-caption-1); color: var(--text-2); }
+}

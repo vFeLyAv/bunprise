@@ -1,0 +1,78 @@
+{
+  "invitations": {
+    "name_fallback": "Jemand",
+    "card": {
+      "section_label_one": "{{count}} Einladung",
+      "section_label_other": "{{count}} Einladungen",
+      "title": "{{name}} lädt dich ein",
+      "when": "„{{title}}“ · {{date}}",
+      "valid_until": "gilt bis {{date}}",
+      "more_one": "{{count}} weitere Einladung",
+      "more_other": "{{count}} weitere Einladungen"
+    },
+    "sheet": {
+      "title": "{{name}} lädt dich ein",
+      "host": "Gastgeber: {{name}}",
+      "privacy": "Mit dem Beitritt sehen {{host}} und die Gäste deinen Namen „{{me}}“, dein Profilbild und deine Antwort, ob du kommst.",
+      "your_name": "dein Name",
+      "privacy_inviter": "{{host}} sieht, dass {{inviter}} dich eingeladen hat.",
+      "after": "Danach siehst du Ort, Gäste und die Wunschliste.",
+      "join": "Beitreten",
+      "joining": "Du trittst bei …",
+      "decline": "Ablehnen",
+      "decline_block": "Ablehnen und blockieren",
+      "report": "Melden",
+      "silent": "{{name}} erfährt nicht, wenn du ablehnst.",
+      "gone": "Diese Einladung gilt nicht mehr.",
+      "declined": "Abgelehnt",
+      "declined_blocked": "Abgelehnt – {{name}} ist blockiert",
+      "report_mail_subject": "Meldung zu einer Einladung ({{id}})",
+      "report_mail_body": "Hallo, ich möchte diese Einladung in Bunprise melden. Was ist passiert?",
+      "block_title": "{{name}} blockieren?",
+      "block_message": "Die Einladung wird abgelehnt. Ihr seht euch danach nicht mehr – weder als Freunde noch in Gästelisten –, und {{name}} kann dich nicht mehr einladen. {{name}} bekommt keine Nachricht."
+    },
+    "picker": {
+      "title": "Freunde einladen",
+      "lead": "Hier stehen Menschen, denen du folgst und die dir folgen.",
+      "guest_note": "{{host}} erlaubt Gästen, Freunde einzuladen. {{host}} sieht, wen du eingeladen hast, sobald die Person beitritt.",
+      "invite": "Einladen",
+      "invite_label": "{{name}} einladen",
+      "invited_until": "Eingeladen · bis {{date}}",
+      "invited": "Eingeladen",
+      "withdraw": "Zurückziehen",
+      "withdraw_label": "Einladung an {{name}} zurückziehen",
+      "withdrawn": "Zurückgezogen",
+      "footer": "Nach dem Beitritt sehen sie Datum, Ort, Gäste und die Wunschliste. Ob jemand ablehnt, erfährst du nicht.",
+      "empty_title": "Noch keine Freunde hier",
+      "empty_text": "Freunde sind Menschen, denen du folgst und die dir folgen.",
+      "empty_link": "Mein Folgen-Link",
+      "limit": "Für heute hast du genug eingeladen. Morgen geht es weiter.",
+      "unavailable": "Einladen geht hier gerade nicht.",
+      "load_failed": "Deine Freunde konnten nicht geladen werden. Versuch es gleich nochmal.",
+      "done": "Fertig",
+      "guests_switch": "Gäste dürfen Freunde einladen",
+      "guests_hint": "Sie sehen nach dem Beitritt Ort, Gäste und deine Wunschliste.",
+      "guests_failed": "Die Einstellung wurde nicht gespeichert."
+    },
+    "entry": {
+      "host_button": "Freunde einladen",
+      "guest_row": "Freunde einladen",
+      "guest_row_hint": "{{host}} erlaubt es Gästen",
+      "invited_by": "eingeladen von {{name}}"
+    },
+    "privacy": {
+      "label": "Einladungen in Anlässe",
+      "friends": "Von Freunden",
+      "nobody": "Niemand",
+      "hint_friends": "Freunde können dich direkt in ihre Anlässe einladen.",
+      "hint_nobody": "Niemand lädt dich direkt ein – du kommst nur noch per Link dazu.",
+      "failed": "Die Einstellung wurde nicht gespeichert."
+    },
+    "email": {
+      "label": "Bei neuen Einladungen eine E-Mail schicken",
+      "hint": "Nur „Jemand hat dich eingeladen“ – ohne Namen und Anlass, an deine Anmelde-Adresse. Abbestellen geht in jeder E-Mail.",
+      "no_address": "Für dein Konto ist keine bestätigte E-Mail-Adresse hinterlegt.",
+      "failed": "Die Einstellung wurde nicht gespeichert."
+    }
+  }
+}

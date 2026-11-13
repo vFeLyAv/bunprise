@@ -1,0 +1,21 @@
+-- =============================================================================
+-- Bunprise — RELEASE TEMPLATE: switch the in-app invitations ("Freunde einladen") ON in the database.
+-- NOT a migration (in migrations/ it would be applied by the next `supabase db push` by itself).
+--
+-- 20261027120000_occasion_invitations.sql creates the feature SWITCHED OFF (private.features.occasion_invitations
+-- defaults to false): every invitation RPC refuses, the two settings cannot be changed, nothing is shown.
+-- USED ONCE ALREADY: Felix 26.10 («так включи приглашения и исправь Datenschutz и AGB») — copied as
+-- supabase/migrations/20261027130000_occasion_invitations_on.sql for the 4th release, together with the pilot-4 legal
+-- texts (privacy notice AND terms with the invitation paragraphs, 20261026200000_legal_versions_pilot_4.sql) and the
+-- client flag VITE_INVITES=1 (scripts/release-web.ps1).
+--
+-- Use it again only to switch back on after an emergency off (supabase/emergency/occasion_invitations_off.sql), with
+-- Felix's OK and while the published legal texts still describe the invitations:
+--   1. copy this file to supabase/migrations/<YYYYMMDDHHMMSS>_occasion_invitations_on.sql (a timestamp later than
+--      every existing migration);
+--   2. `npx supabase db push`;
+--   3. check: `select occasion_invitations from private.features` = true;
+--   4. the app is built with VITE_INVITES = '1'.
+-- =============================================================================
+
+update private.features set occasion_invitations = true;

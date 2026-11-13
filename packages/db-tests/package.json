@@ -1,0 +1,21 @@
+{
+  "name": "@bunprise/db-tests",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SQL migration + Row Level Security tests on PGlite (Postgres in WASM) with Supabase shims, plus concurrency tests on a real embedded PostgreSQL — no Docker needed.",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:concurrency": "vitest run -c vitest.concurrency.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@types/node": "^24.0.0",
+    "@types/pg": "8.23.1",
+    "embedded-postgres": "17.10.0-beta.17",
+    "pg": "8.23.1",
+    "typescript": "~7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

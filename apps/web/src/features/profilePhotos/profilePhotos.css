@@ -1,0 +1,139 @@
+/*
+ * src/features/profilePhotos/profilePhotos.css — a person's own photo over the initials avatar (ProfileAvatar, which is
+ * position: relative) and over the preset banner (.lb-banner: relative, overflow hidden, isolated; the preset art and the
+ * soft light are z-index -1). The photo only fades (opacity); nothing around it moves or changes size.
+ */
+.pph-avatar {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.pph-banner {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.pph-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  user-select: none;
+}
+/* a photo banner keeps the soft paper light only very lightly (it is a photo, not paper) */
+.lb-banner:has(.pph-banner .pph-img)::after {
+  background: none;
+}
+
+/* ---- the sheets (AvatarSheet, BannerSheet's own photo) ------------------------------------------------- */
+.pph-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0 var(--sp-1);
+}
+.pph-preview-avatar {
+  box-shadow: var(--lt-avatar-ring, 0 0 0 3px color-mix(in srgb, var(--hl) 86%, transparent));
+}
+.pph-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+.pph-option {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-2);
+  border-radius: 18px;
+  background-color: var(--fill);
+  transition: transform var(--dur-snappy) var(--ease-snappy), box-shadow var(--dur-xs) var(--ease-out);
+}
+.pph-option:focus-visible { outline: none; box-shadow: var(--ring); }
+.pph-option[data-pressed] { transform: scale(0.96); }
+.pph-option[aria-checked='true'] { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent-text); }
+.pph-option[aria-disabled='true'] { opacity: 0.55; }
+.pph-option-label {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-align: center;
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  font-weight: 600;
+  color: var(--text-2);
+}
+.pph-option[aria-checked='true'] .pph-option-label { color: var(--text); }
+.pph-option-hint {
+  max-width: 100%;
+  text-align: center;
+  font-size: var(--fs-caption-1);
+  line-height: 1.3;
+  color: var(--text-2);
+}
+.pph-own-placeholder {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--accent-text);
+  background-color: color-mix(in oklab, var(--accent-100) 70%, transparent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--accent-300) 60%, transparent);
+}
+.pph-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+.pph-file {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+/* the little camera on a tappable own avatar (headers): fades away while the avatar glides into the bar */
+.pph-cam {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-on-accent, #fff);
+  background-color: var(--accent-300);
+  box-shadow: 0 0 0 2.5px var(--surface), 0 4px 10px -4px color-mix(in srgb, var(--shade) 50%, transparent);
+  opacity: clamp(0, calc(1 - var(--collapse, 0) * 4), 1);
+  pointer-events: none;
+}
+/* the "choose a photo" swatch of the banner sheet: a smaller camera in the middle of the preset */
+.lb-swatch .pph-own-placeholder {
+  width: 40px;
+  height: 40px;
+}
+.lb-choice[aria-disabled='true'] { opacity: 0.55; }
+/* a tappable own avatar in a header (the gliding one lies on it and lets taps through) */
+.pph-avatar-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.pph-avatar-button:focus-visible { outline: none; box-shadow: var(--ring); }
+/* the camera fills the avatar (avatar sheet) / sits in the middle of a banner swatch (banner sheet) */
+.pph-own-fill { position: absolute; inset: 0; width: auto; height: auto; }
+.pph-own-centre { position: absolute; inset: 0; margin: auto; }
+.pph-actions[data-align='start'] { justify-content: flex-start; }

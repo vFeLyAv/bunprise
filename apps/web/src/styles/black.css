@@ -1,0 +1,115 @@
+/*
+ * src/styles/black.css — the sixth theme "Schwarz" (Felix 27.10: «прям черную-черную-серую … как в Дискорде и в
+ * Телеграме»; docs/ideas/2026-10-27-black-theme.md, docs/handoffs/2026-10-27-black-theme.md).
+ *
+ * A true-black page (#000, an OLED screen switches those pixels off) with near-black neutral greys for everything that
+ * lies on it, like the night themes of Discord (Midnight / AMOLED) and Telegram (Night):
+ *   page #000 → frosted panels #111113 → cards / sheets #161618 → raised #1F1F22 → segmented thumb #36363C.
+ * Depth comes from these steps and a white hairline (a shadow is invisible on black). The page has no glows and no
+ * paper grain: black stays black. The brand orange stays, a little quieter (less saturated, so it does not glow).
+ * Glass: a blur over black shows nothing, a translucent bar only lets the content shine through as smudges — the bars,
+ * the tab capsules and the sheets are (nearly) solid dark grey with a hairline edge.
+ * <html data-theme="black"> sets color-scheme dark (tokens.css), so every light-dark() token not repeated here keeps
+ * its night value (ok/danger, occasion tints, tiles, list banners, covers).
+ *
+ * Loaded ONLY when the person chose it (lib/themeBoot.ts loadThemeStyles(), one stylesheet with Blau and Ozean:
+ * styles/extraThemes.css) — never part of the first screens' budget. Specificity (:root + attribute) beats the :root
+ * definitions whatever loads first.
+ * Contrast (WCAG, AA) of the key pairs on a panel #111113 / a raised #1F1F22: text 16.9 / 14.7 : 1, text-2 8.8 / 7.6,
+ * text-3 6.3 / 5.5 (also small grey text keeps 4.5 : 1), accent text 8.4 / 7.3, field rim 4.8 / 4.2; dark ink on the
+ * orange button 6.4; the toast's accent 5.1.
+ */
+:root[data-theme="black"] {
+  /* tokens.css §1 — the accent: the brand orange, a touch quieter; the tinted surfaces (selected chips, soft badges)
+     are very dark warm browns, so text on them keeps its contrast */
+  --accent-50: #1C140E; --accent-100: #281C12; --accent-200: #3A2817;
+  --accent-300: #E8AC72;
+  --accent-400: #DE8C4A; --accent-500: #C47432;
+  --accent-text: #E59D60;
+  --accent-text-strong: #F2BE8A;
+  /* paper and ink: true black, neutral near-black greys, a soft white ink (never pure white: it glares on black) */
+  --bg: #000;
+  --surface: #161618;
+  --surface-2: #1F1F22;
+  --thumb: #36363C;
+  --fill: rgba(255,255,255,.07);
+  --fill-2: rgba(255,255,255,.11);
+  --fill-3: rgba(255,255,255,.16);
+  --separator: rgba(255,255,255,.12);
+  --text: #F2F2F4;
+  --text-2: #B0B0B8;
+  --text-3: #94949C;
+  --text-inverse: #111113;
+  --hl: rgb(255 255 255 / .12);
+  --scrim: rgba(0,0,0,.6);
+  /* the scene behind every screen: no glows, black from top to bottom */
+  --page-glow-1: transparent;
+  --page-glow-2: transparent;
+  --page-glow-3: transparent;
+  --page-glow-4: transparent;
+  --page-top: #000;
+  --page-mid: #000;
+  --page-bottom: #000;
+  --theme-color: #000;
+  /* depth: hairlines instead of shadows (cards with elev-1 get a faint white rim) */
+  --shadow-1: 0 0 0 1px rgba(255,255,255,.07);
+  --shadow-2: 0 0 0 0.5px rgba(255,255,255,.08), 0 10px 26px -8px rgba(0,0,0,.9);
+  --shadow-3: 0 -1px 0 rgba(255,255,255,.1);
+  --mascot-outline: rgba(255,240,225,.2);
+
+  /* glass.css — solid dark grey with a hairline: the bars (after scrolling) and the tab capsules, the sheets, the
+     toast. Opaque and with no backdrop blur at all: on black a blur shows nothing, and any translucency let the text
+     under a sheet show through as ghosts (screenshots 27.10) — and no blur = less GPU work, too */
+  --bar-bg: #0A0A0B;
+  --bar-backdrop: none;
+  --bar-edge: 0 0.5px 0 rgba(255,255,255,.14);
+  --sheet-bg: #161618;
+  --sheet-backdrop: none;
+  --sheet-edge: inset 0 1px 0 rgba(255,255,255,.1), inset 0 0 0 1px rgba(255,255,255,.07);
+  --sheet-shadow: 0 0 0 0.5px rgba(0,0,0,.6);
+  --float-bg: #1E1E21;
+  --float-accent-bg: #DE8C4A;
+  --float-backdrop: none;
+  --float-sheen: none;
+  --float-edge: inset 0 0 0 1px rgba(255,255,255,.1), inset 0 1px 0 rgba(255,255,255,.08);
+  --toast-bg: #E6E6EA;
+  --toast-backdrop: none;
+
+  /* kit.css — the frosted panels become flat near-black cards with a hairline; no paper grain on black */
+  --panel-bg: #111113;
+  --panel-sheen: none;
+  --panel-edge: inset 0 0 0 1px rgba(255,255,255,.07);
+  --panel-shadow: 0 0 #0000;
+  --field-bg: rgba(255,255,255,.05);
+  --field-border: #808088;
+  --field-edge: inset 0 0 0 1px var(--field-border);
+  --page-grain: none;
+
+  /* scene.css — the start screen: black, with only a faint warm light where the bunnies stand */
+  --scene-glow-1: rgba(255,170,104,.08);
+  --scene-glow-2: rgba(232,130,110,.05);
+  --scene-glow-3: rgba(150,132,226,.05);
+  --scene-glow-4: rgba(236,172,82,.05);
+  --scene-glow-5: rgba(232,130,110,.03);
+  --scene-top: #000;
+  --scene-bottom: #000;
+  /* only the top line: the legal footer below continues the card (a full rim drew a seam between them) */
+  --scene-card-edge: inset 0 1px 0 rgba(255,255,255,.12);
+
+  /* gifts.css, wishes.css — the plate under product photos: a raised grey, so a photo with black edges keeps a frame */
+  --gift-photo-plate: #1C1C1F;
+  --gift-photo-rim: rgba(255,255,255,.08);
+  --gift-credit-bg: rgb(0 0 0 / .85);
+  --wish-photo-bg: #1C1C1F;
+
+  /* occasion-form.css — row and pill films */
+  --of-row-press: rgba(255,255,255,.08);
+  --of-row-hover: rgba(255,255,255,.04);
+  --of-pill-bg: rgba(255,255,255,.07);
+}
+/* lists.css — the Lists buddy's little effects (defined on his stage, not on :root) */
+:root[data-theme="black"] .lt-buddy-stage {
+  --buddy-puff: #26262A;
+  --buddy-puff-rim: rgba(255,255,255,.28);
+  --buddy-dust: rgba(200,200,205,.3);
+}

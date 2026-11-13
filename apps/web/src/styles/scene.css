@@ -1,0 +1,92 @@
+/*
+ * src/styles/scene.css — the scene screens (ADR 2026-10-20-design-direction-glass): the start screen and
+ * the first onboarding step. A warm, softly colourful scene behind the page; the welcome bunnies peek over
+ * the top edge of a docked glass card that holds the actions. Imported by ui/Scene.tsx, so Vite ships it
+ * with those screens' chunks only — not in the CSS of every first visit (the invite landing /i has a hard
+ * 150 KB budget). A theme overrides --scene-backdrop / --scene-card-* on its own selector like any token
+ * (e.g. :root[data-palette="pastel"] — more specific than :root, so the load order does not matter).
+ * Contrast: node docs/design/contrast-check.mjs (SCENE, SHEET).
+ */
+:root {
+  /* warm, softly colourful light behind the glass and the bunnies — apricot glow where the bunnies
+     stand (just above the card), blush and lilac at the sides, butter at the bottom (it glows through the
+     card's glass). Light enough that every text colour keeps AA on every point of it. */
+  --scene-backdrop:
+    radial-gradient(80% 30% at 50% 56%, var(--scene-glow-1) 0%, transparent 72%),
+    radial-gradient(60% 30% at 6% 10%, var(--scene-glow-2) 0%, transparent 72%),
+    radial-gradient(55% 30% at 96% 34%, var(--scene-glow-3) 0%, transparent 72%),
+    radial-gradient(85% 34% at 28% 102%, var(--scene-glow-4) 0%, transparent 72%),
+    radial-gradient(60% 30% at 100% 90%, var(--scene-glow-5) 0%, transparent 72%),
+    linear-gradient(180deg, var(--scene-top) 0%, var(--scene-bottom) 100%);
+  /* night: a warm lamp glow where the bunnies stand, the side colours as faint embers */
+  --scene-glow-1: light-dark(rgba(255,226,194,.9), rgba(255,170,104,.17));
+  --scene-glow-2: light-dark(rgba(247,200,180,.62), rgba(232,130,110,.10));
+  --scene-glow-3: light-dark(rgba(222,214,246,.8), rgba(150,132,226,.10));
+  --scene-glow-4: light-dark(rgba(250,218,160,.7), rgba(236,172,82,.11));
+  --scene-glow-5: light-dark(rgba(247,194,172,.5), rgba(232,130,110,.07));
+  --scene-top: light-dark(#F8F1E7, #1C1612);
+  --scene-bottom: light-dark(#F4EDE1, #17120F);
+  /* the docked card: the sheet's frosted material; only a specular top edge (its sides and bottom run into
+     the screen edges and into the footer, which continues the glass) */
+  --scene-card-edge: inset 0 1px 0 light-dark(rgba(255,255,255,.9), rgba(255,236,214,.15));
+}
+
+/* One static fixed layer behind the page (painted once, composited while scrolling). */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--bg);
+  background-image: var(--scene-backdrop);
+}
+
+/* Full width: out of the page gutter to the screen edges (the side bunnies peek from behind them). */
+.scene-bleed {
+  margin-left: calc(-1 * max(var(--gutter), var(--sa-left)));
+  margin-right: calc(-1 * max(var(--gutter), var(--sa-right)));
+}
+
+/* The stage between the screen's text and the card: it takes the free height (never less than room for a
+   peeking bunny); the welcome bunnies' host fills it and reaches a few px below the card's top edge (the
+   paws rest on the card), above the card in the stacking order. */
+.scene-stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 9.5rem;
+}
+/* a stage that keeps its height while the card's content changes (onboarding steps) */
+.scene-stage-fixed {
+  flex: 0 0 auto;
+  height: clamp(10rem, 27dvh, 16rem);
+}
+.scene-stage-host {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* The docked glass card at the bottom of a scene screen: frosted like a sheet (tint + blur + saturation,
+   specular top edge), the sheet's top corners, a soft lift upward. Solid under reduced transparency. */
+.scene-card {
+  position: relative;
+  padding-bottom: var(--sp-3);
+  border-top-left-radius: var(--r-sheet);
+  border-top-right-radius: var(--r-sheet);
+  background-color: var(--solid, var(--sheet-bg));
+  -webkit-backdrop-filter: var(--solid-off, var(--sheet-backdrop));
+  backdrop-filter: var(--solid-off, var(--sheet-backdrop));
+  box-shadow: var(--scene-card-edge), var(--shadow-3);
+}
+
+/* The legal footer right after a scene screen continues the card's glass down to the screen edge: card
+   and footer read as one sheet (the root shell renders the footer after every screen's <main>). */
+main.scene-page + footer {
+  position: relative;
+  margin-top: 0;
+  padding-top: var(--sp-1);
+  background-color: var(--solid, var(--sheet-bg));
+  -webkit-backdrop-filter: var(--solid-off, var(--sheet-backdrop));
+  backdrop-filter: var(--solid-off, var(--sheet-backdrop));
+}

@@ -1,0 +1,52 @@
+/* DEV ONLY — the direction switcher (src/dev/DirectionSwitcher.tsx). Not part of the production bundle. */
+
+/* toolbar group in the phone frame: label + the usual .pf-group pills (phone-frame.css) */
+.pf-dir {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.pf-dir-label {
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+/* Without the frame: a small dark pill bottom-left, above the home indicator. Fixed neutral colours
+   (not the tokens) so it reads the same in every direction. */
+.pf-dir-pill {
+  position: fixed;
+  left: 8px;
+  bottom: calc(8px + var(--sa-bottom, 0px));
+  z-index: 100;
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 999px;
+  background: rgb(28 28 30 / 0.84);
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+  font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.pf-dir-btn {
+  appearance: none;
+  border: 0;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: transparent;
+  color: rgb(255 255 255 / 0.72);
+  font: inherit;
+  cursor: pointer;
+}
+.pf-dir-btn.is-active {
+  background: rgb(255 255 255 / 0.92);
+  color: rgb(28 28 30);
+}
+.pf-dir-btn:focus-visible {
+  outline: 2px solid rgb(255 255 255);
+  outline-offset: 1px;
+  box-shadow: none;
+}
+@media print {
+  .pf-dir-pill { display: none; }
+}

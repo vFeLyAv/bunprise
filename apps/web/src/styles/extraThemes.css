@@ -1,0 +1,8 @@
+/*
+ * src/styles/extraThemes.css — the extra dark themes in ONE stylesheet ("Blau" = navy.css, "Ozean" = ocean.css,
+ * "Schwarz" = black.css since 27.10): lib/themeBoot.ts loads it with one import() only when one of them is chosen (fewer bytes in the first screens than
+ * one loader per theme). Each file keeps every rule under its own :root[data-theme="…"].
+ */
+@import "./navy.css";
+@import "./ocean.css";
+@import "./black.css";

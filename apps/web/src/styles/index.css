@@ -1,0 +1,5 @@
+/*
+ * src/styles/index.css — the ONE stylesheet the app imports (from main.tsx).
+ * Everything else is pulled in from here so the import graph stays trivial.
+ */
+@import "./app.css";

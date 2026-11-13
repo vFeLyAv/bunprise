@@ -1,0 +1,652 @@
+/*
+ * src/features/wishes/wishes.css — the look of the wish screens ("warm glass on paper", wave 1, agent B).
+ * Imported by the wish components, so it ships only with the wish chunks (not with every first visit).
+ * Colours come from the tokens (tokens.css, tiles.css); the few new values are feature tokens below
+ * (--wish-*), candidates for tokens.css once the design system adopts them (docs: wave-1 report).
+ * Animate only transform / opacity / colour; the spring curves are the tokens of src/motion/springs.ts.
+ * Reduced transparency (--solid switches) → solid surfaces; reduced motion → the spring tokens are 0 ms.
+ */
+:root {
+  /* the frosted panels are the design system's .glass-panel (app.css, tokens --panel-*): cards, groups, pill */
+  /* the heart of "Wie sehr?": peach → apricot → rose (decorative, no text on it) */
+  --wish-heart-1: var(--accent-200);
+  --wish-heart-2: var(--accent-400);
+  --wish-heart-3: oklch(0.64 0.18 18);
+  --wish-heart-ink: var(--accent-700);
+  --wish-heart-tongue: oklch(0.82 0.09 12);
+}
+
+/* the wish card glows softly in the shop's tint from its top-left corner (like Apple Invites' per-event
+   backdrop, in our tile colours; the tint is a hash of the shop's name, never of anything else) */
+.wish-card {
+  isolation: isolate;
+}
+.wish-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: radial-gradient(125% 85% at 0% 0%, var(--wish-tone, transparent) 0%, transparent 62%);
+  opacity: 0.95;
+}
+.wish-card[data-tone="1"] { --wish-tone: var(--tile-1); }
+.wish-card[data-tone="2"] { --wish-tone: var(--tile-2); }
+.wish-card[data-tone="3"] { --wish-tone: var(--tile-3); }
+.wish-card[data-tone="4"] { --wish-tone: var(--tile-4); }
+
+/* the big link pill: a frosted capsule; the focus ring is the accent (visible on any scene colour) */
+.wish-pill {
+  transition: box-shadow var(--dur-s) var(--ease-out);
+}
+.wish-pill:focus-within {
+  box-shadow: var(--panel-edge), 0 0 0 2px var(--accent-text), var(--panel-shadow);
+}
+.wish-pill[data-invalid] {
+  box-shadow: var(--panel-edge), 0 0 0 1.5px var(--danger-text), var(--panel-shadow);
+}
+
+/* inline-editable fields of the wish card: plain text until touched, a soft fill while editing */
+.wish-inline {
+  border-radius: var(--r-md);
+  background-color: transparent;
+  transition: background-color var(--dur-xs) var(--ease-out), box-shadow var(--dur-s) var(--ease-out);
+}
+.wish-inline:hover {
+  background-color: var(--fill);
+}
+.wish-inline:focus-within {
+  background-color: var(--fill);
+  box-shadow: inset 0 0 0 1.5px var(--accent-text);
+}
+.wish-inline[data-invalid] {
+  box-shadow: inset 0 0 0 1.5px var(--danger-text);
+}
+.wish-inline input:focus-visible,
+.wish-inline textarea:focus-visible {
+  box-shadow: none;
+  outline: none;
+}
+.wish-title-input {
+  field-sizing: content;
+}
+
+/* ---- loading: a soft light band sweeps over the card (transform only; still under reduced motion) ---- */
+.wish-shimmer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.wish-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 15%, color-mix(in srgb, var(--hl) 60%, transparent) 45%, transparent 75%);
+  transform: translateX(-110%);
+  animation: wish-sweep 1.5s var(--ease-in-out) infinite;
+}
+.wish-bone {
+  background-color: var(--fill-2);
+  border-radius: var(--r-sm);
+}
+@keyframes wish-sweep {
+  to { transform: translateX(110%); }
+}
+/* a loop: never under reduced motion or with animations off (the skeleton itself still says "loading") */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .wish-shimmer::after { animation: none; opacity: 0; }
+}
+:root[data-motion="reduce"] .wish-shimmer::after,
+:root[data-motion="off"] .wish-shimmer::after { animation: none; opacity: 0; }
+
+/* ---- Pompon on the link capsule's edge and his speech bubble (a small floating glass control) ---------- */
+.wish-seat {
+  pointer-events: none;
+}
+.wish-bubble {
+  transform-origin: 0% 100%;
+}
+/* two little dots trail from the bubble down to Pompon (outside the bubble: no doubled glass) */
+.wish-bubble::before,
+.wish-bubble::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--solid, var(--float-bg));
+  box-shadow: var(--float-edge), 0 1px 3px color-mix(in srgb, var(--shade) 12%, transparent);
+}
+.wish-bubble::before {
+  left: -9px;
+  bottom: -2px;
+  width: 9px;
+  height: 9px;
+}
+.wish-bubble::after {
+  left: -17px;
+  bottom: -9px;
+  width: 6px;
+  height: 6px;
+}
+
+/* ---- "Wie sehr?" — the wish-o-meter ------------------------------------------------------------------- */
+@property --wish-meter-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+.wish-meter {
+  /* The translated carrier stays wide: clip horizontal overflow without clipping upward hearts. */
+  overflow-x: clip;
+  overflow-y: visible;
+  /* --t: 0 … 1 = thumb position (set inline); --pad = thumb radius + inset: the detents' distance to the ends */
+  --pad: 28px;
+  --wish-meter-color: var(--wish-heart-2);
+  transition: --wish-meter-color var(--dur-l) var(--ease-out);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.wish-meter[data-level="1"] { --wish-meter-color: var(--wish-heart-1); }
+.wish-meter[data-level="3"] { --wish-meter-color: var(--wish-heart-3); }
+
+.wish-meter-track {
+  position: relative;
+  height: 56px;
+  border-radius: var(--r-full);
+  background-color: var(--fill-2);
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--shade) 10%, transparent), inset 0 -1px 0 color-mix(in srgb, var(--hl) 55%, transparent);
+  overflow: hidden;
+  cursor: pointer;
+}
+.wish-meter-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: linear-gradient(90deg, var(--accent-100) 0%, var(--wish-meter-color) 100%);
+  transform: translateX(calc(-100% + var(--pad) + var(--t) * (100% - 2 * var(--pad))));
+  transition: transform var(--dur-snappy) var(--ease-snappy);
+}
+.wish-meter-detent {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 0.9);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--shade) 10%, transparent);
+}
+.wish-meter-carrier {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pad);
+  right: var(--pad);
+  pointer-events: none;
+  transform: translateX(calc(var(--t) * 100%));
+  /* snappy, not bouncy: a thumb that overshoots would leave the track at its ends (the heart bounces instead) */
+  transition: transform var(--dur-snappy) var(--ease-snappy);
+}
+.wish-meter[data-dragging] .wish-meter-carrier,
+.wish-meter[data-dragging] .wish-meter-fill {
+  transition: none;
+}
+.wish-meter-thumb {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background-color: var(--surface);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--hl) 95%, transparent), 0 0 0 0.5px color-mix(in srgb, var(--shade) 8%, transparent), var(--shadow-2);
+  transition: scale var(--dur-snappy) var(--ease-snappy);
+}
+.wish-meter[data-dragging] .wish-meter-thumb {
+  scale: 1.08;
+}
+/* keyboard focus lives on the (visually hidden) range input: the thumb shows the ring */
+.wish-meter:has(input:focus-visible) .wish-meter-thumb {
+  box-shadow: var(--ring), var(--shadow-2);
+}
+.wish-meter-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.wish-heart [data-part="heart"] {
+  fill: var(--wish-meter-color);
+}
+.wish-heart [data-part="shine"] {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.75);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.wish-heart [data-part="blush"] {
+  fill: rgb(255 255 255 / 0.42);
+}
+.wish-heart [data-part="ink"] {
+  fill: none;
+  stroke: var(--wish-heart-ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wish-heart [data-part="ink-fill"] {
+  fill: var(--wish-heart-ink);
+}
+.wish-heart [data-part="tongue"] {
+  fill: var(--wish-heart-tongue);
+}
+.wish-burst {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  color: var(--wish-heart-3);
+}
+
+
+/* ---- the wish's product photo (only ever an object URL of OUR bytes: WishPhoto.tsx) ----------------------
+   Product shots are made on white: the box is white in both themes, the picture is contained (never cropped
+   in the card and the sheet, so a product is shown whole); in a list row it fills the tile. The box keeps its
+   size while the bytes arrive (shimmer), the picture fades in once decoded — nothing moves (CLS 0). */
+:root {
+  /* a real product photo's plate: white by day, a neutral dark plate at night (like the gift photos) */
+  --wish-photo-bg: light-dark(#fff, #2B231D);
+}
+.wish-photo {
+  position: relative;
+  height: 13rem;
+  overflow: hidden;
+  border-radius: 22px;
+  background-color: var(--wish-photo-bg);
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--shade) 10%, transparent);
+}
+.wish-photo[data-size="lg"] {
+  height: 14rem;
+}
+.wish-photo .wish-photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10px;
+}
+.wish-photo-img {
+  opacity: 0;
+  transition: opacity var(--dur-l) var(--ease-out);
+}
+.wish-photo-img[data-loaded] {
+  opacity: 1;
+}
+/* how a photo sits in its tile (photoFit.ts, Felix 30.10): a product on a one-colour background → the whole tile takes
+   that colour (no white box of its own size on a dark tile); a picture that runs to its edges → fills the tile.
+   The sheet's big photo is never cut: there only the plate colour applies. */
+.wish-photo-img[data-fit="plate"] {
+  background-color: var(--photo-plate);
+}
+.wish-thumb-img[data-fit="fill"],
+.wt-photo-img[data-fit="fill"] {
+  object-fit: cover;
+  padding: 0;
+}
+/* "Foto hinzufügen" (Felix 25.10): a quiet dashed place where the photo would be — the owner's own picture when the
+   link has none, or the wish has no link. One row (≥ 56 px), the camera in an accent tile; the press is colour only. */
+.wish-photo-add {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  margin-top: 16px;
+  padding: 8px 14px;
+  border-radius: 18px;
+  border: 1.5px dashed color-mix(in srgb, var(--accent-text) 38%, transparent);
+  background-color: color-mix(in srgb, var(--accent-text) 5%, transparent);
+  transition: background-color var(--dur-s) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.wish-photo-add:active {
+  background-color: color-mix(in srgb, var(--accent-text) 12%, transparent);
+}
+.wish-photo-add:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+.wish-photo-add-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 11px;
+  color: var(--accent-text);
+  background-color: color-mix(in srgb, var(--accent-text) 14%, transparent);
+}
+/* the row's tile: the photo lies over the letter tile (same box, same corners) and covers it once decoded. The whole
+   product shows, on the white backing with a little air (like the wish sheet): "cover" cut long things (a lens, an
+   SSD) and zoomed into shop photos with wide white margins (Felix 30.10) */
+.wish-thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8%;
+  border-radius: var(--r-md);
+  background-color: var(--wish-photo-bg);
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--shade) 10%, transparent);
+}
+
+/* ---- the shop's real icon over its letter tile (ShopTile.tsx; only ever an object URL of OUR Worker's bytes) ----
+   The letter is there at once; the icon lies over it in the same box (same corners) and fades in once decoded.
+   Icons are drawn on white (like the product photos: transparent icons never sit on the tint, the letter never
+   shows through), contained with a little air. Nothing moves; only opacity animates. */
+.shop-tile { position: relative; }
+.shop-icon {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.shop-icon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: var(--shop-icon-pad, 12%);
+  border-radius: inherit;
+  background-color: var(--wish-photo-bg);
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--shade) 12%, transparent);
+  opacity: 0;
+  transition: opacity var(--dur-m) var(--ease-out);
+}
+.shop-icon-img[data-loaded] { opacity: 1; }
+.shop-icon-img[data-instant] { transition: none; }
+
+/* ---- the wish sheet: the shop row and "Woanders finden" (the look of the gift offers, OffersSheet) -------- */
+.wish-shop-row {
+  display: flex;
+  min-height: 60px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+}
+li + li > .wish-shop-row {
+  box-shadow: inset 0 1px 0 var(--separator);
+}
+a.wish-shop-row {
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+a.wish-shop-row:active {
+  background-color: var(--fill);
+}
+/* a long product text reads as a few lines first; "Mehr lesen" opens the rest (no animation of height) */
+.wish-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+/* the ✕ of a detail's label row: a 44 px target that does not make the row taller */
+.wish-clear {
+  margin: -10px -8px -10px 0;
+}
+
+/* ---- the wishes as a 2-column grid of square tiles (WishGrid.tsx; Felix 22.10) --------------------------------
+   The product photo fills the square (cover: a tile is a glance, the sheet shows the product whole), the shop's
+   small letter tile sits on the picture's corner, the title (2 lines), price and hearts below. The ⋯ of an own wish
+   is its own button on the picture's top right, next to the tile's button (never inside it). */
+.wg-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wt { position: relative; display: flex; min-width: 0; }
+.wt-card {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  border-radius: 22px;
+}
+.wt-card:has(.wt-open:focus-visible) { box-shadow: var(--ring), var(--panel-shadow); }
+.wt-open {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: 6px 6px 0;
+  border-radius: inherit;
+  text-align: left;
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+.wt-open:focus-visible { outline: none; }
+.wt-drop { display: block; width: 100%; }
+.wt-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 16px;
+  background-color: var(--wish-photo-bg);
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--shade) 10%, transparent);
+}
+.wt-thumb { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* the whole product on the white backing (it hides the letter tile under it), never cut (Felix 30.10) */
+.wt-photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 9%;
+  background-color: var(--wish-photo-bg);
+}
+/* without a photo (and until it is there): the shop's letter or the gift on a soft tint */
+.wt-fallback { position: relative; display: grid; width: 100%; height: 100%; place-items: center; }
+/* the shop's icon, when there is one: a white app-icon chip in the middle of the tint, over the letter */
+.wt-fallback .shop-icon {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  /* leaves air to the priority heart in the bottom-right corner, also at 320 px */
+  width: 42%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 24%;
+  transform: translate(-50%, -50%);
+  --shop-icon-pad: 13%;
+}
+.wt-fallback .shop-icon-img[data-loaded] {
+  box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--shade) 45%, transparent), inset 0 0 0 0.5px color-mix(in srgb, var(--shade) 12%, transparent);
+}
+.wt-letter {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.wt-shop {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px -2px color-mix(in srgb, var(--shade) 35%, transparent);
+  --shop-icon-pad: 2px;
+}
+.wt-badge { position: absolute; left: 8px; top: 8px; display: flex; }
+.wt-received {
+  display: inline-flex;
+  height: 24px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px 0 6px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-caption-1);
+  line-height: 1;
+  font-weight: 700;
+  color: var(--ok-text);
+  background-color: color-mix(in oklab, var(--ok-bg) 94%, transparent);
+  box-shadow: 0 1px 4px -2px color-mix(in srgb, var(--shade) 30%, transparent);
+}
+.wt-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 6px 10px;
+}
+.wt-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  font-weight: 600;
+}
+.wt-meta { display: flex; min-height: 18px; align-items: center; gap: 6px; }
+.wt-price { font-size: var(--fs-footnote); line-height: var(--lh-footnote); font-weight: 600; color: var(--text-2); }
+.wt-status { display: flex; margin-top: 2px; }
+/* shared wishes: "auch in „Meine Wünsche“" — one quiet line, never louder than the price */
+.wt-places { display: block; margin-top: 1px; font-size: var(--fs-caption-1); line-height: var(--lh-caption-1); color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* the ⋯ of an own wish: a 44 px target with a small round glass dot, on the picture's top right */
+.wt-more {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 2;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+.wt-more::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background-color: color-mix(in oklab, var(--surface) 84%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hl) 60%, transparent), 0 2px 8px -4px color-mix(in srgb, var(--shade) 35%, transparent);
+}
+.wt-more > svg { position: relative; }
+.wt-more:focus-visible { outline: none; }
+.wt-more:focus-visible::before { box-shadow: var(--ring); }
+/* received wishes: a little quieter */
+.wt[data-muted] .wt-media { opacity: 0.82; filter: saturate(0.7); }
+.wt[data-muted] .wt-title { color: var(--text-2); }
+/* a freshly added wish: a warm light that comes and goes (opacity only) */
+.wt-card[data-highlight]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px var(--accent-300);
+  background: radial-gradient(80% 80% at 30% 20%, light-dark(rgba(255, 214, 170, 0.45), rgba(255, 170, 104, 0.16)), transparent 70%);
+  animation: wt-glow 1.4s var(--ease-out) both;
+}
+@keyframes wt-glow {
+  0% { opacity: 0; }
+  18% { opacity: 1; }
+  100% { opacity: 0; }
+}
+:root[data-motion='off'] .wt-card[data-highlight]::after { animation: none; opacity: 0; }
+/* everything is received: a calm line instead of "no wishes yet" */
+.wg-all-done {
+  margin: 0;
+  padding: var(--sp-4);
+  border-radius: 20px;
+  text-align: center;
+  font-size: var(--fs-subhead);
+  line-height: var(--lh-subhead);
+  color: var(--text-2);
+}
+
+/* ---- "Erhalten (2)" / "Schon erhalten (2)": the collapsed part at the bottom of a list ------------------------- */
+.wr-toggle {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-4);
+  border-radius: 18px;
+  font-size: var(--fs-headline);
+  line-height: var(--lh-headline);
+  font-weight: 600;
+  color: var(--text);
+  background-color: var(--fill);
+  transition: background-color var(--dur-xs) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.wr-toggle:active { background-color: var(--fill-2); }
+.wr-toggle:focus-visible { box-shadow: var(--ring); outline: none; }
+.wr-check {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--ok-text);
+  background-color: var(--ok-bg);
+}
+.wr-count {
+  display: inline-grid;
+  min-width: 26px;
+  height: 26px;
+  place-items: center;
+  padding: 0 8px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-footnote);
+  font-weight: 700;
+  color: var(--text-2);
+  background-color: var(--surface);
+}
+
+@media (max-width: 359px) {
+  .wg-grid { gap: var(--sp-2); }
+  .wt-letter { font-size: 2.25rem; }
+  .wt-shop { left: 6px; bottom: 6px; }
+}
+
+/* "Was hast du bekommen?" after an occasion (shared wishes, Q19): a tappable card above the list (owner only) */
+.wl-prompt {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  min-height: 44px; width: 100%; margin-top: 4px; padding: 12px 16px;
+  border-radius: var(--r-card, 16px); text-align: left;
+  transition: transform 160ms var(--ease-out, ease-out), background-color 160ms;
+}
+.wl-prompt:active { transform: scale(0.98); }
+.wl-prompt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .wl-prompt { transition: background-color 160ms; } .wl-prompt:active { transform: none; } }

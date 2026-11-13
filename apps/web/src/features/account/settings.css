@@ -1,0 +1,327 @@
+/*
+ * src/features/account/settings.css — the Profil tab (K11, Telegram-style profile + settings) and its
+ * pushed sub-pages. Imported by AccountPages.tsx. Frosted panels = the .glass-panel material (app.css; no
+ * blur: they scroll over the ambient scene); the bar is .glass-bar (real blur once content is under it).
+ * The scroll-linked header writes one variable (--collapse, 0 … 1) and one transform per frame.
+ */
+
+/* ---- the bar: the small avatar (the gliding one lands in its slot) and the name, fading in ---------- */
+.set-bar-title {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.set-bar-slot {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  place-items: center;
+  opacity: clamp(0, calc((var(--collapse, 0) - 0.72) * 3.6), 1);
+}
+.set-bar-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+  /* written by ProfileHeader.tsx: 0 → 1 while the big name slides under the bar (it fades out meanwhile) */
+  opacity: var(--name-in, 0);
+}
+/* the gliding avatar: one element in the bar layer, moved by ProfileHeader.tsx (transform only) */
+.set-float {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 88px;
+  height: 88px;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+.set-float-avatar {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--hl) 78%, transparent),
+    0 12px 28px -10px color-mix(in srgb, var(--shade) 42%, transparent);
+}
+
+/* ---- the big header ------------------------------------------------------------------------------ */
+.set-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-3) 0 var(--sp-2);
+  text-align: center;
+}
+.set-hero-avatar {
+  display: grid;
+  width: 88px;
+  height: 88px;
+  place-items: center;
+}
+/* Felix 24.10: my banner behind the avatar (a preset or my own photo; the surface is lists.css .lb-banner) */
+.set-banner {
+  width: 100%;
+  height: 120px;
+  border-radius: var(--r-card);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--shade) 5%, transparent), 0 14px 30px -18px color-mix(in srgb, var(--shade) 34%, transparent);
+}
+.set-hero-avatar-over {
+  /* positioned: drawn above the (positioned) banner it overlaps */
+  position: relative;
+  z-index: 1;
+  margin-top: -48px;
+}
+.set-hero-name {
+  margin-top: var(--sp-4);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-family: var(--font-display);
+  font-size: var(--fs-title-1);
+  line-height: var(--lh-title-1);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.set-hero-email {
+  margin-top: 2px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.set-hero-edit {
+  position: relative;
+  display: inline-flex;
+  height: 40px;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--sp-4);
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-full);
+  font-size: var(--fs-subhead);
+  font-weight: 600;
+  color: var(--accent-text);
+  background-color: color-mix(in oklab, var(--accent-100) 74%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--hl) 62%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--hl) 90%, transparent);
+  transition:
+    background-color var(--dur-xs) var(--ease-out),
+    transform var(--dur-snappy) var(--ease-snappy);
+}
+.set-hero-edit::after {
+  content: '';
+  position: absolute;
+  inset: -2px 0;
+}
+.set-hero-edit:active {
+  transform: scale(0.96);
+  background-color: var(--accent-200);
+}
+
+/* ---- grouped inset sections ---------------------------------------------------------------------- */
+.set-caption {
+  padding: 0 var(--sp-4);
+  font-size: var(--fs-footnote);
+  line-height: var(--lh-footnote);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.set-group {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+  border-radius: 22px;
+}
+.set-item {
+  position: relative;
+}
+/* hairlines start at the label, like iOS: past the icon tile */
+.set-item + .set-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(var(--sp-4) + 30px + var(--sp-3));
+  height: 1px;
+  background-color: var(--separator);
+}
+.set-row {
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-4);
+  text-align: left;
+  color: var(--text);
+}
+.set-row-press {
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.set-row-press:active {
+  background-color: var(--fill);
+}
+.set-row:focus-visible,
+.set-switch:focus-within {
+  outline: 2px solid var(--accent-text);
+  outline-offset: -3px;
+}
+.set-row-icon {
+  display: flex;
+  flex-shrink: 0;
+}
+.set-row-main {
+  display: flex;
+  min-width: 0;
+  min-height: 52px;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) 0;
+}
+.set-row-text {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+/* Keep the label and a wide segmented control readable on small phones and at larger text sizes. */
+.set-row-main-control {
+  flex-wrap: wrap;
+  column-gap: var(--sp-3);
+}
+.set-row-main-control > .set-row-text {
+  flex-basis: max-content;
+}
+.set-row-value {
+  min-width: 0;
+  max-width: 62%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-2);
+}
+/* a switch row: the <label> is the whole row */
+.set-switch {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  cursor: pointer;
+}
+
+/* "Abmelden": its own frosted group, centred, in the danger colour (iOS) */
+.set-logout {
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  border-radius: 22px;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--danger-text);
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.set-logout:active {
+  background-color: var(--fill);
+}
+.set-logout:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+.set-logout:disabled {
+  opacity: 0.5;
+}
+
+/* ---- pushed sub-pages (export, delete) ------------------------------------------------------------ */
+.set-intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-4);
+  border-radius: 24px;
+}
+.set-intro-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: 16px;
+  color: white;
+  box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--shade) 45%, transparent);
+}
+
+/* "Farbschema" (AccountPages, Felix 25.10): each choice is a swatch of its theme — the page colour with the accent as
+   a dot. Pictures of the themes, so their colours are fixed and never follow the shown theme. */
+.theme-swatch {
+  position: relative;
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--r-full);
+  background: var(--sw-page);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--text) 38%, transparent);
+}
+.theme-swatch::after {
+  content: '';
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--r-full);
+  background: var(--sw-accent);
+  box-shadow: 0 0 0 1.5px var(--surface);
+}
+.theme-swatch[data-swatch="system"] { --sw-page: linear-gradient(135deg, #F2EBDD 0 50%, #17120F 50% 100%); --sw-accent: #EE9443; }
+.theme-swatch[data-swatch="light"] { --sw-page: #F2EBDD; --sw-accent: #EE9443; }
+.theme-swatch[data-swatch="dark"] { --sw-page: #17120F; --sw-accent: #EE9443; }
+.theme-swatch[data-swatch="navy"] { --sw-page: #0F1526; --sw-accent: #EE9443; }
+.theme-swatch[data-swatch="ocean"] { --sw-page: #111418; --sw-accent: #4FA8FF; }
+/* "Schwarz" (Felix 27.10): true black with a near-black grey card in the lower half */
+.theme-swatch[data-swatch="black"] { --sw-page: linear-gradient(180deg, #000 0 58%, #1F1F22 58% 100%); --sw-accent: #DE8C4A; }
+
+/* "Sprache" (LanguageSheet, Felix 27.10): the languages as one list in the sheet — rows of 52 px with hairlines, a
+   check mark on the current one (a list, not chips: it stays readable with many more languages) */
+.set-choices {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 18px;
+  background-color: var(--fill);
+}
+.set-choice {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  color: var(--text);
+  transition: background-color var(--dur-xs) var(--ease-out);
+}
+.set-choice + .set-choice::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: var(--sp-4);
+  height: 1px;
+  background-color: var(--separator);
+}
+.set-choice:active { background-color: var(--fill-2); }
+.set-choice:disabled { opacity: 0.5; }
+.set-choice:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: -3px;
+}
+.set-choice[aria-checked="true"] { font-weight: 600; }

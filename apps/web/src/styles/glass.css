@@ -1,0 +1,105 @@
+/*
+ * src/styles/glass.css — the FLOATING glass of the kit (wave 1: "glass you cannot miss"): real backdrop blur +
+ * saturation + a light rim, only on floating chrome — the top bar after scrolling and its capsule controls,
+ * the tab bar, sheets, small floating controls and menus, toasts. Never under a scrolling list (the frosted
+ * panels for cards and groups are .glass-panel / .glass-field in app.css, without blur).
+ * Imported by the kit modules that use these classes (TopBar, Sheet, Toast, Button, IconButton) and by the
+ * kit barrel (ui/index.ts): it ships with the kit chunk, not with the invite landing /i (budget).
+ * In the components layer like app.css, so a pressed-state utility (active:bg-…) still wins.
+ * Solid under reduced transparency / without backdrop-filter: each class reads the switches of tokens.css
+ * first (--solid, --solid-accent, --solid-ink, --solid-off), which only those cases set.
+ */
+:root {
+  /* (b) top bar, scroll edge: no material at the top of a page (its controls are glass capsules); it fades
+     in (--dur-s) once content scrolls under it. Tint = --surface-2 at 70 %, blur 18 px × saturate 1.9 */
+  /* Night: the same glass, smoked — warm dark tints of --surface, a faint warm rim instead of the white one, so
+     bars, sheets and floating controls still read as glass over the dim scene (docs/design/2026-10-25-dark-theme.md). */
+  --bar-bg: light-dark(rgba(250,244,234,.7), rgba(36,29,24,.72));
+  --bar-backdrop: blur(18px) saturate(1.9);
+  --bar-edge: inset 0 -1px 0 light-dark(rgba(255,255,255,.7), rgba(255,236,214,.07)), 0 0.5px 0 var(--separator);
+  --bar-rest-opacity: 0;
+  /* sheet: floats over the dimmed page, specular light along the top edge. Tint = --surface at 74 % */
+  --sheet-bg: light-dark(rgba(255,251,244,.74), rgba(36,29,24,.8));
+  --sheet-backdrop: blur(28px) saturate(2);
+  --sheet-edge: inset 0 1px 0 light-dark(rgba(255,255,255,.95), rgba(255,236,214,.16)), inset 0 0 0 1px light-dark(rgba(255,255,255,.55), rgba(255,236,214,.07));
+  --sheet-shadow: 0 0 0 0.5px light-dark(rgba(116,84,44,.08), rgba(0,0,0,.5)), 0 18px 48px -14px light-dark(rgba(80,50,22,.30), rgba(0,0,0,.6));
+  /* small floating controls (level 2): neutral glass (--surface at 64 %) and the accent glass of the "+"
+     (.glass-accent: --accent-400 at 86 %): a bright specular top, a light rim, a soft lower glow */
+  --float-bg: light-dark(rgba(255,253,248,.64), rgba(44,35,29,.8));
+  --float-accent-bg: light-dark(rgba(238,148,67,.86), rgba(240,152,72,.97));   /* night: nearly solid, or the dark page dulls the orange */
+  --float-backdrop: blur(14px) saturate(1.8);
+  --float-sheen: radial-gradient(130% 90% at 30% 0%, light-dark(rgba(255,255,255,.62), rgba(255,236,214,.1)) 0%, transparent 58%);
+  --float-edge: inset 0 1px 0 light-dark(rgba(255,255,255,.9), rgba(255,236,214,.18)), inset 0 0 0 1px light-dark(rgba(255,255,255,.5), rgba(255,236,214,.08)), inset 0 -1px 2px light-dark(rgba(255,255,255,.28), rgba(0,0,0,.18));
+  /* toast (level 2): a capsule of smoky ink glass (--text at 82 %), light text — at night inverted: warm light
+     glass with dark ink, the one bright thing on a dark screen */
+  --toast-bg: light-dark(rgba(42,35,28,.82), rgba(250,241,230,.9));
+  --toast-backdrop: blur(20px) saturate(1.6);
+  --toast-edge: inset 0 1px 0 rgba(255,255,255,.14), inset 0 0 0 0.5px rgba(255,255,255,.10);
+  /* the check / "Rückgängig" on the toast: the light accent on the dark capsule, the deep accent on the light one */
+  --toast-accent: light-dark(var(--accent-300), var(--accent-600));
+}
+@layer components {
+  /* Top bar (ui/TopBar), scroll edge (blocker 4): transparent at the top of a page; the material and
+     its light bottom edge live on ::before and fade in (opacity, --dur-s; a filter or a shadow is never
+     animated) once content scrolls under the bar — TopBar sets [data-scrolled]. */
+  .glass-bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--solid, var(--bar-bg));
+    -webkit-backdrop-filter: var(--solid-off, var(--bar-backdrop));
+    backdrop-filter: var(--solid-off, var(--bar-backdrop));
+    box-shadow: var(--bar-edge);
+    opacity: var(--bar-rest-opacity);
+    transition: opacity var(--dur-s) var(--ease-out);
+  }
+  .glass-bar[data-scrolled]::before {
+    opacity: 1;
+  }
+  /* The bar's small title (a page with a large title): it fades in (--dur-s) and rises the last few px
+     with the snappy spring once the large title went under the bar; it sinks and fades out on the way
+     back. Under reduced motion the spring token is 0 ms: only the fade remains. */
+  .bar-title {
+    transition: opacity var(--dur-s) var(--ease-out), transform var(--dur-snappy) var(--ease-snappy);
+  }
+  .bar-title[data-hidden] {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  /* Sheet (ui/Sheet): floating glass over the dimmed page, specular top edge. */
+  .glass-sheet {
+    background-color: var(--solid, var(--sheet-bg));
+    -webkit-backdrop-filter: var(--solid-off, var(--sheet-backdrop));
+    backdrop-filter: var(--solid-off, var(--sheet-backdrop));
+    box-shadow: var(--sheet-edge), var(--sheet-shadow);
+  }
+
+  /* Small floating controls (IconButton/Button variant "glass"); + .glass-accent = the "+" FAB (solid:
+     the accent itself). A small area over content is the allowed exception to "no blur over lists" (ADR). */
+  .glass-float {
+    background-color: var(--solid, var(--float-bg));
+    background-image: var(--solid-off, var(--float-sheen));
+    -webkit-backdrop-filter: var(--solid-off, var(--float-backdrop));
+    backdrop-filter: var(--solid-off, var(--float-backdrop));
+    box-shadow: var(--float-edge), var(--shadow-2);
+  }
+  .glass-accent {
+    --float-bg: var(--float-accent-bg);
+    --solid: var(--solid-accent);
+  }
+  /* the material's own box-shadow would hide the base :focus-visible ring (§6: focus always visible) */
+  .glass-float:focus-visible {
+    box-shadow: var(--ring), var(--float-edge), var(--shadow-2);
+  }
+
+  /* Toast capsule (ui/Toast): smoky ink glass (solid: the ink itself). */
+  .glass-toast {
+    background-color: var(--solid-ink, var(--toast-bg));
+    -webkit-backdrop-filter: var(--solid-off, var(--toast-backdrop));
+    backdrop-filter: var(--solid-off, var(--toast-backdrop));
+    box-shadow: var(--toast-edge), var(--shadow-2);
+  }
+}

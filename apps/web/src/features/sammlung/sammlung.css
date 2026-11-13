@@ -1,0 +1,90 @@
+/*
+ * «Pompons Sammlung» (features/sammlung/SammlungPage.tsx) — the collection page under Profil, as designed in the
+ * gallery (packages/mascot/demo/sammlung/gallery.ts, docs/design/2026-10-27-pompons-sammlung.md §2). Frosted panels =
+ * the app's .glass-panel; motion = transform / opacity only (the pressed cards and tiles).
+ */
+
+/* ---- Szenen ---- */
+.sam-sum { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2); }
+.sam-dots { display: flex; gap: 4px; flex-shrink: 0; }
+.sam-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--separator); }
+.sam-dots i.on { background: var(--accent-400); }
+.sam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.sam-grid > li { display: flex; }
+.sam-card {
+  display: flex; flex-direction: column; width: 100%; min-height: 44px; padding: 0; overflow: hidden; border-radius: 20px;
+  text-align: left; color: inherit; font: inherit; appearance: none; border: 0;
+  transition: transform var(--dur-s) var(--ease-bouncy);
+}
+button.sam-card { cursor: pointer; }
+button.sam-card:active { transform: scale(.97); }
+button.sam-card:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+.sam-thumb { position: relative; height: 108px; flex: none; overflow: hidden; background: var(--accent-50); }
+.sam-card.locked .sam-thumb { background: var(--fill); }
+.sam-layer { position: absolute; inset: 0; }
+.sam-nat { position: absolute; left: 50%; bottom: 0; transform-origin: 50% 100%; pointer-events: none; }
+/* not found: the same frame as one pale shadow */
+.sam-layer.sil .sam-nat { filter: brightness(0); opacity: .12; }
+.sam-page[data-dark] .sam-layer.sil .sam-nat { filter: brightness(0) invert(1); opacity: .13; }
+.sam-q {
+  position: absolute; right: 10px; top: 8px; display: grid; width: 26px; height: 26px; place-items: center; border-radius: 50%;
+  font-size: 14px; font-weight: 700; color: var(--text-3); background: var(--surface); box-shadow: var(--shadow-1);
+}
+.sam-text { display: grid; gap: 3px; padding: 9px 12px 12px; }
+.sam-text em { font-style: normal; }
+.sam-scene-host { position: absolute; }
+.sam-ledge { position: absolute; left: 16px; right: 16px; height: 60px; border-radius: 22px; }
+.sam-buddy-card, .sam-buddy { position: absolute; }
+.sam-stage { position: relative; height: 230px; overflow: hidden; border-radius: 20px; background: var(--accent-50); }
+.sam-foot { text-align: center; padding: 0 var(--sp-4); }
+.sam-off { padding: var(--sp-6) var(--sp-4); text-align: center; }
+
+/* ---- Garderobe ---- */
+.sam-dressing { position: relative; height: 250px; overflow: hidden; border-radius: 24px; background: var(--accent-50); }
+.sam-dressing .sam-floor { position: absolute; left: 22px; right: 22px; bottom: 0; height: 30px; border-radius: 22px 22px 0 0; }
+.sam-dressing .sam-pompon { position: absolute; left: 50%; bottom: 22px; width: 240px; margin-left: -120px; }
+.sam-cap { position: absolute; left: 14px; right: 14px; top: 12px; }
+.sam-switch-row { padding: 12px 16px; border-radius: 18px; }
+.sam-outfits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.sam-outfits > li { display: flex; }
+.sam-tile {
+  display: grid; align-content: start; gap: 2px; width: 100%; min-height: 44px; padding: 0 0 8px; overflow: hidden; border-radius: 18px;
+  text-align: center; color: inherit; font: inherit; appearance: none; border: 0; cursor: pointer;
+  transition: transform var(--dur-s) var(--ease-bouncy);
+}
+.sam-tile:active { transform: scale(.96); }
+.sam-tile:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+.sam-tile.on { box-shadow: inset 0 0 0 2px var(--accent-400), var(--shadow-1); }
+.sam-tile b { padding: 4px 6px 0; }
+.sam-tile > span:last-child { padding: 0 4px; }
+.sam-mini { position: relative; display: block; height: 112px; overflow: hidden; background: var(--accent-50); }
+.sam-tile.locked .sam-mini { background: var(--fill); }
+.sam-mini-host { position: absolute; left: 50%; bottom: 0; width: 150px; margin-left: -75px; }
+.sam-tile.locked .sam-mini-host { filter: brightness(0); opacity: .12; }
+.sam-page[data-dark] .sam-tile.locked .sam-mini-host { filter: brightness(0) invert(1); opacity: .13; }
+.sam-note { min-height: 34px; padding: 0 var(--sp-1); }
+.sam-h { margin: var(--sp-2) 0 calc(var(--sp-3) * -1); padding: 0 var(--sp-1); }
+
+/* ---- a new costume (31.10): it waits under a pale cover (data-fresh) until its tile is on screen, then «opens» once
+   (data-reveal) — the cover fades, he grows in softly from the floor. Opacity + transform only; «Weniger» / reduced:
+   simply there. ---- */
+.sam-tile[data-fresh] .sam-mini::after, .sam-tile[data-reveal] .sam-mini::after {
+  content: ''; position: absolute; inset: 0; background: var(--fill); pointer-events: none;
+}
+.sam-tile[data-reveal] .sam-mini::after { animation: sam-cover .62s ease-out .18s both; }
+.sam-tile[data-reveal] .sam-mini-host { transform-origin: 50% 100%; animation: sam-grow .62s var(--ease-bouncy) .18s both; }
+@keyframes sam-cover { from { opacity: 1; } to { opacity: 0; } }
+@keyframes sam-grow { from { opacity: 0; transform: scale(.86); } 55% { opacity: 1; } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sam-card, .sam-tile { transition: none; }
+  .sam-tile[data-reveal] .sam-mini::after, .sam-tile[data-reveal] .sam-mini-host { animation: none; }
+  .sam-tile[data-fresh] .sam-mini::after, .sam-tile[data-reveal] .sam-mini::after { opacity: 0; }
+}
+:root[data-motion='reduced'] .sam-card, :root[data-motion='reduced'] .sam-tile,
+:root[data-motion='off'] .sam-card, :root[data-motion='off'] .sam-tile { transition: none; }
+:root[data-motion='reduced'] .sam-tile[data-reveal] .sam-mini::after, :root[data-motion='reduced'] .sam-tile[data-reveal] .sam-mini-host,
+:root[data-motion='off'] .sam-tile[data-reveal] .sam-mini::after, :root[data-motion='off'] .sam-tile[data-reveal] .sam-mini-host { animation: none; }
+:root[data-motion='reduced'] .sam-tile[data-fresh] .sam-mini::after, :root[data-motion='reduced'] .sam-tile[data-reveal] .sam-mini::after,
+:root[data-motion='off'] .sam-tile[data-fresh] .sam-mini::after, :root[data-motion='off'] .sam-tile[data-reveal] .sam-mini::after { opacity: 0; }
+

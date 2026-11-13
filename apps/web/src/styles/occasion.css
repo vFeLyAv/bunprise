@@ -1,0 +1,66 @@
+/*
+ * src/styles/occasion.css — the occasion screen's own looks (features/occasions), imported by its components:
+ * it ships with the occasion chunk only. The hero card and the RSVP card are frosted panels (.glass-panel)
+ * washed with the occasion's own tint (--hero-tint = --tint-1…4, the stable hash of its id; contrast: PANEL
+ * over TINT in docs/design/contrast-check.mjs).
+ */
+@import './tints.css';
+.occasion-hero {
+  background-image:
+    radial-gradient(110% 80% at 0% 0%, var(--hero-tint) 0%, rgba(255,255,255,0) 62%),
+    var(--solid-panel-sheen, var(--panel-sheen));
+}
+/* "Kommst du?" before the first answer: the card asks with a warm light */
+.rsvp-ask {
+  background-image:
+    radial-gradient(120% 90% at 100% 0%, var(--tint-1) 0%, rgba(255,255,255,0) 64%),
+    var(--solid-panel-sheen, var(--panel-sheen));
+}
+/* "Wer kommt": the ways to invite on top of the members card (features/occasions/InviteSection.tsx) — one inset
+   separator to the people below, the rows' accent circle as big as a person's avatar */
+.invite-actions {
+  position: relative;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  transition: background-color var(--dur-l) var(--ease-out);
+}
+.invite-actions::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--separator);
+}
+.invite-actions:focus-visible { box-shadow: var(--ring); }
+.invite-row-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--accent-100);
+  color: var(--accent-text);
+}
+/* "Freunde einladen" brought the person here (K10, the calendar's pill → #invite): the rows glow once in the
+   accent — a colour change only, so it stays under reduced motion; 'off': it simply is there. */
+.invite-actions[data-spotlight] {
+  background-color: color-mix(in oklab, var(--accent-100) 85%, transparent);
+}
+/* Compact labels remain whole on a 320 px phone; accessible names stay unchanged. */
+.rsvp-short { display: none; }
+/* Russian and Ukrainian answers are long ("Возможно", "Не приду" / "Можливо", "Не прийду" do not fit next to an
+   icon even at 390 px): the compact labels "Да · Возможно · Нет" / "Так · Можливо · Ні" at every width (the
+   <html lang> follows the UI language). */
+:root:is(:lang(ru), :lang(uk)) .rsvp-full { display: none; }
+:root:is(:lang(ru), :lang(uk)) .rsvp-short { display: inline; }
+:root:is(:lang(ru), :lang(uk)) .rsvp-options [role="radio"] { gap: 0; padding-inline: 2px; }
+:root:is(:lang(ru), :lang(uk)) .rsvp-options [role="radio"] svg { display: none; }
+@media (max-width: 359px) {
+  .rsvp-full { display: none; }
+  .rsvp-short { display: inline; }
+  /* 2 px: Russian "Возможно" (75 px) needs the whole 76 px of its third */
+  .rsvp-options [role="radio"] { gap: 0; padding-inline: 2px; }
+  .rsvp-options [role="radio"] svg { display: none; }
+}

@@ -1,0 +1,22 @@
+-- =============================================================================
+-- Bunprise — RELEASE TEMPLATE: switch the invitation e-mail ON in the database (docs/spec/invite-email-design.md §11).
+-- NOT a migration (in migrations/ it would be applied by the next `supabase db push` by itself).
+--
+-- 20261028000000_invite_email.sql creates the feature SWITCHED OFF (private.features.invite_email = false): nobody can
+-- opt in, no outbox row is written, nothing is sent, the dispatch job does not exist.
+-- Use it ONLY with Felix's OK, after ALL of these (docs/handoffs/2026-10-27-invite-email.md):
+--   * the Worker secret BREVO_API_KEY is set by Felix in his own terminal
+--     (`npx wrangler secret put BREVO_API_KEY -c workers/edge/wrangler.jsonc`) and the Worker is deployed;
+--   * the Vault secret 'push_dispatch_secret' exists (Web Push set it up; the same secret signs the mail batches);
+--   * the published privacy notice describes the invitation e-mail (pilot-6, docs/legal-drafts/pilot-6-notes.md;
+--     pilot-5 §3.16 says "es gibt keine E-Mail").
+-- Steps:
+--   1. copy this file to supabase/migrations/<YYYYMMDDHHMMSS>_invite_email_on.sql (a timestamp later than every migration);
+--   2. `npx supabase db push`;
+--   3. check: `select invite_email from private.features` = true and
+--      `select jobname, schedule from cron.job where jobname = 'bunprise_invite_email_dispatch'` = one row ('* * * * *');
+--   4. build the app with VITE_INVITE_EMAIL = '1'.
+-- One plain statement, no LOCK TABLE: the function holds the switch row itself (a running dispatch finishes first).
+-- =============================================================================
+
+select private.set_invite_email_feature(true);

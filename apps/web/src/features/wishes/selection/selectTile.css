@@ -1,0 +1,65 @@
+/* Selection mode on the owner's wish tiles (WishGrid.tsx WishTile, Felix 30.10 request #4: "like moving app icons
+   on an iPhone"). Only transform (the `rotate` property — it composes with the press scale motion writes into
+   `transform`, so the two never fight), opacity and colour change.
+     .wt[data-select="jiggle"]  every open tile wobbles a little, each a bit out of step with its neighbours
+     .wt[data-select="calm"]    reduced motion (or level "off"): no wobble, a calm outline on every tile instead
+     .wt-sel                    the circle on the picture's top left, filled with a check when selected
+     .wt-ring                   the selected tile's accent ring (opacity only) */
+
+.wt[data-select] .wt-open {
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.wt[data-select] .wt-media img { -webkit-user-drag: none; }
+
+@keyframes wt-jiggle {
+  0% { rotate: -0.9deg; }
+  50% { rotate: 0.9deg; }
+  100% { rotate: -0.9deg; }
+}
+.wt[data-select="jiggle"] > .wt-card {
+  animation: wt-jiggle 0.32s ease-in-out infinite;
+}
+/* out of step, like the icons: a slightly different period and phase per column / row */
+.wt[data-select="jiggle"]:nth-child(2n) > .wt-card { animation-duration: 0.36s; animation-delay: -0.11s; }
+.wt[data-select="jiggle"]:nth-child(3n) > .wt-card { animation-delay: -0.21s; }
+.wt[data-select="jiggle"]:nth-child(5n) > .wt-card { animation-duration: 0.3s; }
+/* a second guard next to the JS switch: never a loop under reduced motion or level "off" */
+:root[data-motion="reduce"] .wt[data-select] > .wt-card,
+:root[data-motion="off"] .wt[data-select] > .wt-card { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .wt[data-select] > .wt-card { animation: none; }
+}
+
+/* the ring: a soft accent outline on every tile under calm mode, the accent on a selected tile (both: opacity only) */
+.wt-ring {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2.5px var(--accent-400);
+  opacity: 0;
+  transition: opacity var(--dur-snappy) var(--ease-snappy);
+}
+.wt[data-select="calm"] .wt-ring { box-shadow: inset 0 0 0 1.5px var(--accent-200); opacity: 1; }
+.wt[data-select] .wt-ring[data-on] { box-shadow: inset 0 0 0 2.5px var(--accent-400); opacity: 1; }
+
+/* the circle: an empty white ring on the picture, the accent disc with a check when selected */
+.wt-sel {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  z-index: 1;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: var(--r-full);
+  background-color: color-mix(in oklab, var(--surface) 70%, transparent);
+  box-shadow: inset 0 0 0 2px #fff, 0 1px 5px -2px color-mix(in srgb, var(--shade) 45%, transparent);
+  transition: background-color var(--dur-xs, 120ms) var(--ease-out);
+}
+.wt-sel[data-on] { background-color: var(--accent-400); }
+.wt-sel-check { display: grid; place-items: center; color: #fff; }

@@ -1,0 +1,18 @@
+{
+  "name": "@bunprise/edge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Bunprise API Worker: authenticated link previews and place suggestions, with static asset fallback.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --configLoader runner",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261019.1",
+    "typescript": "7.0.2",
+    "wrangler": "4.151.2"
+  }
+}

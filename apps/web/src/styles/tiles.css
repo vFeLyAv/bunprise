@@ -1,0 +1,58 @@
+/*
+ * src/styles/tiles.css — tints of gift tiles and avatars (blocker 20), imported by ui/tile.ts: Vite ships
+ * it with the screens that show tiles, not in the CSS of every first visit (invite landing budget).
+ * A hash of the wish / person id picks the tint (ui/tile.ts tileTone → data-tile="1…4"): the same id gets
+ * the same colour everywhere. The mascots' own palette — apricot (fawn coat), blush (the cheeks), blue
+ * (the blue coat), butter (the golden hamster) — each with a deeper ink of its own hue (all ≥ 5:1,
+ * docs/design/contrast-check.mjs). A theme overrides these tokens on its own selector like any token.
+ */
+:root {
+  --tile-1: light-dark(#FCE5C9, #3A2A1C); --tile-1-fg: light-dark(#984A14, #F3B676);
+  --tile-2: light-dark(#F8E0D8, #3A2424); --tile-2-fg: light-dark(#8C4757, #F0B3BE);
+  --tile-3: light-dark(#E3E6F1, #23283A); --tile-3-fg: light-dark(#48557F, #B9C3E6);
+  --tile-4: light-dark(#F7EDC9, #353016); --tile-4-fg: light-dark(#76580F, #E9D38D);
+}
+
+.tile {
+  background-color: var(--tile-bg, var(--tile-1));
+  color: var(--tile-ink, var(--tile-1-fg));
+}
+.tile[data-tile="2"] { --tile-bg: var(--tile-2); --tile-ink: var(--tile-2-fg); }
+.tile[data-tile="3"] { --tile-bg: var(--tile-3); --tile-ink: var(--tile-3-fg); }
+.tile[data-tile="4"] { --tile-bg: var(--tile-4); --tile-ink: var(--tile-4-fg); }
+
+/*
+ * Person tones (wave 2, K-cal "the calendar reads from afar"): WHO an occasion belongs to — the day chips of
+ * Start's month view, the people filter, the host avatars on Start. "Du" = the accent; every friend one of
+ * eight hues, picked by a stable hash of the person (features/calendar/people.ts assignTones: a clash inside
+ * your feed takes the next free tone; the order alternates hues, so neighbours differ). Each tone: a warm
+ * pastel chip (--person-N), its deep ink of the same hue (≥ 5:1 on the chip, docs/design/contrast-check.mjs
+ * PERSONS) and a mid tone for decorative marks only (--person-N-dot, never under text). The occasion tints
+ * (tints.css) stay the occasion's own colour; person tones never say anything about reservations.
+ */
+:root {
+  --person-me: light-dark(var(--accent-100), #45301C); --person-me-fg: light-dark(var(--accent-600), #F3B676); --person-me-dot: var(--accent-400);
+  --person-1: light-dark(#D2E3FB, #213654); --person-1-fg: light-dark(#24569F, #B6D3FE); --person-1-dot: light-dark(#6293DB, #5A81BC);
+  --person-2: light-dark(#FED6D4, #522629); --person-2-fg: light-dark(#9D333F, #FCBFC0); --person-2-dot: light-dark(#ED737B, #B46669);
+  --person-3: light-dark(#C8EDC9, #1E3E23); --person-3-fg: light-dark(#18692E, #B3DEB8); --person-3-dot: light-dark(#60B46F, #54915D);
+  --person-4: light-dark(#E5DCFB, #3A2D52); --person-4-fg: light-dark(#63429B, #D6C8FA); --person-4-dot: light-dark(#9C7FD7, #8873B4);
+  --person-5: light-dark(#BAECED, #0C3D3F); --person-5-fg: light-dark(#016569, #A3DDE0); --person-5-dot: light-dark(#40B1B7, #0D9298);
+  --person-6: light-dark(#FDD3EB, #4B2740); --person-6-fg: light-dark(#883170, #F1C0E0); --person-6-dot: light-dark(#D073B3, #A86893);
+  --person-7: light-dark(#DFEAB6, #333912); --person-7-fg: light-dark(#566203, #CCD8A4); --person-7-dot: light-dark(#A4B64F, #7B883E);
+  --person-8: light-dark(#DCE4EB, #2F363D); --person-8-fg: light-dark(#485A6B, #C7D3DE); --person-8-dot: light-dark(#879BAD, #728391);
+}
+
+/* `<span class="person-tone" data-person-tone="me|1…8">`: the chip colour + its ink; --person-mark = the mid tone */
+.person-tone {
+  background-color: var(--person-bg, var(--person-1));
+  color: var(--person-ink, var(--person-1-fg));
+  --person-mark: var(--person-mark-tone, var(--person-1-dot));
+}
+.person-tone[data-person-tone="me"] { --person-bg: var(--person-me); --person-ink: var(--person-me-fg); --person-mark-tone: var(--person-me-dot); }
+.person-tone[data-person-tone="2"] { --person-bg: var(--person-2); --person-ink: var(--person-2-fg); --person-mark-tone: var(--person-2-dot); }
+.person-tone[data-person-tone="3"] { --person-bg: var(--person-3); --person-ink: var(--person-3-fg); --person-mark-tone: var(--person-3-dot); }
+.person-tone[data-person-tone="4"] { --person-bg: var(--person-4); --person-ink: var(--person-4-fg); --person-mark-tone: var(--person-4-dot); }
+.person-tone[data-person-tone="5"] { --person-bg: var(--person-5); --person-ink: var(--person-5-fg); --person-mark-tone: var(--person-5-dot); }
+.person-tone[data-person-tone="6"] { --person-bg: var(--person-6); --person-ink: var(--person-6-fg); --person-mark-tone: var(--person-6-dot); }
+.person-tone[data-person-tone="7"] { --person-bg: var(--person-7); --person-ink: var(--person-7-fg); --person-mark-tone: var(--person-7-dot); }
+.person-tone[data-person-tone="8"] { --person-bg: var(--person-8); --person-ink: var(--person-8-fg); --person-mark-tone: var(--person-8-dot); }

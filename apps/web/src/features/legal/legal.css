@@ -1,0 +1,14 @@
+/*
+ * The archived legal drafts (LegalMarkdown.tsx). The document title holds one long German word —
+ * "Datenschutzerklärung", "Nutzungsbedingungen" — that the display size cannot fit into the card on a phone:
+ * the word broke mid-word without a hyphen ("Datenschutzer|klärung", QA ACCOUNT-7). The title therefore
+ * scales with the card's width (container units: right in the dev phone frame too), from the title-2 size
+ * at 320 px up to the display size; `hyphens: auto` (on the text) still adds hyphens where the browser can.
+ */
+.legal-doc {
+  container-type: inline-size;
+}
+.legal-doc .legal-title {
+  font-size: clamp(var(--fs-title-2), 8.5cqi, var(--fs-display));
+  line-height: 1.17;
+}

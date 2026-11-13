@@ -1,0 +1,100 @@
+/*
+ * src/styles/ocean.css — the fourth theme "Ozean" (Felix 25.10: "тёмная тема, но акценты голубые-синие").
+ *
+ * A dark theme on neutral graphite with a sky-blue accent instead of the orange: buttons, the "+", links, switches,
+ * selected chips and the focus ring turn blue. Everything else keeps the dark half of tokens.css (occasion tints,
+ * tiles, list banners, ok/danger, shadows); the hearts of "Wie sehr" stay warm (a blue heart is no heart).
+ * <html data-theme="ocean"> sets color-scheme dark (tokens.css), so every light-dark() token not repeated here keeps
+ * its night value.
+ *
+ * Loaded ONLY when the person chose it (lib/themeBoot.ts loadThemeStyles(), before the first render) — never part of
+ * the first screens' budget. Specificity (:root + attribute) beats the :root definitions whatever loads first.
+ * Contrast (AA) of the key pairs: text 14.4:1 / text-2 7.8:1 / text-3 4.6:1 / accent text 7.6:1 on a card; ink on
+ * the blue fill 7.1:1; the toast's accent 5.0:1.
+ */
+:root[data-theme="ocean"] {
+  /* tokens.css §1 — the accent: sky blue (50–200 = the tinted surfaces at night, 300–700 = the blue itself) */
+  --accent-50: #142235; --accent-100: #1B2F49; --accent-200: #24405F;
+  --accent-300: #8CC8FF;
+  --accent-400: #4FA8FF; --accent-500: #2F8BF0; --accent-600: #175AAE; --accent-700: #12488C;
+  --accent-text: #6CB6FF;
+  --accent-text-strong: #A9D4FF;
+  --text-on-accent: #06182E;
+  /* paper and ink: neutral graphite, cards one step lighter, cool off-white ink */
+  --bg: #111418;
+  --surface: #1C2026;
+  --surface-2: #232831;
+  --thumb: #3A414D;
+  --fill: rgba(205,220,240,.075);
+  --fill-2: rgba(205,220,240,.115);
+  --fill-3: rgba(205,220,240,.17);
+  --separator: rgba(205,220,240,.13);
+  --text: #EDF1F6;
+  --text-2: #AAB4C2;
+  --text-3: #7E8896;
+  --text-inverse: #15191F;
+  --hl: rgb(220 232 250 / .16);
+  --scrim: rgba(2,4,8,.55);
+  /* the scene behind every screen: blue and cyan light on graphite */
+  --page-glow-1: rgba(80,160,255,.12);
+  --page-glow-2: rgba(90,200,250,.08);
+  --page-glow-3: rgba(120,140,255,.08);
+  --page-glow-4: rgba(80,160,255,.05);
+  --page-top: #15191F;
+  --page-mid: #111418;
+  --page-bottom: #0F1215;
+  --theme-color: #15191F;
+  --shadow-3: 0 -1px 0 rgba(220,232,250,.06), 0 -18px 50px -12px rgba(0,0,0,.6);
+  --mascot-outline: rgba(220,232,250,.18);
+
+  /* glass.css — smoked graphite glass with a cool rim; the "+" in the accent blue */
+  --bar-bg: rgba(28,32,38,.76); /* .72 gave the blue ghost text 4.49:1 over a primary button under the bar (docs/design/contrast-check.mjs, 30.10) */
+  --bar-edge: inset 0 -1px 0 rgba(220,232,250,.07), 0 0.5px 0 var(--separator);
+  --sheet-bg: rgba(28,32,38,.8);
+  --sheet-edge: inset 0 1px 0 rgba(220,232,250,.16), inset 0 0 0 1px rgba(220,232,250,.07);
+  --float-bg: rgba(36,41,49,.8);
+  --float-accent-bg: rgba(79,168,255,.97);
+  --float-sheen: radial-gradient(130% 90% at 30% 0%, rgba(220,232,250,.1) 0%, transparent 58%);
+  --float-edge: inset 0 1px 0 rgba(220,232,250,.18), inset 0 0 0 1px rgba(220,232,250,.08), inset 0 -1px 2px rgba(0,0,0,.18);
+  --toast-bg: rgba(236,241,248,.92);
+
+  /* kit.css — frosted panels and fields */
+  --panel-bg: rgba(36,41,49,.7);
+  --panel-sheen: linear-gradient(180deg, rgba(220,232,250,.05) 0%, transparent 42%);
+  --panel-edge: inset 0 0 0 1px rgba(220,232,250,.075), inset 0 1px 0 rgba(220,232,250,.11);
+  --field-bg: rgba(220,232,250,.06);
+  --field-border: #808A99;
+
+  /* scene.css — the start screen: a blue light where the bunnies stand */
+  --scene-glow-1: rgba(100,170,255,.16);
+  --scene-glow-2: rgba(90,200,250,.09);
+  --scene-glow-3: rgba(120,140,255,.10);
+  --scene-glow-4: rgba(80,160,255,.07);
+  --scene-glow-5: rgba(90,200,250,.06);
+  --scene-top: #15191F;
+  --scene-bottom: #111418;
+  --scene-card-edge: inset 0 1px 0 rgba(220,232,250,.15);
+
+  /* gifts.css, wishes.css — the plate under product photos; the hearts of "Wie sehr" stay warm */
+  --gift-photo-plate: #232831;
+  --gift-photo-rim: rgba(220,232,250,.08);
+  --gift-credit-bg: rgb(17 20 24 / .88);
+  --wish-photo-bg: #232831;
+  --wish-heart-1: #7A5040;
+  --wish-heart-2: #EE9443;
+  --wish-heart-ink: #783910;
+
+  /* occasion-form.css — row and pill films */
+  --of-row-press: rgba(205,220,240,.09);
+  --of-row-hover: rgba(205,220,240,.05);
+  --of-pill-bg: rgba(205,220,240,.08);
+
+  /* tiles.css — "me" (avatar, calendar) is the accent's tint */
+  --person-me: #1B2F49; --person-me-fg: #8CC8FF;
+}
+/* lists.css — the Lists buddy's little effects (defined on his stage, not on :root) */
+:root[data-theme="ocean"] .lt-buddy-stage {
+  --buddy-puff: #2A303A;
+  --buddy-puff-rim: rgba(205,220,240,.3);
+  --buddy-dust: rgba(175,190,210,.35);
+}

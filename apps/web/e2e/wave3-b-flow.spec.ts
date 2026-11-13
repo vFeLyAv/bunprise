@@ -1,0 +1,181 @@
+import { test, expect, type Page } from '@playwright/test'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
+
+test.use({ actionTimeout: 10_000 })
+
+const shots = resolve(process.cwd(), '../../docs/design/pass/wave3/B-flow')
+const guestId = 'd1e0b000-0000-4000-8000-000000000001'
+const token = '6772696c6c6162656e642d62656e2d64656d6f2d696e766974652d6c696e6b21'
+async function go(page: Page, href: string) {
+  await page.evaluate(async (target) => {
+    const path = '/src/router.tsx'
+    const { router } = await import(/* @vite-ignore */ path)
+    await router.navigate({ href: target })
+  }, href)
+}
+async function shot(page: Page, name: string, delay = 700) {
+  await mkdir(shots, { recursive: true })
+  if (delay) await page.waitForTimeout(delay)
+  await page.screenshot({ path: resolve(shots, `${name}.png`) })
+}
+async function signup(page: Page, suffix: string, evidence = false) {
+  await page.getByRole('link', { name: 'Mit E-Mail fortfahren', exact: true }).click()
+  await expect(page.getByText('Demo: erfundene Adresse, Code 123456. Es wird keine E-Mail verschickt.')).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Andere Methode wählen' })).toBeVisible()
+  await page.getByLabel('E-Mail', { exact: true }).fill(`ux-b-${suffix}@example.test`)
+  await page.getByRole('checkbox').nth(0).check()
+  await page.getByRole('checkbox').nth(1).check()
+  if (evidence) await shot(page, 'B8-demo-hint-420')
+  await page.getByRole('button', { name: 'Code schicken', exact: true }).click()
+  await expect(page.getByLabel('Sechsstelliger Code')).toBeFocused()
+  if (evidence) {
+    await shot(page, 'B9-code-focus-420')
+    await shot(page, 'B9-code-bunny-calm-420', 400)
+    await page.getByLabel('Sechsstelliger Code').fill('000000')
+    await expect(page.getByRole('alert')).toContainText('Der Code stimmt nicht oder ist abgelaufen – prüf ihn oder fordere einen neuen an')
+    await expect(page.getByRole('alert')).not.toContainText('{{count}}')
+    await shot(page, 'B8-code-wrong-420')
+  }
+  await page.getByLabel('Sechsstelliger Code').fill('123456')
+  await expect(page.getByLabel('Name', { exact: true })).toBeFocused()
+  await page.getByLabel('Name', { exact: true }).fill('Paula')
+  await page.getByRole('button', { name: 'Fertig', exact: true }).click()
+  await page.waitForURL(/\/welcome$/)
+}
+
+async function acceptFinn(page: Page, width: number) {
+  await go(page, '/people/d1e0a000-0000-4000-8000-000000000005')
+  await page.getByRole('button', { name: 'Annehmen', exact: true }).click()
+  const sheet = page.getByRole('dialog', { name: 'Anfrage von Finn Weber' })
+  await expect(sheet.locator('[data-welcome="meet"]')).toHaveCount(0)
+  await sheet.getByRole('button', { name: 'Annehmen', exact: true }).click()
+  await expect(page.getByRole('dialog', { name: 'Finn Weber folgt dir jetzt' })).toBeVisible()
+  await shot(page, `B1-follow-meet-${width}`, 1200)
+  await page.getByRole('button', { name: 'Später', exact: true }).click()
+}
+
+test('B flow: working auth, current-name sheet, guest links, RSVP and occasion invite', async ({ page, context }) => {
+  test.setTimeout(150_000)
+  const errors: string[] = []
+  page.on('pageerror', (error) => errors.push(error.message))
+  await page.addInitScript(() => Object.defineProperty(navigator, 'share', { configurable: true, value: undefined }))
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+  await page.goto('/?frame=0')
+  await expect(page.getByRole('link', { name: /Mit (Google|Apple) fortfahren/ })).toHaveCount(2)
+  await expect(page.getByText('Kein Passwort nötig – nur ein Code per E-Mail')).toBeVisible()
+  await shot(page, 'B7-start-420', 2000)
+  await signup(page, 'flow', true)
+  await go(page, '/settings')
+  await expect(page.getByRole('heading', { level: 1, name: 'Profil' })).toBeAttached()
+  await expect(page).toHaveTitle('Profil · Bunprise')
+  await expect(page.getByText('E-Mail-Code', { exact: true })).toBeVisible()
+  await shot(page, 'B11-profile-420')
+  await page.getByRole('button', { name: 'Name ändern', exact: true }).click()
+  const dialog = page.getByRole('dialog', { name: 'Name ändern' })
+  await expect(dialog.getByLabel('Name', { exact: true })).toHaveValue('Paula')
+  await expect(dialog.getByText(/Konto löschen|Abmelden|Nutzungsbedingungen/)).toHaveCount(0)
+  await shot(page, 'B10-name-sheet-420')
+  await dialog.getByLabel('Name', { exact: true }).fill('Paula Neu')
+  await dialog.getByRole('button', { name: 'Speichern', exact: true }).click()
+  await expect(dialog).toHaveCount(0)
+  await expect(page.locator('.set-hero-name')).toHaveText('Paula Neu')
+  await page.getByRole('button', { name: 'Name ändern', exact: true }).click()
+  await expect(dialog.getByLabel('Name', { exact: true })).toHaveValue('Paula Neu')
+  await shot(page, 'B10-reopen-420')
+  await dialog.getByRole('button', { name: 'Abbrechen' }).click()
+  await go(page, '/settings/delete')
+  await page.getByLabel('Gib zur Bestätigung „LÖSCHEN“ ein').fill(' löschen ')
+  await expect(page.getByRole('button', { name: 'Endgültig löschen' })).toBeEnabled()
+  await shot(page, 'B11-delete-lowercase-420')
+  await go(page, `/occasions/${guestId}`)
+  await expect(page.getByRole('radiogroup', { name: 'Deine Antwort' })).toBeVisible()
+  await page.getByRole('radiogroup', { name: 'Deine Antwort' }).scrollIntoViewIfNeeded()
+  await shot(page, 'B1-guest-occasion-420')
+  await page.getByRole('radio', { name: 'Zusage', exact: true }).click()
+  await expect(page.getByRole('radio', { name: 'Zusage', exact: true })).toHaveAttribute('aria-checked', 'true')
+  await shot(page, 'B2-zusage-600ms-420', 600)
+  await writeFile(resolve(shots, 'B2-stage-diagnostic.json'), JSON.stringify(await page.locator('[data-welcome="pop-up"]').evaluateAll((hosts) => hosts.map((host) => ({
+    html: host.outerHTML, box: host.getBoundingClientRect().toJSON(), shadow: host.shadowRoot?.innerHTML,
+    animations: host.shadowRoot?.getAnimations().map((animation) => ({ state: animation.playState, time: animation.currentTime })),
+  }))), null, 2))
+  await shot(page, 'B2-zusage-1000ms-420', 400)
+  await shot(page, 'B2-answered-420', 1600)
+  await page.getByRole('button', { name: 'Ideen für Anna Beispiel', exact: false }).scrollIntoViewIfNeeded()
+  await page.getByRole('button', { name: 'Ideen für Anna Beispiel', exact: false }).click()
+  await expect(page).toHaveURL(/\/gifts$/)
+  await page.goBack()
+  await expect(page.getByRole('heading', { name: 'Annas Einweihung', exact: true })).toBeVisible()
+  await page.getByRole('link', { name: /Anna Beispiel/ }).click()
+  await expect(page).toHaveURL(/\/people\/d1e0a000-0000-4000-8000-000000000001$/)
+  await shot(page, 'B1-person-from-row-420')
+  await acceptFinn(page, 420)
+  await go(page, '/occasions/new')
+  await expect(page.getByRole('textbox', { name: 'Titel', exact: true })).toBeFocused()
+  await expect(page.locator('.of-when-bunny')).toHaveCount(0)
+  await shot(page, 'B4-focus-420')
+  await page.getByRole('textbox', { name: 'Titel', exact: true }).fill('Paulas Testfest')
+  await page.getByRole('button', { name: /Datum.*Tag wählen/ }).click()
+  await page.getByRole('button', { name: 'Morgen', exact: true }).click()
+  await expect(page.getByRole('grid')).toHaveCount(0)
+  await shot(page, 'B4-date-picked-420', 1100)
+  await page.getByRole('button', { name: 'Speichern', exact: true }).click()
+  await page.getByRole('link', { name: /Paulas Testfest Ganztägig/ }).click()
+  // the invite link sits in "Wer kommt" › "Per Link einladen" (27.10)
+  await page.getByRole('button', { name: /^Per Link einladen/ }).waitFor()
+  await expect(page.getByRole('button', { name: /Ideen für/ })).toHaveCount(0)
+  await shot(page, 'B1-host-no-row-420')
+  await page.getByRole('button', { name: /^Per Link einladen/ }).click()
+  await page.getByRole('button', { name: 'Einladungslink erstellen', exact: false }).click()
+  await expect(page.getByText('Link kopiert – ab in den Chat!', { exact: true })).toBeVisible()
+  await shot(page, 'B5-letter-0300ms-420', 300)
+  await shot(page, 'B5-letter-0900ms-420', 600)
+  await shot(page, 'B5-letter-1600ms-420', 700)
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await shot(page, 'B5-weniger-420')
+  await expect(page.locator('#invite [data-mascot],#invite [data-welcome]')).toHaveCount(0)
+  await go(page, `/occasions/${guestId}`)
+  await page.getByRole('radiogroup', { name: 'Deine Antwort' }).scrollIntoViewIfNeeded()
+  await shot(page, 'B2-weniger-420')
+  await go(page, '/occasions/00000000-0000-4000-8000-000000000099')
+  await expect(page.getByRole('heading', { name: 'Anlass nicht gefunden oder kein Zugriff' })).toBeVisible()
+  await shot(page, 'B6-not-found-420')
+  expect(errors).toEqual([])
+})
+
+test('B public invite states stay impersonal', async ({ page }) => {
+  await page.goto(`/i#${token}`)
+  await expect(page.getByText('Bunprise', { exact: true })).toBeVisible()
+  await expect(page.getByText('Gemeinsame Pläne und Wunschlisten – Geschenke werden heimlich reserviert.')).toBeVisible()
+  await expect(page.getByText(/Ben|Grillabend|Anna/)).toHaveCount(0)
+  await shot(page, 'B6-invite-landing-420')
+  await page.goto('/i#invalid')
+  await expect(page.getByRole('heading', { name: 'Dieser Link ist ungültig oder abgelaufen' })).toBeVisible()
+  await shot(page, 'B6-invite-invalid-420', 2000)
+})
+
+for (const width of [320, 1200]) test(`B layout at ${width}`, async ({ page }) => {
+  test.setTimeout(90_000)
+  await page.setViewportSize({ width, height: 900 })
+  await page.goto(width === 320 ? '/?frame=0' : '/')
+  await shot(page, `B7-start-${width === 1200 ? 'frame-' : ''}${width}`)
+  await signup(page, String(width))
+  await go(page, `/occasions/${guestId}`)
+  const options = page.getByRole('radiogroup', { name: 'Deine Antwort' })
+  await options.scrollIntoViewIfNeeded()
+  await shot(page, `B3-rsvp-${width}`)
+  for (const label of ['Zusage', 'Vielleicht', 'Absage']) await expect(page.getByRole('radio', { name: label, exact: true })).toBeVisible()
+  if (width === 320) {
+    expect(await options.locator('.rsvp-short').first().isVisible()).toBe(true)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.getByRole('radio', { name: 'Zusage', exact: true }).click()
+    await shot(page, 'B2-zusage-1000ms-320', 1000)
+    await acceptFinn(page, 320)
+    await go(page, `/occasions/${guestId}`)
+  }
+  for (const label of ['In Google Maps öffnen', 'In Apple Karten öffnen']) {
+    // The desktop preview scales the whole device; the control's CSS hit target is still 44 px.
+    const height = await page.getByRole('link', { name: label }).evaluate((element) => (element as HTMLElement).offsetHeight)
+    expect(height).toBeGreaterThanOrEqual(44)
+  }
+})
